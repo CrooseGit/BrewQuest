@@ -6,13 +6,11 @@ h1 {
   text-align: center;
 }
 
-@include media-breakpoint-down(sm) {
-  .login-form {
-    margin: 1rem;
-    background: red;
-  }
+.text {
+  color: white;
+  font-family: 'Quicksand';
 }
 
-text {
-  color: white;
+#login-btn {
+  background-color: #6a8d73;
 }

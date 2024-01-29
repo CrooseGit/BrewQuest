@@ -8,20 +8,20 @@ const Login = () => {
 
   return (
     <>
-      <BackButton onClick={handleBackButtonClick} />
+      <BackButton onClick={handleBackButtonClick} className='text' />
       <div>
-        <h1>BrewQuest</h1>
+        <h1 className='text display-1'>BrewQuest</h1>
       </div>
       <div className='container login-form'>
         <form>
           <div className='mb-3'>
-            <label htmlFor='email_input' className='form-label'>
+            <label htmlFor='email_input' className='form-label text'>
               Email address
             </label>
             <input type='email' className='form-control' id='email_input' />
           </div>
           <div className='mb-3'>
-            <label htmlFor='input_password' className='form-label'>
+            <label htmlFor='input_password' className='form-label text'>
               Password
             </label>
             <input
@@ -30,9 +30,15 @@ const Login = () => {
               id='input_password'
             />
           </div>
-          <button type='button' className='btn btn-primary'>
-            Login
-          </button>
+          <div className='d-grid gap-2 col-6 mx-auto'>
+            <button
+              type='button'
+              className='btn btn-primary btn-lg'
+              id='login-btn'
+            >
+              Login
+            </button>
+          </div>
         </form>
       </div>
     </>
