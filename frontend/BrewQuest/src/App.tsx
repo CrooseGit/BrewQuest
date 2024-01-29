@@ -1,7 +1,7 @@
 import './App.css';
-import Placeholder from './containers/Placeholder';
+import Login from './containers/Login';
 function App() {
-  return <Placeholder />;
+  return <Login />;
 }
 
 export default App;
