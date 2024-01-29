@@ -1,7 +1,8 @@
 import './App.css';
-import Login from './containers/Login';
+
+import Register from './containers/Register';
 function App() {
-  return <Login />;
+  return <Register />;
 }
 
 export default App;
