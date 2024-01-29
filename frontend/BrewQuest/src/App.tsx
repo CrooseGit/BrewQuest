@@ -1,8 +1,9 @@
 import './App.css';
 
-import Register from './containers/Register';
+import Landing from './containers/Landing';
+
 function App() {
-  return <Register />;
+  return <Landing />;
 }
 
 export default App;
