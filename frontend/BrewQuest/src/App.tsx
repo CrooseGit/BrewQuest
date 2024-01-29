@@ -1,7 +1,8 @@
 import './App.css';
-import Placeholder from './containers/Placeholder';
+
+import Register from './containers/Register';
 function App() {
-  return <Placeholder />;
+  return <Register />;
 }
 
 export default App;
