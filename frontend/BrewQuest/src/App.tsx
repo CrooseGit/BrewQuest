@@ -1,9 +1,9 @@
 import './App.css';
 
-import Landing from './containers/Landing';
+import GamePin from './containers/GamePin';
 
 function App() {
-  return <Landing />;
+  return <GamePin />;
 }
 
 export default App;
