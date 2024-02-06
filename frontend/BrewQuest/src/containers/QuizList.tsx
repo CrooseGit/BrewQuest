@@ -47,7 +47,7 @@ const QuizList = () => {
                                 id={quizItem.id.toString()}
                                 // called when item is selected and selected item has changed
                                 onChange={() => setSelectedQuiz(quizItem)}></input>
-                                <label className="btn btn-outline-danger quiz-item-label" htmlFor={quizItem.id.toString()}>{quizItem.title}</label>
+                                <label className="btn btn-outline-success quiz-item-label" htmlFor={quizItem.id.toString()}>{quizItem.title}</label>
                             </li>
                         )
                     )
