@@ -1,0 +1,10 @@
+.list-head {
+    color: white;
+}
+
+.list-item{
+    color: white;
+    list-style-type: none;
+    padding: 0%;
+    margin: 0%;
+}
