@@ -1,63 +1,61 @@
 import './QuizList.css';
-// npm install axios
 import axios from "axios";
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 
 const QuizList = () => {
     // set up items list structure
-    // quizzes is an array
-    const [quizzes, setQuizzes] = useState([]);
+    // sample quiz array
+    const [quizzes, setQuizzes] = useState([
+        {id: 1, title: "First quiz"},
+        {id: 2, title: "Second quiz"},
+        {id: 3, title: "Third quiz"}
+    ]);
 
     //set selected item structure
-    const [selectedQuiz, setSelectedQuiz] = useState(null);
+    const [selectedQuiz, setSelectedQuiz] = useState({});
 
-    //load items from database
-    useEffect( () => {
-        //HTTP GET request
-        axios.get('/api/items') //change path of database
-        // order of quizzes obtained
-        .then((response) => { setQuizzes(response.data) }) //change path
-        //catch error message
-        .catch((error) => { console.error(error, ": error fetching data") } );
-    }
-    ,[]
-    );
+    // //load items from database
+    // useEffect( () => {
+    //     //HTTP GET request
+    //     axios.get('/api/items') //change path for database
+    //     // quizzes obtained
+    //     .then((response) => { setQuizzes(response.data) }) //change path
+    //     //catch error message
+    //     .catch((error) => { console.error(error, ": error fetching data") } );
+    // },[]
+    // );
 
-    // on click, this will be run
-    const handleItemChange = (item) => {
-        setSelectedQuiz(item);
-        console.log(item);
-    };
-
+    useEffect(() => {
+        console.log(selectedQuiz);
+    });
     
 
     return (
         <div>
             <h2 className="list-head">Quizzes</h2>
             {/* display each list item */}
-            {/* <ul>
+            <div className="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group"><ul className="list-item">
                 {
                     quizzes.map(
                         // display each list item
                         (quizItem) => (
-                            <li className="list-item" key={quizItem.id}>
-                                <label>
-                                    <input
-                                    type="radio"
-                                    name={quizzes}
-                                    value={quizItem.id}
-                                    // called when item is selected and selected item has changed
-                                    onChange={() => handleItemChange(quizItem)}/>
-                                    {quizItem.name}
-                                </label>
+                            <li key={quizItem.id}>
+                                <input
+                                type="radio"
+                                className="btn-check"
+                                name="quizList"
+                                id={quizItem.id.toString()}
+                                // called when item is selected and selected item has changed
+                                onChange={() => setSelectedQuiz(quizItem)}></input>
+                                <label className="btn btn-outline-danger quiz-item-label" htmlFor={quizItem.id.toString()}>{quizItem.title}</label>
                             </li>
                         )
                     )
                 }
-            </ul> */}
+            </ul></div>
 
             {/* sample list items */}
-            <ul>
+            {/* <ul>
                 <li className="list-item" key="1">
                     <label>
                         <input type="radio" name={"quizzes"} value={1}
@@ -69,8 +67,8 @@ const QuizList = () => {
                     <label>
                         <input type="radio" name={"quizzes"} value={1}
                         onChange={() => handleItemChange("quizItem 2")}/>
+                        Second quiz
                     </label>
-                    Second quiz
                 </li>
                 <li className="list-item" key="3">
                     <label>
@@ -79,7 +77,7 @@ const QuizList = () => {
                         Third quiz
                     </label>
                 </li>
-            </ul>
+            </ul> */}
             
         </div>
     );
