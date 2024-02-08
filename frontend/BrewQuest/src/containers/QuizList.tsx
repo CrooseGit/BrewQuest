@@ -1,6 +1,9 @@
 import './QuizList.css';
 import axios from "axios";
 import {useState, useEffect} from 'react';
+import OptionButton from '../components/OptionButton/OptionButton';
+
+
 
 const QuizList = () => {
     // set up items list structure
@@ -10,6 +13,11 @@ const QuizList = () => {
         {id: 2, title: "Second quiz"},
         {id: 3, title: "Third quiz"}
     ]);
+
+    const handleOptionButtonClick= () => {
+        // Replace this with actual functionality when other view exists
+        console.log('Going Back');
+    }
 
     //set selected item structure
     const [selectedQuiz, setSelectedQuiz] = useState({});
@@ -48,6 +56,7 @@ const QuizList = () => {
                                 // called when item is selected and selected item has changed
                                 onChange={() => setSelectedQuiz(quizItem)}></input>
                                 <label className="btn btn-outline-success quiz-item-label" htmlFor={quizItem.id.toString()}>{quizItem.title}</label>
+                                <OptionButton onClick={handleOptionButtonClick}/>
                             </li>
                         )
                     )
