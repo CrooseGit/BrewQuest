@@ -1,4 +1,5 @@
 import './QuizList.css';
+import HostButton from './HostButton';
 import axios from "axios";
 import {useState, useEffect} from 'react';
 import OptionButton from '../components/OptionButton/OptionButton';
@@ -87,6 +88,8 @@ const QuizList = () => {
                     </label>
                 </li>
             </ul> */}
+
+            <HostButton></HostButton>
             
         </div>
     );
