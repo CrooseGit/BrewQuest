@@ -1,9 +1,9 @@
 import './App.css';
 
-import GamePin from './containers/GamePin';
+import QuizEdit from './containers/QuizEdit';
 
 function App() {
-  return <GamePin />;
+  return <QuizEdit />;
 }
 
 export default App;
