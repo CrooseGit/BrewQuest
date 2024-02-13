@@ -3,7 +3,6 @@ import HostButton from './HostButton';
 import axios from "axios";
 import {useState, useEffect} from 'react';
 import OptionButton from '../components/OptionButton/OptionButton';
-import QuizListItem from './QuizListItem.tsx'
 
 
 
@@ -50,8 +49,7 @@ const QuizList = () => {
                     id={quizItem.id.toString()}
                     // called when item is selected and selected item has changed
                     onChange={() => setSelectedQuiz(quizItem)}></input>,
-                <label className="btn btn-outline-success quiz-item-label" htmlFor={quizItem.id.toString()}>{quizItem.title}</label>,
-                <OptionButton onClick={handleOptionButtonClick} className='inline-option-button'/>
+                <label className="btn btn-outline-success quiz-item-label" htmlFor={quizItem.id.toString()}>{quizItem.title}<OptionButton onClick={handleOptionButtonClick} className='inline-option-button'/></label>
             ]
         )
     );
@@ -64,7 +62,7 @@ const QuizList = () => {
 
             <h2 className="list-head">Quizzes</h2>
             {/* display each list item */}
-            <div className="list-item btn-group-vertical" role="group">
+            <div className="btn-group-vertical quiz-button-group" role="group">
 
                 {quizElements.flat()}
 
