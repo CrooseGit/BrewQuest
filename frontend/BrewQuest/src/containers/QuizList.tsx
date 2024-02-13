@@ -3,6 +3,7 @@ import HostButton from './HostButton';
 import axios from "axios";
 import {useState, useEffect} from 'react';
 import OptionButton from '../components/OptionButton/OptionButton';
+import QuizListItem from './QuizListItem.tsx'
 
 
 
@@ -37,59 +38,37 @@ const QuizList = () => {
     useEffect(() => {
         console.log(selectedQuiz);
     });
+
+    const quizElements = quizzes.map(
+        (quizItem) => (
+            [
+                <input
+                    key={quizItem.id}
+                    type="radio"
+                    className="btn-check"
+                    name="quizList"
+                    id={quizItem.id.toString()}
+                    // called when item is selected and selected item has changed
+                    onChange={() => setSelectedQuiz(quizItem)}></input>,
+                <label className="btn btn-outline-success quiz-item-label" htmlFor={quizItem.id.toString()}>{quizItem.title}</label>,
+                <OptionButton onClick={handleOptionButtonClick} className='inline-option-button'/>
+            ]
+        )
+    );
+
+    console.log(quizElements);
     
 
     return (
         <div>
+
             <h2 className="list-head">Quizzes</h2>
             {/* display each list item */}
-            <div className="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group"><ul className="list-item">
-                {
-                    quizzes.map(
-                        // display each list item
-                        (quizItem) => (
-                            <li key={quizItem.id}>
-                                <input
-                                type="radio"
-                                className="btn-check"
-                                name="quizList"
-                                id={quizItem.id.toString()}
-                                // called when item is selected and selected item has changed
-                                onChange={() => setSelectedQuiz(quizItem)}></input>
-                                <label className="btn btn-outline-success quiz-item-label" htmlFor={quizItem.id.toString()}>{quizItem.title}</label>
-                                <OptionButton onClick={handleOptionButtonClick}/>
-                            </li>
-                        )
-                    )
-                }
-            </ul></div>
+            <div className="list-item btn-group-vertical" role="group">
 
-            {/* sample list items */}
-            {/* <ul>
-                <li className="list-item" key="1">
-                    <label>
-                        <input type="radio" name={"quizzes"} value={1}
-                        onChange={() => handleItemChange("quizItem 1")}/>
-                        First quiz
-                    </label>
-                </li>
-                <li className="list-item" key="2">
-                    <label>
-                        <input type="radio" name={"quizzes"} value={1}
-                        onChange={() => handleItemChange("quizItem 2")}/>
-                        Second quiz
-                    </label>
-                </li>
-                <li className="list-item" key="3">
-                    <label>
-                        <input type="radio" name={"quizzes"} value={1}
-                        onChange={() => handleItemChange("quizItem 3")}/>
-                        Third quiz
-                    </label>
-                </li>
-            </ul> */}
+                {quizElements.flat()}
 
-            <HostButton></HostButton>
+            </div>
             
         </div>
     );

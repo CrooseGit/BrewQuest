@@ -7,9 +7,11 @@ const QuizListPage = () => {
   return (
     //page
     <div>
-        {/* navbar */}
-        <Navbar></Navbar>
+      <Navbar></Navbar>
+      <div>
         <QuizList></QuizList>
+        <HostButton></HostButton>
+      </div>
     </div>
     
   );
