@@ -1,4 +1,4 @@
-import './QuizList.css';
+
 import HostButton from './HostButton';
 import axios from "axios";
 import {useState, useEffect} from 'react';
@@ -65,7 +65,8 @@ const QuizList = () => {
                     id={quizItem.id.toString()}
                     // called when item is selected and selected item has changed
                     onChange={() => setSelectedQuiz(quizItem)}></input>,
-                <label className="btn btn-outline-success quiz-item-label" htmlFor={quizItem.id.toString()}>{quizItem.title}<OptionButton onClick={handleOptionButtonClick} className='inline-option-button'/><Options isVisible={isVisible} /></label>
+
+                <label className="btn btn-outline-success quiz-item-label btngrp-space style-text" htmlFor={quizItem.id.toString()}><h5>{quizItem.title}<OptionButton onClick={handleOptionButtonClick} className='inline-option-button'/><Options isVisible={isVisible} /></h5></label>
             ]
         )
     );
@@ -74,12 +75,12 @@ const QuizList = () => {
     
 
     return (
-        <div>
+        <div className='style-text'>
 
-            <h2 className="list-head">Quizzes</h2>
             {/* display each list item */}
             <div className="btn-group-vertical quiz-button-group" role="group">
 
+                <label className="btn btngrp-space quiz-list-head style-text center-block"><h1 className='bold'>Quizzes</h1></label>
                 {quizElements.flat()}
 
             </div>

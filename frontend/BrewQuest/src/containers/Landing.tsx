@@ -2,7 +2,7 @@
 
 const Landing = () => {
   return (
-    <div className='btn-container container-size center-elements'>
+    <div className='btn-container container-size center-text'>
 
       <button className='btn btn-primary' id='join-btn'>
         <h1 className='style-text display-1'>Join Game</h1>
