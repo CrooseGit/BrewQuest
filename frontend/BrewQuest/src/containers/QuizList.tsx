@@ -15,9 +15,25 @@ const QuizList = () => {
         {id: 3, title: "Third quiz"}
     ]);
 
+    const [isVisible, setIsVisible] = useState(false);
+    function Options() {
+        return (
+            <div>
+                {isVisible ? (
+                    <ul>
+                        <li><button>Duplicate</button></li>
+                        <li><button>Edit</button></li>
+                        <li><button>Delete</button></li>
+                    </ul>
+                ) : null}
+            </div>
+        );
+        }
+
     const handleOptionButtonClick= () => {
         // Replace this with actual functionality when other view exists
-        console.log('Going Back');
+        setIsVisible(!isVisible);
+
     }
 
     //set selected item structure
@@ -49,7 +65,7 @@ const QuizList = () => {
                     id={quizItem.id.toString()}
                     // called when item is selected and selected item has changed
                     onChange={() => setSelectedQuiz(quizItem)}></input>,
-                <label className="btn btn-outline-success quiz-item-label" htmlFor={quizItem.id.toString()}>{quizItem.title}<OptionButton onClick={handleOptionButtonClick} className='inline-option-button'/></label>
+                <label className="btn btn-outline-success quiz-item-label" htmlFor={quizItem.id.toString()}>{quizItem.title}<OptionButton onClick={handleOptionButtonClick} className='inline-option-button'/><Options isVisible={isVisible} /></label>
             ]
         )
     );
