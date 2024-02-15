@@ -1,0 +1,35 @@
+body {
+  background-color: #212922;
+}
+
+.center-elements {
+  text-align: center;
+}
+
+.style-text {
+  color: white;
+  font-family: 'Quicksand';
+}
+
+.container-size{
+  width: 100vw;
+  height: 100vh;
+}
+
+.btn {
+  border-color: #6a8d73;
+  background-color: #6a8d73;
+}
+
+#join-btn {
+  width: 80%;
+  height: 70%;
+  margin-top: 7%;
+  margin-bottom: 6%;
+}
+
+#host-btn {
+  width: 80%;
+  height: 10%;
+  margin-bottom: 7%;
+}

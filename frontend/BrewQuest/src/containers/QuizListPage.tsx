@@ -1,7 +1,6 @@
 import Navbar from './Navbar.tsx';
 import QuizList from './QuizList.tsx';
 import HostButton from './HostButton.tsx'
-import './QuizListPage.css';
 
 const QuizListPage = () => {
   return (

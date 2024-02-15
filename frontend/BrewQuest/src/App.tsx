@@ -1,14 +1,16 @@
-import './App.css';
-
 import Landing from './containers/Landing';
 import QuizListPage from './containers/QuizListPage';
-import Testing from './Testing.tsx'
+// one css file for all views
+import "./index.css";
 
 
 function App() {
-  // return <Landing />;
-  return <QuizListPage />;
-  // return <Testing></Testing>
+  return(
+    <div>
+      {/* <Landing /> */}
+      <QuizListPage></QuizListPage>
+    </div>
+  )
 }
 
 export default App;

@@ -1,14 +1,17 @@
 //this is the landing page
-import '../containers/Landing.css';
+
 const Landing = () => {
   return (
-    <div className='container text-center'>
+    <div className='btn-container container-size center-elements'>
+
       <button className='btn btn-primary' id='join-btn'>
-        <h1 className='text display-1'>Join Game</h1>
+        <h1 className='style-text display-1'>Join Game</h1>
       </button>
+
       <button type='button' className='btn btn-primary' id='host-btn'>
-        <h2 className='text'>Host Game</h2>
+        <h2 className='style-text'>Host Game</h2>
       </button>
+
     </div>
   );
 };
