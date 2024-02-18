@@ -10,7 +10,7 @@ const QuizList = () => {
     // set up items list structure
     // sample quiz array
     const [quizzes, setQuizzes] = useState([
-        {id: 1, title: "First quiz"},
+        {id: 1, title: "dsjifopasidj posifdj poasid jfpoiasj dpofij saopidf jposiajdfposiaj fopdij ospfi japsfodij "},
         {id: 2, title: "Second quiz"},
         {id: 3, title: "Third quiz"}
     ]);
@@ -66,7 +66,7 @@ const QuizList = () => {
                     // called when item is selected and selected item has changed
                     onChange={() => setSelectedQuiz(quizItem)}></input>,
 
-                <label className="btn btn-outline-success quiz-item-label btngrp-space style-text" htmlFor={quizItem.id.toString()}><h5>{quizItem.title}<OptionButton onClick={handleOptionButtonClick} className='inline-option-button'/><Options /></h5></label>
+                <label className="btn btn-outline-success quiz-item-selection" htmlFor={quizItem.id.toString()}><div className='quiz-item-title'>{quizItem.title}</div><OptionButton onClick={handleOptionButtonClick} className='inline-option-button'/><Options /></label>
             ]
         )
     );
@@ -75,16 +75,12 @@ const QuizList = () => {
     
 
     return (
-        <div className='style-text'>
+        // display each list item
+        <div className="btn-group-vertical quiz-button-group" role="group">
 
-            {/* display each list item */}
-            <div className="btn-group-vertical quiz-button-group" role="group">
+            <label className="btn quiz-list-head">Quizzes</label>
+            {quizElements.flat()}
 
-                <label className="btn btngrp-space quiz-list-head style-text center-block"><h1 className='bold'>Quizzes</h1></label>
-                {quizElements.flat()}
-
-            </div>
-            
         </div>
     );
 };
