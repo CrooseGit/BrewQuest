@@ -1,5 +1,3 @@
-import './Navbar.css';
-
 const Navbar = () => {
     return (
         // component wrap

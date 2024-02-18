@@ -66,7 +66,7 @@ const QuizList = () => {
                     // called when item is selected and selected item has changed
                     onChange={() => setSelectedQuiz(quizItem)}></input>,
 
-                <label className="btn btn-outline-success quiz-item-label btngrp-space style-text" htmlFor={quizItem.id.toString()}><h5>{quizItem.title}<OptionButton onClick={handleOptionButtonClick} className='inline-option-button'/><Options isVisible={isVisible} /></h5></label>
+                <label className="btn btn-outline-success quiz-item-label btngrp-space style-text" htmlFor={quizItem.id.toString()}><h5>{quizItem.title}<OptionButton onClick={handleOptionButtonClick} className='inline-option-button'/><Options /></h5></label>
             ]
         )
     );
