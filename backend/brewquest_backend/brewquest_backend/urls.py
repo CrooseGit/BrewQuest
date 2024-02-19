@@ -16,22 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.core.paginator import Paginator
-from django.http import JsonResponse
-from . import Quiz
-from . import QuizSerializer
-
-def paginated_quiz_list(request):
-    all_quizzes = Quiz.objects.all()
-    paginator = Paginator(all_quizzes, 10)  # Show 10 quizzes per page
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    serializer = QuizSerializer(page_obj, many=True)
-    
-    return JsonResponse(serializer.data, safe=False)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('quizzes/', paginated_quiz_list, name='paginated_quiz_list')
 ]
