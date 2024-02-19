@@ -1,18 +1,9 @@
 import BackButton from '../components/BackButton/BackButton';
 import Button from 'react-bootstrap/Button';
 import Pagination from 'react-bootstrap/Pagination';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import '../containers/QuizEdit.css';
-
-let active = 1;
-let items: JSX.Element[] = [];
-for (let number = 1; number <= 5; number++) {
-  items.push(
-    <Pagination.Item key={number} active={number === active}>
-      {number}
-    </Pagination.Item>,
-  );
-}
 
 const QuizEditContainer: React.FC = () => {
   const handleBackButtonClick = () => {
@@ -25,6 +16,17 @@ const QuizEditContainer: React.FC = () => {
     console.log('Saving Quiz');
   };
 
+  const [quizzes, setQuizzes] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    const fetchQuizzes = async () => {
+      const response = await axios.get(`/api/quizzes/?page=${currentPage}`);
+      setQuizzes(response.data);
+    };
+    fetchQuizzes();
+  }, [currentPage]);
+
   return (
     <>
       <div className='header'>
@@ -33,7 +35,9 @@ const QuizEditContainer: React.FC = () => {
         <Button onClick={handleSaveButtonClick}>Save & Exit</Button>
       </div>
       <div>
-        <Pagination>{items}</Pagination>
+        <Pagination>
+          <Pagination.Item>{currentPage}</Pagination.Item>
+        </Pagination>
         <br />
       </div>
 
