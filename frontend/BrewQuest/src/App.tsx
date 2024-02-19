@@ -1,5 +1,6 @@
 import Landing from './containers/Landing';
 import QuizListPage from './containers/QuizListPage';
+import MarkingPage from './containers/MarkingPage';
 // one css file for all views
 import "./index.css";
 
@@ -7,8 +8,9 @@ import "./index.css";
 function App() {
   return(
     <div>
-      {/* <Landing /> */}
-      <QuizListPage></QuizListPage>
+      {/* <Landing />
+      <QuizListPage></QuizListPage> */}
+      <MarkingPage></MarkingPage>
     </div>
   )
 }

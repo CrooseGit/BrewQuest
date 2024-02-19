@@ -2,6 +2,106 @@ body {
   background-color: #212922;
 }
 
+h1, h2, .question-selection, .submitted-answers-list, .arrow-guide{
+  color: white;
+  font-family: "Quicksand";
+  font-weight: bold;
+}
+
+.arrow-guide{
+  position: relative;
+  top: 67px;
+  font-weight: normal;
+  font-size: 30px;
+  display: inline-block;
+  padding: 7px;
+  box-shadow: 0 18px 20px -5px rgba(0, 0, 0, 0.25);
+}
+
+.left-arrow{
+  border-radius: 15px 1px 1px 15px;
+  margin-left: 5%;
+  background-color: #bb1818;
+}
+
+.right-arrow{
+  float: right;
+  border-radius: 1px 15px 15px 1px;
+  margin-right: 5%;
+  background-color: #49ab2e;
+}
+
+.submitted-answers-list{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 0px auto;
+  font-weight: normal;
+}
+
+.submitted-answer{
+  background-color: #6a8d73;
+  display: block;
+  width: 400px;
+  margin: 0px auto;
+  text-align: center;
+  padding: 20px 10px;
+  font-size: 22px;
+  border-radius: 16px;
+  box-shadow: 0 12px 17px 0 rgba(0, 0, 0, 0.4);
+}
+
+.branding-heading{
+  font-size: 28px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.round-subtitle{
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.round-questions{
+  width: 90%;
+  margin: 0px auto;
+  margin-bottom: 20px;
+}
+
+.marked-question{
+  font-weight: normal;
+  font-size: 25px;
+  margin: 0px auto;
+  margin-bottom: -30px;
+  width: 80%;
+  text-align: center;
+}
+
+.question-selection{
+  background-color: #212922;
+  border-radius: 25px;
+  text-align: center;
+  width: 50px;
+  height: 50px;
+  padding-top: 10px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #080808;
+}
+
+.question-selection-container{
+  background-color: rgb(80, 37, 15);
+  padding: 10px 8px;
+  padding-bottom: 10px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 52px;
+  overflow-x: auto;
+  border-color: #080808;
+  border-style: solid;
+  border-width: 2px;
+}
 
 .quiz-list-head{
   list-style-type: none;
@@ -68,4 +168,3 @@ body {
   height: 10%;
   margin-bottom: 7%;
 }
-
