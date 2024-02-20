@@ -1,35 +1,20 @@
-import BackButton from '../components/BackButton/BackButton';
-import { Form, FormControl, Button } from 'react-bootstrap';
-import { Link } from "react-router-dom";
-import '../containers/QuizEdit.css';
-
-const QuizEdit = () => {
-  const handleBackButtonClick = () => {
-    // Replace this with actual functionality when other view exists
-    console.log('Going Back');
-  };
-
-  const handleSaveButtonClick = () => {
-    // Replace this with actual functionality when other view exists
-    console.log('Saving Quiz');
-  };
-
+import '../containers/QuestionPageClient.css';
+const QuestionPageClient = () => {
   return (
     <div className='box'>
-      <div className='header'>
-        <Link to="../"><BackButton onClick={handleBackButtonClick} className='text' /></Link>
-        <h1 className='title'>Quiz Title</h1>
-        <Button onClick={handleSaveButtonClick}>Save & Exit</Button>
+      <div className='topBar d-flex justify-content-between'>
+        <div>
+          <h5 className='text p-2'>Round 3</h5>
+        </div>
+        <div>
+          <h5 className='text p-2'>10:11</h5>
+        </div>
+        <div>
+          <button type='button' className='btn p-2 submitAllButton'>
+            <h5 className='text'>Submit All</h5>
+          </button>
+        </div>
       </div>
-
-      <div>
-        <Form.Select>
-        <option value="1">Round 1</option>
-        <option value="2">Round 2</option>
-        <option value="3">Round 3</option>
-        </Form.Select>
-      </div>
-
       <div className='scrollMenu'>
         <button type='button' className='btn questionButton'>
           <h4>Q1</h4>
@@ -61,16 +46,12 @@ const QuizEdit = () => {
         </button>
       </div>
 
-      <div>
-        <Form.Label>Question</Form.Label>
-        <FormControl
-          size='lg'
-          id="questionInput"
-          defaultValue={"What's the capital of Switzerland?"}
-        />
-      </div>
-
       <div className='questionDiv'>
+        <div>
+          <h1 className='text questionText'>
+            What's the capital of Switzerland?
+          </h1>
+        </div>
 
         <div>
           <form>
@@ -104,5 +85,4 @@ const QuizEdit = () => {
     </div>
   );
 };
-
-export default QuizEdit;
+export default QuestionPageClient;

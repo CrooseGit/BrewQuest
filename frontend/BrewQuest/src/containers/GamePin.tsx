@@ -1,5 +1,6 @@
 import BackButton from '../components/BackButton/BackButton';
 import '../containers/GamePin.css';
+import {Link} from "react-router-dom";
 const GamePin = () => {
   const handleBackButtonClick = () => {
     // Replace this with actual functionality when other view exists
@@ -8,7 +9,7 @@ const GamePin = () => {
 
   return (
     <>
-      <BackButton onClick={handleBackButtonClick} className='text' />
+      <Link to="../"><BackButton onClick={handleBackButtonClick} className='text' /></Link>
       <div>
         <h1 className='text display-1'>Game Pin</h1>
       </div>
