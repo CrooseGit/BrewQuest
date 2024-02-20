@@ -22,7 +22,7 @@ const QuizEdit = () => {
         <Button onClick={handleSaveButtonClick}>Save & Exit</Button>
       </div>
 
-      <div>
+      <div className='round'>
         <Form.Select>
         <option value="1">Round 1</option>
         <option value="2">Round 2</option>
@@ -61,7 +61,7 @@ const QuizEdit = () => {
         </button>
       </div>
 
-      <div>
+      <div className='question'>
         <Form.Label>Question</Form.Label>
         <FormControl
           size='lg'
