@@ -4,13 +4,14 @@ import axios from "axios";
 import {useState, useEffect} from 'react';
 import OptionButton from '../components/OptionButton/OptionButton';
 
+// import OptionButton from './OptionButton.tsx';
 
 
 const QuizList = () => {
     // set up items list structure
     // sample quiz array
     const [quizzes, setQuizzes] = useState([
-        {id: 1, title: "dsjifopasidj posifdj poasid jfpoiasj dpofij saopidf jposiajdfposiaj fopdij ospfi japsfodij "},
+        {id: 1, title: "dsjifopasidj jpodi jsapofij dspoij faspoid jfposaidj fpoi jposifdj poasid jfpoiasj dpofij saopidf jposiajdfposiaj fopdij ospfi japsfodij dsjifopasidj jpodi jsapofij dspoij faspoid jfposaidj fpoi jposifdj poasid jfpoiasj dpofij saopidf jposiajdfposiaj fopdij ospfi japsfodij dsjifopasidj jpodi jsapofij dspoij faspoid jfposaidj fpoi jposifdj poasid jfpoiasj dpofij saopidf jposiajdfposiaj fopdij ospfi japsfodij"},
         {id: 2, title: "Second quiz"},
         {id: 3, title: "Third quiz"}
     ]);
@@ -60,13 +61,15 @@ const QuizList = () => {
                 <input
                     key={quizItem.id}
                     type="radio"
-                    className="btn-check"
+                    className="btn-check quiz-item-input"
                     name="quizList"
                     id={quizItem.id.toString()}
                     // called when item is selected and selected item has changed
                     onChange={() => setSelectedQuiz(quizItem)}></input>,
 
-                <label className="btn btn-outline-success quiz-item-selection" htmlFor={quizItem.id.toString()}><div className='quiz-item-title'>{quizItem.title}</div><OptionButton onClick={handleOptionButtonClick} className='inline-option-button'/><Options /></label>
+                <label className="btn quiz-item-selection" htmlFor={quizItem.id.toString()}>
+                    <div className='quiz-item-title'>{quizItem.title}</div><OptionButton></OptionButton>
+                </label>
             ]
         )
     );

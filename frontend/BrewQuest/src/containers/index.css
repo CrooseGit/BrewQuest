@@ -2,16 +2,83 @@ body {
   background-color: #212922;
 }
 
+.option-dropdown{
+  position: relative;
+}
+
+.option-dropdown > .option-button:focus + .shown-options {
+  opacity: 1;
+}
+
+.shown-options{
+  position: absolute;
+  top: 35px;
+  left: -140px;
+  height: fit-content;
+  width: fit-content;
+  display: flex;
+  background-color: #212922;
+  flex-direction: column;
+  gap: 3px;
+  border-color: #212922;
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 5px;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 99999999999 !important;
+}
+
+.first-button{
+  border-radius: 3px 3px 0 0;
+}
+
+.last-button{
+  border-radius: 0 0 3px 3px;
+}
+
+.shown-option-button{
+  background-color: #6a8d73;
+  color: white;
+  width: 160px;
+  padding: 5px;
+  font-size: 14px;
+}
+
+.option-icon {
+  width: 20px;
+  height: auto;  
+}
+
+.option-button{
+  margin-bottom: 4px;
+  background: none;
+  border: none;
+}
 
 .quiz-list-head{
   list-style-type: none;
   text-align: left;
   color: white;
   font-size: 40px;
+  margin-bottom: 4px;
 }
 
 .quiz-list-head:hover, .quiz-list-head:active{
   color: white !important;
+}
+
+.quiz-item-selection:hover{
+  color: rgb(148, 155, 137) !important;
+  border-color: rgb(148, 155, 137) !important;
+  background-color: #212922 !important;
+  position: static; /* to ignore z-index rules for option menu */
+}
+
+.quiz-item-input:checked + .quiz-item-selection{
+  background-color: rgb(148, 155, 137);
+  color: white;
+  border-color: rgb(148, 155, 137);
 }
 
 .quiz-item-selection{
@@ -20,6 +87,7 @@ body {
   color: white;
   display: grid;
   grid-template-columns: 1fr auto;
+  margin-bottom: 4px;
 }
 
 .quiz-button-group{
