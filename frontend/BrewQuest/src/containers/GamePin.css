@@ -1,0 +1,26 @@
+body {
+    margin: 0.2em;
+    background-color: #212922;
+  }
+  h1 {
+    text-align: center;
+  }
+  
+  .text {
+    color: white;
+    font-family: 'Quicksand';
+  }
+  
+  #input-txtbox {
+    width: 70%;
+    margin-top: 20vh;
+    margin-left: 15%;
+  }
+  #confirm-btn {
+    background-color: #6a8d73;
+    width: 60%;
+    height: 10vh;
+    margin-top: 10vh;
+    margin-left: 20%;
+  }
+  

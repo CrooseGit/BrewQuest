@@ -1,0 +1,17 @@
+.list-head {
+    color: white;
+}
+
+.list-item{
+    list-style-type: none;
+}
+
+.quiz-item-label{
+    min-width: 200px;
+    max-width: 1000px;
+    width: auto;
+    text-align: left;
+    color: white;
+    list-style-type: none;
+    padding: auto;
+}
