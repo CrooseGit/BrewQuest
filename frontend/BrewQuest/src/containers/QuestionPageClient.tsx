@@ -1,21 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import '../containers/QuestionPageClient.css';
 const QuestionPageClient = () => {
   const [question_index, setQuestion_index] = useState(0);
-  const prompts = [
-    'What is the capital of Switzerland?',
-    'Who is the reigning monarch of the U.K?',
-    'Why did the chicken cross the road?',
-    'Who was the 44th president of the U.S?',
-    "Who directed the movie 'The Hangover'?",
-  ];
-  const number_of_questions = prompts.length;
-  const [answers, setAnswers] = useState(
-    new Array(number_of_questions).fill('')
-  );
+
+  const [prompts, setPrompts] = useState(['Loading']);
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:8000/api/questions/')
+      .then((response) => {
+        setPrompts(response.data.questions);
+        setAnswers(new Array(prompts.length).fill(''));
+        setSubmitted(new Array(prompts.length).fill(false));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [prompts.length]);
+
+  const [answers, setAnswers] = useState(new Array(prompts.length).fill(''));
 
   const [isSubmitted, setSubmitted] = useState(
-    new Array(number_of_questions).fill(false)
+    new Array(prompts.length).fill(false)
   );
 
   const handleAnswerInputChange = (input: string) => {
@@ -110,7 +117,7 @@ const QuestionPageClient = () => {
             type='button'
             className='btn btn-lg'
             onClick={() => {
-              if (question_index != number_of_questions)
+              if (question_index != prompts.length)
                 setQuestion_index(question_index + 1);
             }}
           >
