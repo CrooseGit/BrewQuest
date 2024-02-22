@@ -2,9 +2,13 @@ import BackButton from '../components/BackButton/BackButton';
 
 import { Link } from "react-router-dom";
 import './QuizGame.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const QuizGame = () => {
+
+  const [currentQuestion, setCurrentQuestion] = useState(1);
+  const [questions, setQuestions] = useState({"num":[1,2,3]})
+
   const handleBackButtonClick = () => {
     // Replace this with actual functionality when other view exists
     console.log('Going Back');
@@ -15,8 +19,11 @@ const QuizGame = () => {
     console.log('Saving Quiz');
   };
 
-  const [currentQuestion, setCurrentQuestion] = useState(1);
-  const [questions, setQuestions] = useState({"num":["Q1","Q2","Q3"]})
+  const handleQuestionChange = useEffect(() => {
+    // Replace this with actual functionality when other view exists
+    document.getElementById(currentQuestion.toString());
+    console.log('Question Change');
+  }, [currentQuestion]);
 
 
 
@@ -36,8 +43,21 @@ const QuizGame = () => {
         <option value="3">Round 3</option>
         </form>
       </div>
-
-      <div className='scrollMenu'>
+      <div className='scrollMenu'>  
+    {questions["num"].map((num, index) => {
+      return (
+        <button type='button' 
+        className={'btn questionButton '+ 
+        (currentQuestion === num ? "selectedButton" : "questionButton")} 
+        id = {num.toString()}
+        onClick={() => setCurrentQuestion(num)}>
+          
+          <h4>{"Q"+num.toString()}</h4>
+          </button>
+      );
+      })}
+    </div>
+    {/*<div className='scrollMenu'>
         <button type='button' className='btn questionButton'>
           <h4>Q1</h4>
         </button>
@@ -66,7 +86,8 @@ const QuizGame = () => {
         <button type='button' className='btn questionButton'>
           <h4>Q8</h4>
         </button>
-      </div>
+      </div> */}
+      
 
       <div className='question'>
         <form>Question</form>
