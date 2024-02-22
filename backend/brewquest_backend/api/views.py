@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from datetime import datetime
 # Create your views here.
 
-
+# This is a temporary function, just a place holder.
 @api_view(['GET'])
 def questions(request):
     now = datetime.now()
