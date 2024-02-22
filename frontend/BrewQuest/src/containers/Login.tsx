@@ -1,10 +1,19 @@
 import BackButton from '../components/BackButton/BackButton';
 import '../containers/Login.css';
+import { useNavigate } from 'react-router-dom';
 const Login = () => {
-  const handleBackButtonClick = () => {
+
+  const navigate = useNavigate();
+  const handleBackButtonClick =  async() => {
     // Replace this with actual functionality when other view exists
     console.log('Going Back');
+    navigate('../');
+  
   };
+
+  const handleSubmit = () =>{
+
+  }
 
   return (
     <>
@@ -13,7 +22,7 @@ const Login = () => {
         <h1 className='text display-1'>BrewQuest</h1>
       </div>
       <div className='container login-form'>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className='mb-3'>
             <label htmlFor='email_input' className='form-label text'>
               Email address
@@ -32,7 +41,7 @@ const Login = () => {
           </div>
           <div className='d-grid gap-2 col-6 mx-auto'>
             <button
-              type='button'
+              type='submit'
               className='btn btn-primary btn-lg'
               id='login-btn'
             >
@@ -40,6 +49,7 @@ const Login = () => {
             </button>
           </div>
         </form>
+
       </div>
     </>
   );
