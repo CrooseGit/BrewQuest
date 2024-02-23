@@ -7,7 +7,7 @@ import ColoredBox from './block';
 function App() {
   return (
     <>
-      <body>
+      <body className='body'>
         <div className="App" >
         <ButtonToolbar>
             <Button bsStyle="success" size="lg" onClick={""}>

@@ -18,6 +18,6 @@
   color: #ffffff;
 }
 
-body {
+.body {
   background-color: hsl(124, 96%, 9%); /* 设置整个网页的背景颜色 */
 }
