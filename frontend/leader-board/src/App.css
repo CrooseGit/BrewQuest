@@ -1,0 +1,23 @@
+
+.App {
+  text-align: center;
+}
+
+
+.leaderboard {
+  font-family: Fantasy;
+  font-size: 70px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.urrank {
+  font-family: Sans-serif;
+  font-size: 50px;
+  text-align: center;
+  color: #ffffff;
+}
+
+body {
+  background-color: hsl(124, 96%, 9%); /* 设置整个网页的背景颜色 */
+}
