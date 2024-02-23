@@ -5,4 +5,3 @@ export {default as Register} from "./Register";
 export {default as Placeholder} from "./Placeholder";
 export {default as QuizList} from "./QuizList";
 export {default as QuizListPage } from "./QuizListPage";
-

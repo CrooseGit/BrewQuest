@@ -15,3 +15,11 @@ def questions(request):
         'Why did the chicken cross the road?',
         'Who was the 44th president of the U.S?',
         "Who directed the movie 'The Hangover'?", "time of response "+current_time]})
+
+@api_view(['GET'])
+def quizzes(request):
+    return Response({'quizzes': [
+        'Animals',
+        'Software Engineering',
+        'Aerospace']
+    })
