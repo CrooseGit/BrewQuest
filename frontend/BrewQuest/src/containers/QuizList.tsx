@@ -19,7 +19,7 @@ const QuizList = () => {
 
     useEffect(() => {
         axios
-          .get('http://localhost:8000/api/questions/')
+          .get('http://localhost:8000/api/quizzes/')
           .then((response) => {
             setQuizzes(response.data.quizzes);
           })
@@ -43,7 +43,7 @@ const QuizList = () => {
     });
 
     
-    const quizElements = quizzes.map(
+    const quizElements = quizzes && quizzes.map(
         (quizItem, index) => (
             [
                 <input
