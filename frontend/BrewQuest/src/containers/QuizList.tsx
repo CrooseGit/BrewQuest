@@ -56,7 +56,7 @@ const QuizList = () => {
                     onChange={() => setSelectedQuiz(quizItem)}></input>,
 
                 <label className="btn quiz-item-selection" htmlFor={index.toString()}>
-                    <div className='quiz-item-title'>{quizItem}</div><OptionButton></OptionButton>
+                    <div className='quiz-item-title'>{quizItem}</div><OptionButton quizId={index}></OptionButton>
 
                 </label>
             ]

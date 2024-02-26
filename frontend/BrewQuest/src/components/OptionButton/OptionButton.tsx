@@ -13,6 +13,7 @@ import option_image from '../../assets/three_dots.svg';
 const OptionButton = (props) => {
 
   const quizId=props.quizId;
+  console.log(quizId);
 
   const [optionDropdownVisible, setOptionDropdownVisible] = useState(false);
   const toggleOptionDropdown = () => {
@@ -29,9 +30,9 @@ const OptionButton = (props) => {
           <img src={option_image} className='option-icon' />
         </button>
         {optionDropdownVisible && <div className='shown-options'>
-          <button className='shown-option-button first-button'>Duplicate</button>
-          <button className='shown-option-button'>Edit</button>
-          <button className='shown-option-button last-button'>Delete</button>
+          <button className='shown-option-button first-button'>Duplicate</button> {/*use axios api to ask to duplicate quiz item with given id number*/}
+          <button className='shown-option-button'>Edit</button> {/*link to different page with given id number*/}
+          <button className='shown-option-button last-button'>Delete</button> {/*use axios api to ask to delete quiz item with given id number*/}
         </div>}
       </div>
     </div>
