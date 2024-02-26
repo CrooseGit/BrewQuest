@@ -1,26 +1,38 @@
+import { useState } from 'react';
 import option_image from '../../assets/three_dots.svg';
-import { MouseEventHandler } from 'react';
+// import { MouseEventHandler } from 'react';
 
-interface OptionButtonProps {
-  onClick?: MouseEventHandler;
-  className?: string;
-}
+// interface OptionButtonProps {
+//   onClick?: MouseEventHandler;
+//   className?: string;
+// }
 
-const OptionButton = ({ onClick, className }: OptionButtonProps) => {
+
+
+// { onClick, className }: OptionButtonProps
+const OptionButton = (props) => {
+
+  const quizId=props.quizId;
+
+  const [optionDropdownVisible, setOptionDropdownVisible] = useState(false);
+  const toggleOptionDropdown = () => {
+    setOptionDropdownVisible(!optionDropdownVisible);
+  };
+
   return (
-    <div
-      className={'d-inline-flex align-items-start ' + className}
-      onClick={onClick}>
+    // className={'d-inline-flex align-items-start ' + className}
+        // onClick={onClick}
+    <div>
       
-      <div className='option-dropdown'>
-        <button tabIndex={0} className="option-button">
+      <div className='option-dropdown' >
+        <button tabIndex={0} className="option-button" onClick={toggleOptionDropdown}> {/* tab index for dropdown menu to appear in safari, temporary fix */}
           <img src={option_image} className='option-icon' />
         </button>
-        <div className='shown-options'>
-          <div className='shown-option-button first-button'>Duplicate</div>
-          <div className='shown-option-button'>Edit</div>
-          <div className='shown-option-button last-button'>Delete</div>
-        </div>
+        {optionDropdownVisible && <div className='shown-options'>
+          <button className='shown-option-button first-button'>Duplicate</button>
+          <button className='shown-option-button'>Edit</button>
+          <button className='shown-option-button last-button'>Delete</button>
+        </div>}
       </div>
     </div>
   );
