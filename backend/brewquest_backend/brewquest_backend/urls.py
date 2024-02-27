@@ -20,7 +20,7 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     #path('questionedit/',include('QuestionHandler.urls')),
-    path('QuizEditsAPI/', include('QuizEditsAPI.urls'))
+    path('QuizEditsAPI/', include('QuizEditsAPI.urls')),
+    path('testdb/', include('testdb.urls')),
+   
 ]
-
-

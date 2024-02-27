@@ -11,7 +11,13 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+'''
+import os
+from dotenv import load_dotenv, find_dotenv
 
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path)
+'''
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,6 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'QuizEditsAPI',
+    'testdb',
 ]
 
 MIDDLEWARE = [
@@ -83,8 +90,12 @@ WSGI_APPLICATION = 'brewquest_backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'testdb', 
+        'USER': 'postgres',
+        'PASSWORD': '<tyler password>',
+        'HOST': '127.0.0.1', 
+        'PORT': '5432',
     }
 }
 
@@ -131,3 +142,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+CSRF_TRUSTED_ORIGINS = ['https://127.0.0.1:5173'] 
