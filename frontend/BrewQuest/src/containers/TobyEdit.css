@@ -2,6 +2,8 @@ html,
 body {
   padding: 0.4em;
   height: 100%;
+  color: white;
+  font-family: 'Quicksand';
 }
 
 #root {
@@ -24,6 +26,11 @@ body {
   width: 5rem;
   height: 5rem;
   border-radius: 2.5rem;
+  border: 0rem;
+}
+#newQuestionButton {
+  background-color: #939D89;
+  color: white;
 }
 
 .questionButton h4 {
@@ -45,9 +52,8 @@ body {
   margin: 0;
 }
 
-.questionText {
+.questionEditText {
   font-size: 2.5rem;
-  margin-top: 3rem;
 }
 
 #textInput {
@@ -77,12 +83,6 @@ body {
 }
 .scrollMenu {
   flex: 0 1 auto;
-}
-.submitButton {
-  border-radius: 2rem;
-}
-.submitButton h2 {
-  margin: 0.75rem;
 }
 
 .navigationButtons button {

@@ -8,6 +8,8 @@ import {
   Register,
   Placeholder,
   QuizEdit,
+  TobyEdit,
+ 
 } from './containers/index';
 import QuestionPageClient from './containers/QuestionPageClient';
 
@@ -21,7 +23,9 @@ function App() {
         <Route path='/register' element={<Register />}></Route>
         <Route path='/placeholder' element={<Placeholder />}></Route>
         <Route path='/qpc' element={<QuestionPageClient />} />
-        <Route path='/quizedit' element={<QuizEdit />}></Route>
+        <Route path='/tobyedit' element={<TobyEdit />}></Route>
+        <Route path = 'quizpageclient' element="QuestionPageClient"></Route>
+
       </Routes>
     </>
   );

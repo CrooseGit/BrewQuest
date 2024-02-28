@@ -1,15 +1,5 @@
 import BackButton from '../components/BackButton/BackButton';
 import '../containers/Login.css';
-<<<<<<< HEAD
-import { useNavigate } from 'react-router-dom';
-const Login = () => {
-
-  const navigate = useNavigate();
-  const handleBackButtonClick =  async() => {
-    // Replace this with actual functionality when other view exists
-    console.log('Going Back');
-    navigate('../');
-=======
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -17,16 +7,11 @@ const Login = () => {
   const handleBackButtonClick =  () => {
     // Replace this with actual functionality when other view exists
     console.log('Going Back');
->>>>>>> TylerRouting
   
   };
 
   const handleSubmit = () =>{
-<<<<<<< HEAD
-
-=======
     console.log('Submitting');
->>>>>>> TylerRouting
   }
 
   return (
@@ -54,15 +39,6 @@ const Login = () => {
             />
           </div>
           <div className='d-grid gap-2 col-6 mx-auto'>
-<<<<<<< HEAD
-            <button
-              type='submit'
-              className='btn btn-primary btn-lg'
-              id='login-btn'
-            >
-              Login
-            </button>
-=======
             <Link to='/QuizList' className='btn btn-primary btn-lg'>
               <button
                 type='submit'
@@ -71,7 +47,6 @@ const Login = () => {
                 Login
               </button>
             </Link>
->>>>>>> TylerRouting
           </div>
         </form>
 

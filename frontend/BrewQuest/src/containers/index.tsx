@@ -7,4 +7,5 @@ export {default as QuizEdit} from "./QuizEdit";
 export {default as QuestionPageClient } from "./QuestionPageClient";
 export {default as QuizListPage } from "./QuizListPage";
 export {default as QuizEdit2} from "./QuizEdit2";
+export {default as TobyEdit} from "./tobyEdit";
 
