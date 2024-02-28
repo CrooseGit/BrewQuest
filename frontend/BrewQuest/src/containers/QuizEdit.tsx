@@ -107,11 +107,6 @@ const QuizEdit = () => {
   }
 
 
-
-
-
-
-
   return (
     <div className='box'>
       <div className='header'>
