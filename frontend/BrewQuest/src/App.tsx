@@ -1,6 +1,6 @@
 import './App.css';
 import {Routes,Route} from "react-router-dom";
-import {Landing,Login,Register,GamePin,QuizListPage,QPC,TobyEdit,QuizEdit,} from './containers/index';
+import {Landing,Login,Register,GamePin,QuizListPage,QPC,TobyEdit,QuizEdit,Leaderboard} from './containers/index';
 import { HelloWorld } from './apis';
 
 function App() {
@@ -17,6 +17,7 @@ function App() {
       
       <Route path="/qpc" element={<QPC/>}></Route>
       <Route path="/register" element={<Register/>}></Route>
+      <Route path='/leaderboard' element={<Leaderboard></Leaderboard>}></Route>
 
     
       
