@@ -8,6 +8,8 @@ const QuestionPageClient = () => {
 
   const [time, setTime] = useState(0);
 
+  const [round, setRound] = useState(0);
+
   type Question = {
     prompt: string;
     index: number;
@@ -21,6 +23,7 @@ const QuestionPageClient = () => {
         setPrompts(
           response.data.questions.map((question: Question) => question.prompt)
         );
+        setRound(response.data.round);
         setAnswers(new Array(prompts.length).fill(''));
         setSubmitted(new Array(prompts.length).fill(false));
       })
@@ -50,7 +53,7 @@ const QuestionPageClient = () => {
     <div className='box'>
       <div className='topBar d-flex justify-content-between'>
         <div>
-          <h5 className='text p-2'>Round 3</h5>
+          <h5 className='text p-2'>Round {round}</h5>
         </div>
         <div>
           <h5 className='text p-2'>
@@ -129,7 +132,7 @@ const QuestionPageClient = () => {
             type='button'
             className='btn btn-lg'
             onClick={() => {
-              if (question_index != prompts.length-1)
+              if (question_index != prompts.length - 1)
                 setQuestion_index(question_index + 1);
             }}
           >

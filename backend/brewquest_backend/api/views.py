@@ -18,7 +18,6 @@ def questions(request):
     round_ = Round.objects.get(quiz_id=quiz)
     time = round_.time
     questions = Question.objects.filter(round_id=round_)
-    print(questions)
     serializer = ClientQuestionSerializer(questions, many=True)
-    data = {'questions': serializer.data, 'time': time}
+    data = {'questions': serializer.data, 'time': time, 'round': round_.index}
     return JsonResponse(data, safe=False)
