@@ -1,32 +1,60 @@
 import BackButton from '../components/BackButton/BackButton';
 import '../containers/Login.css';
-import { Link } from "react-router-dom";
+import { MouseEvent, useState } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleBackButtonClick =  () => {
-    // Replace this with actual functionality when other view exists
-    console.log('Going Back');
-  
+  const handleSubmit = async (e: MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    console.log('test');
+    const user = {
+      username: username,
+      password: password,
+    };
+    try {
+      const { data } = await axios.post('http://localhost:8000/token/', user, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+      });
+      localStorage.clear();
+      localStorage.setItem('access_token', data.access);
+      localStorage.setItem('refresh_token', data.refresh);
+
+      axios.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${data['access']}`;
+      window.location.href = '/host/QuizList';
+    } catch (error) {
+      window.alert('Invalid Credentials');
+    }
   };
-
-  const handleSubmit = () =>{
-    console.log('Submitting');
-  }
 
   return (
     <>
-      <Link to="../"><BackButton onClick={handleBackButtonClick} className='text' /></Link>
+      <Link to='../'>
+        <BackButton className='text' />
+      </Link>
       <div>
         <h1 className='text display-1'>BrewQuest</h1>
       </div>
       <div className='container login-form'>
-        <form onSubmit={handleSubmit}>
+        <form>
           <div className='mb-3'>
-            <label htmlFor='email_input' className='form-label text'>
-              Email address
+            <label htmlFor='username_input' className='form-label text'>
+              Username
             </label>
-            <input type='email' className='form-control' id='email_input' />
+            <input
+              type='username'
+              className='form-control'
+              id='username_input'
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </div>
           <div className='mb-3'>
             <label htmlFor='input_password' className='form-label text'>
@@ -36,20 +64,20 @@ const Login = () => {
               type='password'
               className='form-control'
               id='input_password'
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+
           <div className='d-grid gap-2 col-6 mx-auto'>
-            <Link to='/QuizList' className='btn btn-primary btn-lg'>
-              <button
-                type='submit'
-                id='login-btn'
-              >
-                Login
-              </button>
-            </Link>
+            <button
+              className='btn btn-primary login-btn'
+              type='button'
+              onClick={handleSubmit}
+            >
+              Login
+            </button>
           </div>
         </form>
-
       </div>
     </>
   );

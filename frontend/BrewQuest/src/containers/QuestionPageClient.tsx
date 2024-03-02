@@ -16,6 +16,9 @@ const QuestionPageClient = () => {
   };
 
   useEffect(() => {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
       .get('http://localhost:8000/api/questions/')
       .then((response) => {

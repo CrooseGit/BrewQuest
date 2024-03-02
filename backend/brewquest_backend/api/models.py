@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 
@@ -23,6 +24,10 @@ class Quiz(models.Model):
 
     def __str__(self):
         return f"Title: {self.title}, Last Changed: {self.last_changed}, User: {self.user_id}"
+
+    def save(self, *args, **kwargs):
+        self.last_changed = timezone.now()
+        return super().save(*args, **kwargs)
 
 
 class Round(models.Model):
