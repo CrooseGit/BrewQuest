@@ -1,28 +1,31 @@
 import './App.css';
-import {Routes,Route} from "react-router-dom";
-import {Landing,Login,Register,GamePin,QuizListPage,QPC,TobyEdit,QuizEdit,Leaderboard} from './containers/index';
-import { HelloWorld } from './apis';
+import { Routes, Route } from 'react-router-dom';
+import {
+  Landing,
+  Register,
+  GamePin,
+  QuizListPage,
+  TobyEdit,
+  QuizEdit,
+  Leaderboard,
+  Host,
+} from './containers/index';
 
 function App() {
-
   return (
     <>
-    <Routes>
-      <Route path="/" element={<Landing></Landing>}></Route>
-      <Route path="/gamepin" element={<GamePin/>}></Route>
-      <Route path="/login" element={<Login/>}></Route>
-      <Route path="/quizlist" element={<QuizListPage/>}></Route>
-      <Route path="/quizedit" element={<QuizEdit/>}></Route>
-      <Route path="/tobyedit" element={<TobyEdit/>}></Route>
-      
-      <Route path="/qpc" element={<QPC/>}></Route>
-      <Route path="/register" element={<Register/>}></Route>
-      <Route path='/leaderboard' element={<Leaderboard></Leaderboard>}></Route>
-
-    
-      
-    </Routes>
-
+      <Routes>
+        <Route path='/' element={<Landing></Landing>} />
+        <Route path='/gamepin' element={<GamePin />} />
+        <Route path='/quizlist' element={<QuizListPage />} />
+        <Route path='/quizedit' element={<QuizEdit />} />
+        <Route path='/tobyedit' element={<TobyEdit />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/leaderboard' element={<Leaderboard />} />
+        {/* <Route path='/login' element={<Login />} />
+        <Route path='/logout' element={<Logout />} /> */}
+        <Route path='/host/*' element={<Host />} />
+      </Routes>
     </>
   );
 }
