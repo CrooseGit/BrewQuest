@@ -1,6 +1,6 @@
 import BackButton from '../components/BackButton/BackButton';
-import '../containers/GamePin.css';
 import {Link} from "react-router-dom";
+import '../index.css'
 const GamePin = () => {
   const handleBackButtonClick = () => {
     // Replace this with actual functionality when other view exists

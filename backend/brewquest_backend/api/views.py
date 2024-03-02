@@ -12,8 +12,6 @@ from .serializer import *
 
 @api_view(['GET'])
 def questions(request):
-    now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
     quiz = Quiz.objects.get(user_id=User.objects.last())
     round_ = Round.objects.get(quiz_id=quiz)
     time = round_.time
@@ -21,3 +19,12 @@ def questions(request):
     serializer = ClientQuestionSerializer(questions, many=True)
     data = {'questions': serializer.data, 'time': time, 'round': round_.index}
     return JsonResponse(data, safe=False)
+    
+@api_view(['GET'])
+def quizzes(request):
+    return Response({'quizzes': [
+        'Animals',
+        'Software Engineering',
+        'Aerospace']
+    })
+

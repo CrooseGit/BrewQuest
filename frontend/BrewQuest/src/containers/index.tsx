@@ -9,4 +9,3 @@ export {default as QuizListPage } from "./QuizListPage";
 export {default as QuizEdit2} from "./QuizEdit2";
 export {default as TobyEdit} from "./TobyEdit";
 export {default as Leaderboard} from "./Leaderboard";
-

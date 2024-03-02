@@ -4,10 +4,10 @@ import '../containers/Landing.css';
 
 const Landing = () => {
   return (
-    <div className='container text-center'>
+    <div className='btn-container container-size center-text'>
       <Link to="/gamepin" style={{ textDecoration: 'none' }}>
         <button className='btn btn-primary' id='join-btn'>
-          <h1 className='text display-1'>Join Game</h1>
+          <h1 className='style-text display-1'>Join Game</h1>
         </button>
       </Link>
       <Link to="/Login" style={{ textDecoration: 'none' }}>
