@@ -11,7 +11,13 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+'''
+import os
+from dotenv import load_dotenv, find_dotenv
 
+dotenv_path = find_dotenv()
+load_dotenv(dotenv_path)
+'''
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,9 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'QuestionHandler',
     'rest_framework',
     'corsheaders',
-    'api',
+    'QuizEditsAPI',
+    'testdb',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -50,7 +59,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 👇 Add this line here
     'corsheaders.middleware.CorsMiddleware',
+    # Add above line just before this line 👇
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'brewquest_backend.urls'
@@ -72,11 +84,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'brewquest_backend.wsgi.application'
-
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -84,7 +93,18 @@ DATABASES = {
     }
 }
 
-
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'testdb', 
+        'USER': 'postgres',
+        'PASSWORD': '<password>',
+        'HOST': '127.0.0.1', 
+        'PORT': '5432',
+    }
+}
+'''
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -127,3 +147,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+CSRF_TRUSTED_ORIGINS = ['https://127.0.0.1:5173'] 

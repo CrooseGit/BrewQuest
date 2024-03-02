@@ -1,23 +1,22 @@
 import BackButton from '../components/BackButton/BackButton';
 import '../containers/Login.css';
-import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
+
 const Login = () => {
 
-  const navigate = useNavigate();
-  const handleBackButtonClick =  async() => {
+  const handleBackButtonClick =  () => {
     // Replace this with actual functionality when other view exists
     console.log('Going Back');
-    navigate('../');
   
   };
 
   const handleSubmit = () =>{
-
+    console.log('Submitting');
   }
 
   return (
     <>
-      <BackButton onClick={handleBackButtonClick} className='text' />
+      <Link to="../"><BackButton onClick={handleBackButtonClick} className='text' /></Link>
       <div>
         <h1 className='text display-1'>BrewQuest</h1>
       </div>
@@ -40,13 +39,14 @@ const Login = () => {
             />
           </div>
           <div className='d-grid gap-2 col-6 mx-auto'>
-            <button
-              type='submit'
-              className='btn btn-primary btn-lg'
-              id='login-btn'
-            >
-              Login
-            </button>
+            <Link to='/QuizList' className='btn btn-primary btn-lg'>
+              <button
+                type='submit'
+                id='login-btn'
+              >
+                Login
+              </button>
+            </Link>
           </div>
         </form>
 

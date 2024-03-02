@@ -1,0 +1,95 @@
+html,
+body {
+  padding: 0.4em;
+  height: 100%;
+  color: white;
+  font-family: 'Quicksand';
+}
+
+#root {
+  height: 100%;
+}
+
+.scrollMenu {
+  margin-top: 3rem;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.text {
+  color: white;
+  font-family: 'Quicksand';
+}
+
+.questionButton {
+  background-color: white;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 2.5rem;
+  border: 0rem;
+}
+#newQuestionButton {
+  background-color: #939D89;
+  color: white;
+}
+
+.questionButton h4 {
+  color: #6a8d73;
+  font-family: 'Quicksand';
+}
+
+#selectedButton {
+  background-color: #6a8d73;
+}
+#selectedButton h4 {
+  color: white;
+}
+
+.submitAllButton {
+  border-radius: 2rem;
+}
+.submitAllButton h5 {
+  margin: 0;
+}
+
+.questionEditText {
+  font-size: 2.5rem;
+}
+
+#textInput {
+  font-size: 2rem;
+  border-radius: 1rem;
+}
+
+.navigationButtons {
+  flex: 0 1 40px;
+  margin: 0.5rem;
+}
+.box {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+.questionDiv {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.topBar {
+  flex: 0 1 auto;
+}
+.scrollMenu {
+  flex: 0 1 auto;
+}
+
+.navigationButtons button {
+  background-color: white;
+  color: #6a8d73;
+  font-family: 'Quicksand';
+}
+.navigationButtons button h3 {
+  font-weight: bold;
+}
