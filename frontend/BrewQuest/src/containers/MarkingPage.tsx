@@ -20,6 +20,7 @@ const MarkingPage = () =>{
                 </div>
             </div>
             <h2 className="marked-question">The selected question to be swiped on &#40;left or right&#41;</h2>
+            {/* arrows to indicate swipe */}
             <div className="arrow-guide left-arrow">&#8592;</div>
             <div className="arrow-guide right-arrow">&#8594;</div>
             <div className="submitted-answers-list">
