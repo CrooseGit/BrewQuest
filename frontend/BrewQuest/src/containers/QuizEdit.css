@@ -1,34 +1,9 @@
-body {
-  background-color: #212922;
-  color: white;
-  font-family: 'Quicksand'
-}
-
-h1 {
-  text-align: center;
-}
-
-button {
-  background-color: #6a8d73;
-  border-radius: 5px;
-  border: 0;
-  outline: none;
-  cursor: pointer;
-  padding: 0.5rem, 1rem;
-}
-
-.title {
-  margin: auto
-}
-
-.header {
-  display: flex
-}
-
 html,
 body {
   padding: 0.4em;
   height: 100%;
+  color: white;
+  font-family: 'Quicksand';
 }
 
 #root {
@@ -41,11 +16,21 @@ body {
   white-space: nowrap;
 }
 
+.text {
+  color: white;
+  font-family: 'Quicksand';
+}
+
 .questionButton {
   background-color: white;
   width: 5rem;
   height: 5rem;
   border-radius: 2.5rem;
+  border: 0rem;
+}
+#newQuestionButton {
+  background-color: #939D89;
+  color: white;
 }
 
 .questionButton h4 {
@@ -67,18 +52,13 @@ body {
   margin: 0;
 }
 
-.questionText {
+.questionEditText {
   font-size: 2.5rem;
-  margin-top: 3rem;
 }
 
 #textInput {
   font-size: 2rem;
   border-radius: 1rem;
-}
-
-#questionInput {
-  font-size: 3rem;
 }
 
 .navigationButtons {
@@ -89,12 +69,6 @@ body {
   display: flex;
   flex-flow: column;
   height: 100%;
-}
-.round {
-  padding-top: 2rem;
-}
-.question {
-  margin-top: 2rem;
 }
 .questionDiv {
   margin-top: 3rem;
@@ -109,12 +83,6 @@ body {
 }
 .scrollMenu {
   flex: 0 1 auto;
-}
-.submitButton {
-  border-radius: 2rem;
-}
-.submitButton h2 {
-  margin: 0.75rem;
 }
 
 .navigationButtons button {

@@ -15,9 +15,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 
 @api_view(['GET'])
-@permission_classes((IsAuthenticated, ))
 def questions(request):
-    quiz = Quiz.objects.get(user_id=User.objects.last())
+    quiz = Quiz.objects.first()
     round_ = Round.objects.get(quiz_id=quiz)
     time = round_.time
     questions = Question.objects.filter(round_id=round_)

@@ -44,11 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'QuestionHandler',
     'rest_framework',
     'corsheaders',
-    'QuizEditsAPI',
-    'testdb',
     'api',
     'rest_framework_simplejwt.token_blacklist',
 ]
