@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Login, Logout, QuizListPage } from '.';
 import QuestionPageClient from './QuestionPageClient';
 const Host = () => {
+  // This file provides the routing for all the host's views
   return (
     <>
       <Routes>

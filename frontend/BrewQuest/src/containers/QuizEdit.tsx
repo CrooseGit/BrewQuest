@@ -1,173 +1,130 @@
-import BackButton from '../components/BackButton/BackButton';
-
-import { Link } from "react-router-dom";
-import './QuizEdit.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../containers/QuizEdit.css';
+const TobyEdit = () => {
+  const [quizName, setQuizName] = useState('Loading');
+  const [rounds, setRounds] = useState<string[]>([]);
+  const [selectedRound, setSelectedRound] = useState(0);
+  const [question_index, setQuestion_index] = useState(0);
+  const [prompts, setPrompts] = useState(['Loading']);
+  const [answers, setAnswers] = useState(new Array(prompts.length).fill(''));
 
-const QuizEdit = () => {
-
-
-  const [originalQuestions, setOriginalQuestions] = useState([{ "num": 1, "question": "w", "answer": "a" }, { "num": 2, "question": "w", "answer": "m" }, { "num": 3, "question": "wsadj", "answer": "t" }]);
-  const [currentQuestion, setCurrentQuestion] = useState(1);
-  const [questions, setQuestions] = useState([{ "num": 1, "question": "w", "answer": "a" }, { "num": 2, "question": "w", "answer": "m" }, { "num": 3, "question": "wsadj", "answer": "t" }]);
-  const [buttonClasses, setButtonClasses] = useState(questions.map((q, index) => {
-    if (index === 0) {
-      return "btn selectedButton"
-
-    }
-    else {
-      return "btn questionButton"
-    }
-  }))
   useEffect(() => {
-    console.log("heeeeeellllllooooo")
-    //'http://127.0.0.1:8000/QuizEditsAPI/get-questions/'
-    axios.get('http://127.0.0.1:8000/testdb/get-questions/')
-      .then(response => {
-        setQuestions(response.data.message);
-        //setOriginalQuestions(response.data.message);
-        
+    axios
+      .get('http://localhost:8000/api/questions/')
+      .then((response) => {
+        const data = response.data;
+        const roundNames = Object.keys(data.rounds);
+        setQuizName(data.name);
+        setRounds(roundNames);
+        setSelectedRound(0);
+        setPrompts(data.rounds[roundNames[0]]);
+        setAnswers(new Array(data.rounds[roundNames[0]]).fill(''));
       })
-      .catch(error => {
-        console.log("noooooooooooooooo")
+      .catch((error) => {
         console.log(error);
       });
-    setCurrentQuestion(1);
   }, []);
 
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/questions/').then((response) => {
+      console.log('updating questions');
+      const data = response.data;
+      const roundNames = Object.keys(data.rounds);
+      setPrompts(data.rounds[roundNames[selectedRound]]);
+      setAnswers(new Array(data.rounds[roundNames[selectedRound]]).fill(''));
+      setQuestion_index(0);
+    });
+  }, [selectedRound]);
 
-
-  const saveNewQuestions = () => {
-    //delete all questions from database
-    axios.delete('http://127.0.0.1:8000/testdb/delete-all-questions/').then(response => {
-      console.log(response.data);
-    }).catch(error => {
-      console.log(error);
-    })
-    //add new questions
-    axios.post('http://127.0.0.1:8000/testdb/add-all-questions/', {
-      questions: questions
-    })
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    
-  }
-
-  const handleBackButtonClick = () => {
-    // Replace this with actual functionality when other view exists
-    console.log('Going Back');
+  const handleAnswerInputChange = (input: string) => {
+    const a = JSON.parse(JSON.stringify(answers));
+    a[question_index] = input;
+    setAnswers(a);
   };
 
+  const handleQuestionInputChange = (input: string) => {
+    const a = JSON.parse(JSON.stringify(prompts));
+    a[question_index] = input;
+    setPrompts(a);
+  };
 
-  const handleQuestionChange = useEffect(() => {
-    
-    const values = questions.map((q, index) => {
-      if (q["num"] === currentQuestion) { return "btn selectedButton" }
-      else { return "btn questionButton" }
-    })
-    setButtonClasses(values);
-  }, [currentQuestion]);
-
-  const getNewAnswers = (event: any) => {
-    let newQuestions: { "num": number, "question": string, "answer": string }[] = [];
-
-    questions.forEach((q, index) => {
-      if (q["num"] === currentQuestion) {
-        newQuestions.push({ "num": q["num"], "question": q["question"], "answer": event.target.value });
-      }
-      else {
-        newQuestions.push(q);
-      }
-    })
-
-    setQuestions(newQuestions);
-
-  }
-
-  const addQuestion = () => {
-    setQuestions([...questions, { "num": questions.length + 1, "question": "empty", "answer": "mt" }]);
-  }
-
-  const removeQuestion = () => {
-    setQuestions(questions.filter((q, index) => {
-      if (questions.length === 1) {
-        return true
-      }
-      setCurrentQuestion(currentQuestion > 1 ? currentQuestion - 1 : 1);
-      if (q["num"] === currentQuestion) { return false }
-      else { return true }
-    }).map((q, index) => {
-      return { "num": index + 1, "question": q["question"], "answer": q["answer"] }
-    }))
-  }
-
+  const handleNewQuestion = () => {
+    setPrompts((prevPrompts) => [...prevPrompts, '']);
+    setAnswers((prevAnswers) => [...prevAnswers, '']);
+    setQuestion_index(prompts.length);
+  };
 
   return (
     <div className='box'>
-      <div className='header'>
-        <Link to="../"><BackButton onClick={handleBackButtonClick} className='text' /></Link>
-        <h1 className='title'>Quiz Title</h1>
-        <button onClick={()=>console.log(questions)}>Save & Exit</button>
-      </div>
-
-      <div className='round'>
-        <form>
-          <option value="1">Round 1</option>
-          <option value="2">Round 2</option>
-          <option value="3">Round 3</option>
-        </form>
+      <div className='topBar d-flex justify-content-between'>
+        <div>
+          <form className='p-2'>
+            <select
+              value={rounds[selectedRound]}
+              onChange={(e) => setSelectedRound(rounds.indexOf(e.target.value))}
+            >
+              {rounds.map((round, index) => (
+                <option key={index} value={round}>
+                  {round}
+                </option>
+              ))}
+            </select>
+          </form>
+        </div>
+        <div>
+          <h5 className='text p-2'>{quizName}</h5>
+        </div>
+        <div>
+          <button
+            type='button'
+            className='btn p-2 submitAllButton'
+            onClick={() => alert('Takes user to quiz list screen')}
+          >
+            <h5 className='text'>Save & Exit</h5>
+          </button>
+        </div>
       </div>
       <div className='scrollMenu'>
-
-        <button type='button'
-          key="addQ"
-          className="btn btn-success"
-          id="addQ"
-          onClick={addQuestion}
+        <button
+          type='button'
+          className='btn questionButton'
+          id='newQuestionButton'
+          onClick={() => {
+            handleNewQuestion();
+          }}
         >
-          <h4>{"addQ"}</h4>
+          <h1 className='fw-bolder'>+</h1>
         </button>
-
-        <button type='button'
-          key="removeQ"
-          className="btn btn-success"
-          id="removeQ"
-          onClick={removeQuestion}
-        >
-          <h4>{"removeQ"}</h4>
-        </button>
-
-        {questions.map((arr, index) => {
-          return (
-            <button type='button'
-              key={arr["num"]}
-              className={buttonClasses[index]}
-              id={arr["num"].toString()}
-              onClick={() => setCurrentQuestion(arr["num"])}>
-
-              <h4>{"Q" + arr["num"].toString()}</h4>
-            </button>
-          );
-        })}
-      </div>
-
-
-
-      <div className='question'>
-        <form>Question: {questions[currentQuestion - 1]["question"]}</form>
-        <form
-
-          id="questionInput"
-          defaultValue={"What's the capital of Switzerland?"}
-        />
+        {prompts.map((_prompt, index) => (
+          <button
+            type='button'
+            className='btn questionButton'
+            id={index == question_index ? 'selectedButton' : ''}
+            key={'button_' + index}
+            onClick={() => {
+              setQuestion_index(index);
+            }}
+          >
+            <h4>Q{index + 1}</h4>
+          </button>
+        ))}
       </div>
 
       <div className='questionDiv'>
+        <div className='form mb-3'>
+          <label htmlFor='questionInput' className='h3'>
+            Question
+          </label>
+          <input
+            type='text'
+            id='questionInput'
+            className='form-control questionEditText'
+            value={prompts[question_index]}
+            placeholder='Question'
+            onChange={(e) => handleQuestionInputChange(e.target.value)}
+          />
+        </div>
 
         <div>
           <form>
@@ -176,29 +133,35 @@ const QuizEdit = () => {
               type='text'
               className='form-control'
               placeholder='Your answer goes here...'
-              value={questions[currentQuestion - 1]["answer"]}
-              onChange={getNewAnswers}
+              value={answers[question_index]}
+              onChange={(e) => handleAnswerInputChange(e.target.value)}
             />
           </form>
         </div>
-        {/*
-        <div className='d-flex justify-content-center'>
-          <button type='button' className='btn btn-lg submitButton'>
-            <h2 className='text'>SaveQuestion</h2>
-          </button>
-        </div>
-        */
-        }
+        <div></div>
       </div>
 
       <div className='d-flex justify-content-between navigationButtons'>
         <div className='p-2'>
-          <button type='button' className='btn btn-lg' onClick={() => setCurrentQuestion(currentQuestion > 1 ? currentQuestion - 1 : currentQuestion)}>
+          <button
+            type='button'
+            className='btn btn-lg'
+            onClick={() => {
+              if (question_index != 0) setQuestion_index(question_index - 1);
+            }}
+          >
             <h3>&lt; Back</h3>
           </button>
         </div>
         <div className='p-2'>
-          <button type='button' className='btn btn-lg' onClick={() => setCurrentQuestion(questions.length > currentQuestion ? currentQuestion + 1 : currentQuestion)}>
+          <button
+            type='button'
+            className='btn btn-lg'
+            onClick={() => {
+              if (question_index != prompts.length - 1)
+                setQuestion_index(question_index + 1);
+            }}
+          >
             <h3>Next &gt;</h3>
           </button>
         </div>
@@ -206,5 +169,4 @@ const QuizEdit = () => {
     </div>
   );
 };
-
-export default QuizEdit;
+export default TobyEdit;
