@@ -1,4 +1,3 @@
-import axios from 'axios';
 import './Navbar.css';
 import { useState, useEffect } from 'react';
 const Navbar = () => {
@@ -9,14 +8,6 @@ const Navbar = () => {
     }
   }, [isAuth]);
 
-  const createQuiz = () => {
-    axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${localStorage.getItem('access_token')}`;
-    axios.post('http://localhost:8000/api/createQuiz/').catch((error) => {
-      console.log(error);
-    });
-  };
   return (
     <div>
       <nav className='navbar navbar-expand-lg bg-body-primary'>
@@ -38,11 +29,6 @@ const Navbar = () => {
 
           <div className='collapse navbar-collapse' id='navbarSupportedContent'>
             <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
-              <li className='nav-item'>
-                <span className='nav-link text' onClick={createQuiz}>
-                  Create Quiz
-                </span>
-              </li>
               <li className='nav-item'>
                 <a
                   className='nav-link text'

@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar/Navbar.tsx';
-import QuizList from './QuizList.tsx';
+import QuizList from '../components/QuizList/QuizList.tsx';
 import HostButton from './HostButton.tsx';
-import '../index.css';
+import './QuizListPage.css';
 
 const QuizListPage = () => {
   return (
@@ -10,9 +10,7 @@ const QuizListPage = () => {
       <Navbar></Navbar>
       <div>
         <QuizList></QuizList>
-        <button type='button' className='fs-1 newQuizButton'>
-          +
-        </button>
+
         <HostButton></HostButton>
       </div>
     </div>

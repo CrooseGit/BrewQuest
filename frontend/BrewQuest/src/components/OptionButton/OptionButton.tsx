@@ -27,6 +27,17 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
         console.log(error);
       });
   };
+  const handleDuplicate = () => {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('access_token')}`;
+    axios
+      .post('http://localhost:8000/api/duplicateQuiz/', { id: quizId })
+      .then(reloadFunction)
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     // className={'d-inline-flex align-items-start ' + className}
@@ -44,7 +55,11 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
         </button>
         {optionDropdownVisible && (
           <div className='shown-options'>
-            <button className='shown-option-button first-button'>
+            <button
+              className='shown-option-button first-button'
+              type='button'
+              onClick={handleDuplicate}
+            >
               Duplicate
             </button>
             {/*use axios api to ask to duplicate quiz item with given id number*/}
