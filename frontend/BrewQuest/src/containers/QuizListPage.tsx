@@ -10,6 +10,9 @@ const QuizListPage = () => {
       <Navbar></Navbar>
       <div>
         <QuizList></QuizList>
+        <button type='button' className='fs-1 newQuizButton'>
+          +
+        </button>
         <HostButton></HostButton>
       </div>
     </div>

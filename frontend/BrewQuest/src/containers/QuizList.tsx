@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import OptionButton from '../components/OptionButton/OptionButton';
 import '../index.css';
 
-// import OptionButton from './OptionButton.tsx';
-
 const QuizList = () => {
   // set up items list structure
   // sample quiz array
@@ -58,7 +56,10 @@ const QuizList = () => {
         htmlFor={quizItem.id.toString()}
       >
         <div className='quiz-item-title'>{quizItem.title}</div>
-        <OptionButton quizId={quizItem.id}></OptionButton>
+        <OptionButton
+          quizId={quizItem.id}
+          reloadFunction={loadQuizzes}
+        ></OptionButton>
       </label>,
     ]);
 

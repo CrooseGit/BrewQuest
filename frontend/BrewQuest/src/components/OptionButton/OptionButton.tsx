@@ -5,9 +5,10 @@ import axios from 'axios';
 
 interface OptionButtonProps {
   quizId: number;
+  reloadFunction: () => void;
 }
 
-const OptionButton = ({ quizId }: OptionButtonProps) => {
+const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
   //console.log(quizId);
 
   const [optionDropdownVisible, setOptionDropdownVisible] = useState(false);
@@ -21,6 +22,7 @@ const OptionButton = ({ quizId }: OptionButtonProps) => {
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
       .post('http://localhost:8000/api/deleteQuiz/', { id: quizId })
+      .then(reloadFunction)
       .catch((error) => {
         console.log(error);
       });
