@@ -1,4 +1,37 @@
+import { useState } from "react";
+import { useEffect } from "react";
+import SubmittedAnswer from "./SubmittedAnswer";
+
 const MarkingPage = () =>{
+
+    // answers object
+    // id for each submitted answer to a question, unique id
+    // player to identify player, which player submitted the answer (might be in different order than id)
+    const [submittedAnswers, setSubmittedAnswers] = useState([
+        {id: 1, player: 2, contents: "happy birthday to you happy birthday to you happy"},
+        {id: 2, player: 1, contents: "She sells sea shells by the sea shore but they're just picking shells up off the floor"},
+        {id: 3, player: 3, contents: "Cheddar"},
+        {id: 4, player: 4, contents: "Swiss"},
+        {id: 5, player: 5, contents: "Blue cheese"},
+        {id: 6, player: 6, contents: "Mozarella"},
+        {id: 7, player: 7, contents: "Cheddar"},
+        {id: 8, player: 8, contents: "Swiss"},
+        {id: 9, player: 9, contents: "Blue cheese"},
+        {id: 10, player: 10, contents: "Mozarella"},
+        {id: 11, player: 11, contents: "Cheddar"},
+        {id: 12, player: 12, contents: "Swiss"}
+    ]);
+
+    // to be flattened for display
+    const submittedAnswerElements = submittedAnswers && submittedAnswers.map((submittedAnswer,index)=>
+    [
+    <SubmittedAnswer submittedAnswer={submittedAnswer}></SubmittedAnswer>
+    ]
+    );
+
+    // react to dynamic list of submitted answers
+    useEffect(()=>{},[submittedAnswers]);
+
     return (
         <div>
             <h1 className="branding-heading">BrewQuest</h1>
@@ -25,18 +58,7 @@ const MarkingPage = () =>{
             <div className="arrow-guide right-arrow">&#8594;</div>
             <div className="submitted-answers-list">
                 {/* answers to be fetched from database */}
-                <div className="submitted-answer">Blue cheese</div>
-                <div className="submitted-answer">Mozarella</div>
-                <div className="submitted-answer">Cheddar</div>
-                <div className="submitted-answer">Swiss</div>
-                <div className="submitted-answer">Blue cheese</div>
-                <div className="submitted-answer">Mozarella</div>
-                <div className="submitted-answer">Cheddar</div>
-                <div className="submitted-answer">Swiss</div>
-                <div className="submitted-answer">Blue cheese</div>
-                <div className="submitted-answer">Mozarella</div>
-                <div className="submitted-answer">Cheddar</div>
-                <div className="submitted-answer">Swiss</div>
+                {submittedAnswerElements}
             </div>
         </div>
     );
