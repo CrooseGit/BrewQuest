@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import option_image from '../../assets/three_dots.svg';
 import axios from 'axios';
-//import { MouseEventHandler } from 'react';
 
 interface OptionButtonProps {
   quizId: number;
@@ -9,9 +8,8 @@ interface OptionButtonProps {
 }
 
 const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
-  //console.log(quizId);
-
   const [optionDropdownVisible, setOptionDropdownVisible] = useState(false);
+
   const toggleOptionDropdown = () => {
     setOptionDropdownVisible(!optionDropdownVisible);
   };
@@ -40,8 +38,6 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
   };
 
   return (
-    // className={'d-inline-flex align-items-start ' + className}
-    // onClick={onClick}
     <div>
       <div className='option-dropdown'>
         <button
@@ -58,21 +54,25 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
             <button
               className='shown-option-button first-button'
               type='button'
-              onClick={handleDuplicate}
+              onClick={() => {
+                setOptionDropdownVisible(false);
+                handleDuplicate();
+              }}
             >
               Duplicate
             </button>
-            {/*use axios api to ask to duplicate quiz item with given id number*/}
+
             <button className='shown-option-button'>Edit</button>
-            {/*link to different page with given id number*/}
             <button
               className='shown-option-button last-button'
               type='button'
-              onClick={handleDelete}
+              onClick={() => {
+                setOptionDropdownVisible(false);
+                handleDelete();
+              }}
             >
               Delete
             </button>
-            {/*use axios api to ask to delete quiz item with given id number*/}
           </div>
         )}
       </div>
