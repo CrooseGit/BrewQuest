@@ -58,14 +58,14 @@ def duplicateQuiz(request):
     rounds = Round.objects.filter(quiz_id=quiz_id)
     for r in rounds:
         duplicate_round = Round(
-            title=r.title, quiz_id=r.quiz_id, topic=r.topic, time=r.time, index=r.index)
+            title=r.title, quiz_id=duplicate_quiz, topic=r.topic, time=r.time, index=r.index)
         duplicate_round.save()
         questions = Question.objects.filter(round_id=r.id)
         for q in questions:
             # TODO: Deleted items not cascading
             duplicate_question = Question(
-                index=q.index, round_id=q.round_id, prompt=q.prompt, answer=q.answer, time=q.time, last_changed=timezone.now())
-        duplicate_question.save()
+                index=q.index, round_id=duplicate_round, prompt=q.prompt, answer=q.answer, time=q.time, last_changed=timezone.now())
+            duplicate_question.save()
 
     return Response({'Status': 'Success'})
 
