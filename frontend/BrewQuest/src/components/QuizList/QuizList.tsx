@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import OptionButton from '../OptionButton/OptionButton';
+import './QuizList.css';
 import '../../containers/index';
-
-// import OptionButton from './OptionButton.tsx';
 
 const QuizList = () => {
   // set up items list structure
@@ -28,6 +27,18 @@ const QuizList = () => {
         console.log(response.data.quizzes);
         setQuizzes(response.data.quizzes);
       })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const createQuiz = () => {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('access_token')}`;
+    axios
+      .post('http://localhost:8000/api/createQuiz/')
+      .then(loadQuizzes)
       .catch((error) => {
         console.log(error);
       });
@@ -58,17 +69,26 @@ const QuizList = () => {
         htmlFor={quizItem.id.toString()}
       >
         <div className='quiz-item-title'>{quizItem.title}</div>
-        <OptionButton quizId={quizItem.id}></OptionButton>
+        <OptionButton
+          quizId={quizItem.id}
+          reloadFunction={loadQuizzes}
+        ></OptionButton>
       </label>,
     ]);
 
-  //console.log(quizElements);
-
   return (
-    // display each list item
-    <div className='btn-group-vertical quiz-button-group' role='group'>
-      <label className='btn quiz-list-head'>Quizzes</label>
-      {quizElements}
+    <div className='boxContainer'>
+      <div className='btn-group-vertical quiz-button-group' role='group'>
+        <label className='btn quiz-list-head'>Quizzes</label>
+        {quizElements}
+      </div>
+      <button
+        type='button'
+        onClick={createQuiz}
+        className='btn fs-1 newQuizButton'
+      >
+        +
+      </button>
     </div>
   );
 };

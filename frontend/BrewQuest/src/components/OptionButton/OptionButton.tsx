@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import option_image from '../../assets/three_dots.svg';
 import axios from 'axios';
-//import { MouseEventHandler } from 'react';
+import { Link } from 'react-router-dom';
 
 interface OptionButtonProps {
   quizId: number;
+  reloadFunction: () => void;
 }
 
-const OptionButton = ({ quizId }: OptionButtonProps) => {
-  //console.log(quizId);
-
+const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
   const [optionDropdownVisible, setOptionDropdownVisible] = useState(false);
+
   const toggleOptionDropdown = () => {
     setOptionDropdownVisible(!optionDropdownVisible);
   };
@@ -21,14 +21,24 @@ const OptionButton = ({ quizId }: OptionButtonProps) => {
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
       .post('http://localhost:8000/api/deleteQuiz/', { id: quizId })
+      .then(reloadFunction)
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const handleDuplicate = () => {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('access_token')}`;
+    axios
+      .post('http://localhost:8000/api/duplicateQuiz/', { id: quizId })
+      .then(reloadFunction)
       .catch((error) => {
         console.log(error);
       });
   };
 
   return (
-    // className={'d-inline-flex align-items-start ' + className}
-    // onClick={onClick}
     <div>
       <div className='option-dropdown'>
         <button
@@ -42,20 +52,40 @@ const OptionButton = ({ quizId }: OptionButtonProps) => {
         </button>
         {optionDropdownVisible && (
           <div className='shown-options'>
-            <button className='shown-option-button first-button'>
+            <button
+              className='shown-option-button first-button'
+              type='button'
+              onClick={() => {
+                setOptionDropdownVisible(false);
+                handleDuplicate();
+              }}
+            >
               Duplicate
             </button>
-            {/*use axios api to ask to duplicate quiz item with given id number*/}
-            <button className='shown-option-button'>Edit</button>
-            {/*link to different page with given id number*/}
+            <Link
+              to='/host/edit'
+              state={{ quiz_id: quizId }} // passes id as prop
+              style={{ textDecoration: 'none' }}
+            >
+              <button
+                className='shown-option-button'
+                type='button'
+                onClick={() => {}}
+              >
+                Edit
+              </button>
+            </Link>
+
             <button
               className='shown-option-button last-button'
               type='button'
-              onClick={handleDelete}
+              onClick={() => {
+                setOptionDropdownVisible(false);
+                handleDelete();
+              }}
             >
               Delete
             </button>
-            {/*use axios api to ask to delete quiz item with given id number*/}
           </div>
         )}
       </div>
