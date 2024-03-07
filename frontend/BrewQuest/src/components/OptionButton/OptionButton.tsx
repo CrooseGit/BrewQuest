@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import option_image from '../../assets/three_dots.svg';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 interface OptionButtonProps {
   quizId: number;
@@ -61,8 +62,20 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
             >
               Duplicate
             </button>
+            <Link
+              to='/host/edit'
+              state={{ quiz_id: quizId }} // passes id as prop
+              style={{ textDecoration: 'none' }}
+            >
+              <button
+                className='shown-option-button'
+                type='button'
+                onClick={() => {}}
+              >
+                Edit
+              </button>
+            </Link>
 
-            <button className='shown-option-button'>Edit</button>
             <button
               className='shown-option-button last-button'
               type='button'

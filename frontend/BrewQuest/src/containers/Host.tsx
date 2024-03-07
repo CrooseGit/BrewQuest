@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { Login, Logout, QuizListPage } from '.';
+import { Login, Logout, QuizEdit, QuizListPage } from '.';
 import QuestionPageClient from './QuestionPageClient';
 const Host = () => {
   return (
@@ -7,8 +7,9 @@ const Host = () => {
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/logout' element={<Logout />} />
-        <Route path='/qpc' element={<QuestionPageClient />}></Route>
-        <Route path='/QuizList' element={<QuizListPage />}></Route>
+        <Route path='/qpc' element={<QuestionPageClient />} />
+        <Route path='/QuizList' element={<QuizListPage />} />
+        <Route path='/edit' element={<QuizEdit />} />
       </Routes>
     </>
   );
