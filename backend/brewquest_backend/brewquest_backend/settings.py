@@ -38,12 +38,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
+    "daphne",
+    'livequiz',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+     "django.contrib.sites",
+
     'rest_framework',
     'corsheaders',
     'api',
@@ -95,6 +101,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'brewquest_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+ASGI_APPLICATION = "brewquest_backend.asgi.application" #routing.py will handle the ASGI
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+        }
+    }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
