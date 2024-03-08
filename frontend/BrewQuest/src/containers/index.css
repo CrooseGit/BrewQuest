@@ -8,6 +8,13 @@ h1, h2, .question-selection, .submitted-answers-list, .arrow-guide{
   font-weight: bold;
 }
 
+.marking-page-div{
+  /* make unscrollable */
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
 .arrow-guide{
   position: relative;
   top: 67px;

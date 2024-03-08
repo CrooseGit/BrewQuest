@@ -33,7 +33,7 @@ const MarkingPage = () =>{
     useEffect(()=>{},[submittedAnswers]);
 
     return (
-        <div>
+        <div className="marking-page-div">
             <h1 className="branding-heading">BrewQuest</h1>
             <div className="round-questions">
                 {/* to fetch from database */}
