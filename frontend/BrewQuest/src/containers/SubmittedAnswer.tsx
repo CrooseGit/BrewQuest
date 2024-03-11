@@ -1,46 +1,70 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import {useSpring, animated} from "react-spring";
 
-const SubmittedAnswer = ({submittedAnswer, onDelete}) =>{
+const SubmittedAnswer = ({submittedAnswer, onDelete, roundNum, questionNum}) =>{
 
-    let startX, endX;
+    let answerElement;
+    let startX=0, offsetX=0, isDragging=false, animationID=0;
     const tolerance=80;
+
+    const animation = () =>{
+        if (isDragging){
+            answerElement.style.transform=`translateX(${offsetX}px)`;
+            // recursive function, request only when dragging
+            requestAnimationFrame(animation);
+        } else {
+            // reset to 0 when animation frame is requested one last time
+            answerElement.style.transform=`translateX(0px)`;
+        }
+    }
 
     const handleTouchStart = (e)=>{
         startX=e.touches[0].clientX;
-        console.log(startX);
+        offsetX=0;
+        isDragging=true;
+
+        // call function for first time
+        animationID=requestAnimationFrame(animation);
     }
 
     const handleTouchMove = (e)=>{
         //update endX for final offset
-        endX=e.touches[0].clientX;
-        
+        offsetX=e.touches[0].clientX-startX;
     }
 
-    const handleTouchEnd = (e)=>{
+    const handleTouchEnd = ()=>{
+        isDragging=false;
 
         //detect swipe direction
-        if (startX < endX-tolerance){
+        if (offsetX > 0 && offsetX > tolerance){
             console.log("Swiped right");
-        } else if (startX > endX+tolerance){
+        } else if (offsetX < 0 && -offsetX > tolerance){
             console.log("Swiped left");
         }
 
         // remove element from list
-        if (startX < endX - tolerance || startX > endX + tolerance){
-            //send marking request (right or left)
-            console.log("Swiped left or right funciton")
-
-            console.log("Remove element from list")
-            //delete answer element from list
+        if (offsetX > 0 && offsetX > tolerance || offsetX < 0 && -offsetX > tolerance){
+            //delete answer element from list using function prop
             onDelete(submittedAnswer);
         }
+
+        // cancel animation (after this animation will rerun one last time)
+        cancelAnimationFrame(animationID);
+
     }
 
+    useEffect(()=>{
+        answerElement=document.getElementById(`sd-${roundNum}-${questionNum}-${submittedAnswer.id}`);
+
+        answerElement?.addEventListener("touchstart",(e)=>e.preventDefault());
+        answerElement?.addEventListener("touchstart",handleTouchStart);
+        answerElement?.addEventListener("touchmove",handleTouchMove);
+        answerElement?.addEventListener("touchend",handleTouchEnd);
+    },[]);
+
     return (
-        // unique id in entire project to be fetched by js for event listening
-        <div className="submitted-answer" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>{submittedAnswer.contents}</div>
+        // unique id in entire dom to be fetched by js for event listening
+        <div className="submitted-answer" id={`sd-${roundNum}-${questionNum}-${submittedAnswer.id}`}>{submittedAnswer.contents}</div>
     );
 }
 

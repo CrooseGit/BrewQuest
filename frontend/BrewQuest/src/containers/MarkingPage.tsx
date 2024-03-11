@@ -22,17 +22,17 @@ const MarkingPage = () =>{
         {id: 12, player: 12, contents: "Swiss"}
     ]);
 
+    // for identifying unique html elements
+    let roundNum=1, questionNum=1;
+
     // react to dynamic list of submitted answers
     useEffect(()=>{},[submittedAnswers]);
 
+    // remove element from list
     const handleDelete = (element) => {
         const newAnswersList = submittedAnswers.filter((answer) => answer !== element);
         setSubmittedAnswers(newAnswersList);
     }
-
-    useEffect(()=>{
-        console.log("hello");
-    },[]);
 
     return (
         <div className="marking-page-div">
@@ -61,7 +61,7 @@ const MarkingPage = () =>{
             <div className="submitted-answers-list">
                 {/* answers to be fetched from database */}
                 {submittedAnswers && submittedAnswers.map((submittedAnswer)=>[
-                <SubmittedAnswer submittedAnswer={submittedAnswer} onDelete={handleDelete} key={submittedAnswer.id}></SubmittedAnswer>]
+                <SubmittedAnswer roundNum={roundNum} questionNum={questionNum} submittedAnswer={submittedAnswer} onDelete={handleDelete} key={submittedAnswer.id}></SubmittedAnswer>]
                 )}
             </div>
         </div>
