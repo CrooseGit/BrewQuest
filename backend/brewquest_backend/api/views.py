@@ -26,6 +26,27 @@ def questions(request):
     return JsonResponse(data, safe=False)
 
 
+@api_view(['POST'])
+def register(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    email = body['email']
+    password = body['password']
+    username = body['username']
+    if User.objects.filter(username=username).count() > 0:
+        return Response({'status': 'failed', 'message': 'Username taken, try another.'})
+    if username.strip() == "" or email.strip() == "" or password.strip() == "":
+        return Response({'status': 'failed', 'message': 'Field(s) left empty'})
+
+    try:
+        user = User.objects.create_user(
+            email=email, username=username, password=password)
+    except Exception as error:
+        print("Uh oh: ", error)
+
+    return Response({'Status': 'Success'})
+
+
 @api_view(['GET'])
 @permission_classes((IsAuthenticated, ))
 def quizzes(request):

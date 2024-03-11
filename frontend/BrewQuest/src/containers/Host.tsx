@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { Login, Logout, QuizEdit, QuizListPage } from '.';
+import { Login, Logout, QuizEdit, QuizListPage, Register } from '.';
 import QuestionPageClient from './QuestionPageClient';
 const Host = () => {
   // This file provides the routing for all the host's views
@@ -11,6 +11,7 @@ const Host = () => {
         <Route path='/qpc' element={<QuestionPageClient />} />
         <Route path='/QuizList' element={<QuizListPage />} />
         <Route path='/edit' element={<QuizEdit />} />
+        <Route path='/register' element={<Register />} />
       </Routes>
     </>
   );
