@@ -22,15 +22,17 @@ const MarkingPage = () =>{
         {id: 12, player: 12, contents: "Swiss"}
     ]);
 
-    // to be flattened for display
-    const submittedAnswerElements = submittedAnswers && submittedAnswers.map((submittedAnswer,index)=>
-    [
-    <SubmittedAnswer submittedAnswer={submittedAnswer}></SubmittedAnswer>
-    ]
-    );
-
     // react to dynamic list of submitted answers
     useEffect(()=>{},[submittedAnswers]);
+
+    const handleDelete = (element) => {
+        const newAnswersList = submittedAnswers.filter((answer) => answer !== element);
+        setSubmittedAnswers(newAnswersList);
+    }
+
+    useEffect(()=>{
+        console.log("hello");
+    },[]);
 
     return (
         <div className="marking-page-div">
@@ -58,7 +60,9 @@ const MarkingPage = () =>{
             <div className="arrow-guide right-arrow">&#8594;</div>
             <div className="submitted-answers-list">
                 {/* answers to be fetched from database */}
-                {submittedAnswerElements}
+                {submittedAnswers && submittedAnswers.map((submittedAnswer)=>[
+                <SubmittedAnswer submittedAnswer={submittedAnswer} onDelete={handleDelete} key={submittedAnswer.id}></SubmittedAnswer>]
+                )}
             </div>
         </div>
     );
