@@ -37,7 +37,7 @@ const Login = () => {
 
   return (
     <>
-      <Link to='../'>
+      <Link to='/'>
         <BackButton className='text' />
       </Link>
       <div>
@@ -76,6 +76,9 @@ const Login = () => {
             >
               Login
             </button>
+            <Link to='/host/register' className='text-center'>
+              Register
+            </Link>
           </div>
         </form>
       </div>
