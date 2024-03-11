@@ -3,39 +3,44 @@ import axios from 'axios';
 import '../containers/QuizEdit.css';
 const TobyEdit = () => {
   const [quizName, setQuizName] = useState('Loading');
-  const [rounds, setRounds] = useState<string[]>([]);
-  const [selectedRound, setSelectedRound] = useState(0);
+  const [rounds, setRounds] = useState<string[]>(['Loading']);
+  const [selectedRound, setSelectedRound] = useState(1);
   const [question_index, setQuestion_index] = useState(0);
   const [prompts, setPrompts] = useState(['Loading']);
-  const [answers, setAnswers] = useState(new Array(prompts.length).fill(''));
+  const [answers, setAnswers] = useState(['Loading']);
 
   useEffect(() => {
     axios
-      .get('http://localhost:8000/api/questions/')
+      .post('http://localhost:8000/api/questionsAndAnswers/', {round_id: selectedRound})
       .then((response) => {
+        console.log('getting questions');
         const data = response.data;
-        const roundNames = Object.keys(data.rounds);
-        setQuizName(data.name);
-        setRounds(roundNames);
-        setSelectedRound(0);
-        setPrompts(data.rounds[roundNames[0]]);
-        setAnswers(new Array(data.rounds[roundNames[0]]).fill(''));
+        console.log(response)
+        //const roundNames = Object.keys(data.rounds);
+        const prompts = data.map(question => question.prompt);
+        const answers = data.map(question => question.answer);
+        setPrompts(prompts);
+        setAnswers(answers);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-
+  {/*
   useEffect(() => {
     axios.get('http://localhost:8000/api/questions/').then((response) => {
       console.log('updating questions');
       const data = response.data;
       const roundNames = Object.keys(data.rounds);
-      setPrompts(data.rounds[roundNames[selectedRound]]);
-      setAnswers(new Array(data.rounds[roundNames[selectedRound]]).fill(''));
+      setPrompts(data.questions);
+      //setAnswers(new Array(data.rounds[roundNames[selectedRound]]).fill(''));
       setQuestion_index(0);
     });
   }, [selectedRound]);
+*/}
+  const handleNameInputChange = (input: string) => {
+    setQuizName(input);
+  };
 
   const handleAnswerInputChange = (input: string) => {
     const a = JSON.parse(JSON.stringify(answers));
@@ -73,7 +78,16 @@ const TobyEdit = () => {
           </form>
         </div>
         <div>
-          <h5 className='text p-2'>{quizName}</h5>
+          <form>
+            <input
+              id='textInput'
+              type='text'
+              className='form-control'
+              placeholder='Quiz name goes here...'
+              value={quizName}
+              onChange={(e) => handleNameInputChange(e.target.value)}
+            />
+          </form>
         </div>
         <div>
           <button

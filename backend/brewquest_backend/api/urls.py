@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('questions/', views.questions, name='questions'),
+    path('questionsAndAnswers/', views.questionsAndAnswers, name='questionsAndAnswers'),
     path('createQuiz/', views.createQuiz, name='createQuiz'),
     path('deleteQuiz/', views.deleteQuiz, name='deleteQuiz'),
     path('duplicateQuiz/', views.duplicateQuiz, name='duplicateQuiz'),

@@ -14,3 +14,8 @@ class HostQuizListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quiz
         fields = ['title', 'id']
+
+class HostQuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = ['prompt', 'answer','id','index','time']

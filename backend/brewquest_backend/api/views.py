@@ -17,7 +17,7 @@ from django.utils import timezone
 
 @api_view(['GET'])
 def questions(request):
-    quiz = Quiz.objects.first()
+    quiz = Quiz.objects.last()
     round_ = Round.objects.get(quiz_id=quiz)
     time = round_.time
     questions = Question.objects.filter(round_id=round_)
@@ -42,6 +42,15 @@ def createQuiz(request):
     new_quiz.save()
     return Response({'Status': 'Success'})
 
+@api_view(['POST'])
+def questionsAndAnswers(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    round_id = body['round_id']
+    questions = Question.objects.filter(round_id=round_id)
+    serializer = HostQuestionSerializer(questions, many=True)
+    data = serializer.data
+    return JsonResponse(data, safe=False)
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
