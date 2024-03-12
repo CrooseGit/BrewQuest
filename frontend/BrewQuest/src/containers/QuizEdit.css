@@ -6,8 +6,6 @@ body {
 
 #root {
   height: 100%;
-  color: white;
-  font-family: 'Quicksand';
 }
 
 .scrollMenu {
@@ -18,6 +16,11 @@ body {
 
 .text {
   color: white;
+  font-family: 'Quicksand';
+}
+
+.textBlack {
+  color: black;
   font-family: 'Quicksand';
 }
 
@@ -57,7 +60,6 @@ body {
 .submitAllButton h5 {
   margin: 0;
 }
-
 
 .delBtn {
   color: white;

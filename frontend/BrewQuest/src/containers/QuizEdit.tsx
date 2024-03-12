@@ -108,43 +108,15 @@ const TobyEdit = () => {
   return (
     <div className='box'>
       <div className='topBar d-flex justify-content-between align-items-center p-2'>
-        {/*<div className='d-flex justify-content-between align-items-center'>
-          <form>
-            <select
-              className='roundSelect p-2'
-              value={rounds[selectedRound]}
-              onChange={(e) => {
-                setSelectedRound(rounds.indexOf(e.target.value))
-                setSelectedRoundId(roundIds[rounds.indexOf(e.target.value)])
-              }}
-            >
-              {rounds.map((round, index) => (
-                <option key={index} value={round}>
-                  {round}
-                </option>
-              ))}
-            </select>
-          </form>
-          <button
-            type='button'
-            className='btn roundButton'
-            id='newRoundButton'
-            onClick={() => {
-              handleNewRound();
-            }}
-          >
-            <h1 className='fw-bolder'>+</h1>
-          </button>
-          </div>*/}
         <div className="input-group mb-3 roundSelect">
           <input
-            className='form-control'
+            className='form-control textBlack'
             placeholder='Round name goes here...'
             value={rounds[selectedRound]}
             onChange={(e) => handleRoundNameInputChange(e.target.value)}
           />
           <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-          <ul className="dropdown-menu dropdown-menu-end">
+          <ul className="dropdown-menu dropdown-menu-end text">
             {rounds.map((round, index) => (
               <button
                 className='dropdown-item'
@@ -166,7 +138,7 @@ const TobyEdit = () => {
           <form>
             <input
               id='textInput'
-              className='form-control'
+              className='form-control textBlack'
               placeholder='Quiz name goes here...'
               value={quizName}
               onChange={(e) => handleNameInputChange(e.target.value)}
@@ -186,7 +158,7 @@ const TobyEdit = () => {
           </Link>
         </div>
       </div>
-      <div className='scrollMenu'>
+      <div className='scrollMenu text'>
         <button
           type='button'
           className='btn questionButton'
@@ -212,7 +184,7 @@ const TobyEdit = () => {
         ))}
       </div>
 
-      <div className='questionDiv'>
+      <div className='questionDiv text'>
         <div className='form mb-3'>
           <div className='d-flex justify-content-between p-2'>
             <label htmlFor='questionInput' className='h3'>
@@ -220,7 +192,7 @@ const TobyEdit = () => {
             </label>
             <button
               type='button'
-              className='btn btn-custom delBtn'
+              className='btn delBtn'
               onClick={() => handleDelQuestion(question_index)}
               disabled={prompts.length === 1}
             >
