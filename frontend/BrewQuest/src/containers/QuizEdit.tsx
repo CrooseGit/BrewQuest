@@ -51,18 +51,6 @@ const TobyEdit = () => {
       });
   }, [selectedRoundId]);
 
-  {/*
-  useEffect(() => {
-    axios.get('http://localhost:8000/api/questions/').then((response) => {
-      console.log('updating questions');
-      const data = response.data;
-      const roundNames = Object.keys(data.rounds);
-      setPrompts(data.questions);
-      //setAnswers(new Array(data.rounds[roundNames[selectedRound]]).fill(''));
-      setQuestion_index(0);
-    });
-  }, [selectedRound]);
-*/}
   const handleNameInputChange = (input: string) => {
     setQuizName(input);
   };
@@ -92,7 +80,10 @@ const TobyEdit = () => {
           <form className='p-2'>
             <select
               value={rounds[selectedRound]}
-              onChange={(e) => setSelectedRound(rounds.indexOf(e.target.value))}
+              onChange={(e) => {
+                setSelectedRound(rounds.indexOf(e.target.value))
+                setSelectedRoundId(roundIds[rounds.indexOf(e.target.value)])
+              }}
             >
               {rounds.map((round, index) => (
                 <option key={index} value={round}>
