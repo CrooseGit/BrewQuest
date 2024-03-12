@@ -1,24 +1,33 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import '../containers/QuizEdit.css';
 const TobyEdit = () => {
+  const location = useLocation();
+  const { state } = location;
+  const quizId = state && state.quiz_id;
   const [quizName, setQuizName] = useState('Loading');
   const [rounds, setRounds] = useState<string[]>(['Loading']);
-  const [selectedRound, setSelectedRound] = useState(1);
+  const [roundIds, setRoundIds] = useState([]);
+  const [selectedRound, setSelectedRound] = useState(0);
+  const [selectedRoundId, setSelectedRoundId] = useState(0);
   const [question_index, setQuestion_index] = useState(0);
   const [prompts, setPrompts] = useState(['Loading']);
   const [answers, setAnswers] = useState(['Loading']);
 
   useEffect(() => {
     axios
-      .post('http://localhost:8000/api/quizInfo/', {quiz_id: 20})
+      .post('http://localhost:8000/api/quizInfo/', {quiz_id: quizId})
       .then((response) => {
         console.log('getting quiz info');
         const data = response.data;
         console.log(data)
         setQuizName(data.name);
         const roundNames = data.rounds.map(round => round.title);
+        const roundIds = data.rounds.map(round => round.id);
         setRounds(roundNames);
+        setRoundIds(roundIds);
+        setSelectedRoundId(roundIds[0])
       })
       .catch((error) => {
         console.log(error);
@@ -27,12 +36,11 @@ const TobyEdit = () => {
   
   useEffect(() => {
     axios
-      .post('http://localhost:8000/api/questionsAndAnswers/', {round_id: selectedRound})
+      .post('http://localhost:8000/api/questionsAndAnswers/', {round_id: selectedRoundId})
       .then((response) => {
         console.log('getting questions');
         const data = response.data;
         console.log(data)
-        //const roundNames = Object.keys(data.rounds);
         const prompts = data.map(question => question.prompt);
         const answers = data.map(question => question.answer);
         setPrompts(prompts);
@@ -41,7 +49,7 @@ const TobyEdit = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [selectedRoundId]);
 
   {/*
   useEffect(() => {
