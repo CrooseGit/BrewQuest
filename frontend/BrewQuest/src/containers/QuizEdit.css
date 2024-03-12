@@ -2,12 +2,12 @@ html,
 body {
   padding: 0.4em;
   height: 100%;
-  color: white;
-  font-family: 'Quicksand';
 }
 
 #root {
   height: 100%;
+  color: white;
+  font-family: 'Quicksand';
 }
 
 .scrollMenu {
@@ -33,6 +33,10 @@ body {
   color: white;
 }
 
+.roundSelect {
+  width: 20rem;
+}
+
 .questionButton h4 {
   color: #6a8d73;
   font-family: 'Quicksand';
@@ -47,9 +51,30 @@ body {
 
 .submitAllButton {
   border-radius: 2rem;
+  width: 4rem;
+  height: 3rem;
 }
 .submitAllButton h5 {
   margin: 0;
+}
+
+
+.delBtn {
+  color: white;
+  background-color: #E61610;
+  border: 0rem;
+}
+
+#delRoundBtn {
+  color: white;
+  background-color: #E61610;
+  border: 0rem;
+}
+
+#newRoundBtn {
+  color: white;
+  background-color: #939D89;
+  border: 0rem;
 }
 
 .questionEditText {
