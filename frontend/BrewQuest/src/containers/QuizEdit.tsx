@@ -124,6 +124,7 @@ const TobyEdit = () => {
                 onClick={() => {
                   setSelectedRound(index);
                   setSelectedRoundId(roundIds[index]);
+                  setQuestion_index(0);
                 }}
               >
                 {round}
