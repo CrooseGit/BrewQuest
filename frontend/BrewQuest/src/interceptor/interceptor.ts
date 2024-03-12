@@ -1,11 +1,13 @@
 import axios from 'axios';
 let refresh = false;
 axios.interceptors.response.use(
+  // if successful, then continue with the response
   (resp) => resp,
+  // if there was an error outside 2xx, then perform the following
   async (error) => {
+    const { config } = error;
     if (error.response.status === 401 && !refresh) {
       refresh = true;
-      console.log(localStorage.getItem('refresh_token'));
       axios.defaults.headers.common[
         'Authorization'
       ] = `Bearer ${localStorage.getItem('access_token')}`;
@@ -24,7 +26,8 @@ axios.interceptors.response.use(
        ${response.data['access']}`;
         localStorage.setItem('access_token', response.data.access);
         localStorage.setItem('refresh_token', response.data.refresh);
-        return axios(error.config);
+        // if successfully, updated the tokens then returns 
+        // return axios(error.config);
       }
     }
     refresh = false;

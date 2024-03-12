@@ -3,12 +3,12 @@ import { useState, useEffect } from 'react';
 import OptionButton from '../components/OptionButton/OptionButton';
 import '../index.css';
 
+
 // import OptionButton from './OptionButton.tsx';
 
 const QuizList = () => {
   // set up items list structure
   // sample quiz array
-
   const [quizzes, setQuizzes] = useState([{ title: 'Loading', id: -1 }]);
 
   //set selected item structure
@@ -25,20 +25,20 @@ const QuizList = () => {
         },
       })
       .then((response) => {
-        console.log(response.data.quizzes);
         setQuizzes(response.data.quizzes);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
+        // console.log("hi")
       });
   };
   useEffect(() => {
     loadQuizzes();
   }, []);
 
-  useEffect(() => {
-    console.log(selectedQuiz);
-  });
+  // useEffect(() => {
+  //   console.log(selectedQuiz);
+  // });
 
   const quizElements =
     quizzes &&

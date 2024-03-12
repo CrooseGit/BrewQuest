@@ -13,9 +13,8 @@ const Navbar = () => {
     axios.defaults.headers.common[
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
-    axios.post('http://localhost:8000/api/createQuiz/').catch((error) => {
-      console.log(error);
-    });
+    axios.post('http://localhost:8000/api/createQuiz/')
+    
   };
   return (
     <div>
