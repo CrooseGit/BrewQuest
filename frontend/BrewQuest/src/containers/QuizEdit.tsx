@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import '../containers/QuizEdit.css';
-const TobyEdit = () => {
+
+const QuizEdit = () => {
   const location = useLocation();
   const { state } = location;
   const quizId = state && state.quiz_id;
@@ -18,12 +19,12 @@ const TobyEdit = () => {
 
   useEffect(() => {
     axios
-      .post('http://localhost:8000/api/quizInfo/', {quiz_id: quizId})
+      .post('http://localhost:8000/api/quizInfo/', { quiz_id: quizId })
       .then((response) => {
         const data = response.data;
         setQuizName(data.name);
-        const roundNames = data.rounds.map(round => round.title);
-        const roundIds = data.rounds.map(round => round.id);
+        const roundNames = data.rounds.map((round) => round.title);
+        const roundIds = data.rounds.map((round) => round.id);
         setRounds(roundNames);
         setRoundIds(roundIds);
         setSelectedRoundId(roundIds[0]);
@@ -33,14 +34,16 @@ const TobyEdit = () => {
         console.log(error);
       });
   }, []);
-  
+
   useEffect(() => {
     axios
-      .post('http://localhost:8000/api/questionsAndAnswers/', {round_id: selectedRoundId})
+      .post('http://localhost:8000/api/questionsAndAnswers/', {
+        round_id: selectedRoundId,
+      })
       .then((response) => {
         const data = response.data;
-        const prompts = data.map(question => question.prompt);
-        const answers = data.map(question => question.answer);
+        const prompts = data.map((question) => question.prompt);
+        const answers = data.map((question) => question.answer);
         setPrompts(prompts);
         setAnswers(answers);
       })
@@ -97,54 +100,27 @@ const TobyEdit = () => {
     }
   };
 
-  const handleNewRound = () => {
-  
-  };
+  const handleNewRound = () => {};
 
-  const handleDelRound = () => {
-
-  };
+  const handleDelRound = () => {};
 
   return (
     <div className='box'>
       <div className='topBar d-flex justify-content-between align-items-center p-2'>
-        {/*<div className='d-flex justify-content-between align-items-center'>
-          <form>
-            <select
-              className='roundSelect p-2'
-              value={rounds[selectedRound]}
-              onChange={(e) => {
-                setSelectedRound(rounds.indexOf(e.target.value))
-                setSelectedRoundId(roundIds[rounds.indexOf(e.target.value)])
-              }}
-            >
-              {rounds.map((round, index) => (
-                <option key={index} value={round}>
-                  {round}
-                </option>
-              ))}
-            </select>
-          </form>
-          <button
-            type='button'
-            className='btn roundButton'
-            id='newRoundButton'
-            onClick={() => {
-              handleNewRound();
-            }}
-          >
-            <h1 className='fw-bolder'>+</h1>
-          </button>
-          </div>*/}
-        <div className="input-group mb-3 roundSelect">
+        <div className='input-group mb-3 roundSelect'>
           <input
             className='form-control'
             placeholder='Round name goes here...'
             value={rounds[selectedRound]}
             onChange={(e) => handleRoundNameInputChange(e.target.value)}
           />
-          <button className="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
-          <ul className="dropdown-menu dropdown-menu-end">
+          <button
+            className='btn btn-outline-secondary dropdown-toggle'
+            type='button'
+            data-bs-toggle='dropdown'
+            aria-expanded='false'
+          ></button>
+          <ul className='dropdown-menu dropdown-menu-end'>
             {rounds.map((round, index) => (
               <button
                 className='dropdown-item'
@@ -157,9 +133,23 @@ const TobyEdit = () => {
                 {round}
               </button>
             ))}
-            <li><hr className="dropdown-divider"></hr></li>
-            <button className='dropdown-item' id='newRoundBtn' onClick={handleNewRound}>New</button>
-            <button className='dropdown-item' id='delRoundBtn' onClick={handleDelRound}>Delete</button>
+            <li>
+              <hr className='dropdown-divider'></hr>
+            </li>
+            <button
+              className='dropdown-item'
+              id='newRoundBtn'
+              onClick={handleNewRound}
+            >
+              New
+            </button>
+            <button
+              className='dropdown-item'
+              id='delRoundBtn'
+              onClick={handleDelRound}
+            >
+              Delete
+            </button>
           </ul>
         </div>
         <div>
@@ -174,42 +164,51 @@ const TobyEdit = () => {
           </form>
         </div>
         <div>
-          <Link
-            to='/host/quizlist'
-          >
-            <button
-              type='button'
-              className='btn p-2 submitAllButton'
-            >
+          <Link to='/host/quizlist'>
+            <button type='button' className='btn p-2 submitAllButton'>
               <h5 className='text'>Exit</h5>
             </button>
           </Link>
         </div>
       </div>
-      <div className='scrollMenu'>
-        <button
-          type='button'
-          className='btn questionButton'
-          id='newQuestionButton'
-          onClick={() => {
-            handleNewQuestion();
-          }}
-        >
-          <h1 className='fw-bolder'>+</h1>
-        </button>
-        {prompts.map((_prompt, index) => (
+
+      <div className='d-flex justify-content-between questionButtonBar'>
+        <div className='scrollMenuEdit p-2'>
           <button
             type='button'
             className='btn questionButton'
-            id={index == question_index ? 'selectedButton' : ''}
-            key={'button_' + index}
+            id='newQuestionButton'
             onClick={() => {
-              setQuestion_index(index);
+              handleNewQuestion();
             }}
           >
-            <h4>Q{index + 1}</h4>
+            <h1 className='fw-bolder'>+</h1>
           </button>
-        ))}
+          {prompts.map((_prompt, index) => (
+            <button
+              type='button'
+              className='btn questionButton'
+              id={index == question_index ? 'selectedButton' : ''}
+              key={'button_' + index}
+              onClick={() => {
+                setQuestion_index(index);
+              }}
+            >
+              <h4>Q{index + 1}</h4>
+            </button>
+          ))}
+        </div>
+        <div className=' p-2'>
+          <button
+            type='button'
+            className='btn deleteButton questionButton '
+            onClick={() => {
+              handleNewQuestion();
+            }}
+          >
+            <h1 className='fw-bolder'>-</h1>
+          </button>
+        </div>
       </div>
 
       <div className='questionDiv'>
@@ -278,4 +277,4 @@ const TobyEdit = () => {
     </div>
   );
 };
-export default TobyEdit;
+export default QuizEdit;
