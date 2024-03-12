@@ -11,11 +11,27 @@ const TobyEdit = () => {
 
   useEffect(() => {
     axios
+      .post('http://localhost:8000/api/quizInfo/', {quiz_id: 20})
+      .then((response) => {
+        console.log('getting quiz info');
+        const data = response.data;
+        console.log(data)
+        setQuizName(data.name);
+        const roundNames = data.rounds.map(round => round.title);
+        setRounds(roundNames);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  
+  useEffect(() => {
+    axios
       .post('http://localhost:8000/api/questionsAndAnswers/', {round_id: selectedRound})
       .then((response) => {
         console.log('getting questions');
         const data = response.data;
-        console.log(response)
+        console.log(data)
         //const roundNames = Object.keys(data.rounds);
         const prompts = data.map(question => question.prompt);
         const answers = data.map(question => question.answer);
@@ -26,6 +42,7 @@ const TobyEdit = () => {
         console.log(error);
       });
   }, []);
+
   {/*
   useEffect(() => {
     axios.get('http://localhost:8000/api/questions/').then((response) => {
