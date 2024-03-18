@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useEffect } from "react";
 
-const SubmittedAnswer = ({submittedAnswer, onDelete, roundNum, questionNum}) =>{
+const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum}) =>{
 
     let answerElement;
     let startX=0, offsetX=0, isDragging=false, animationID=0;
     const tolerance=80;
 
+    // html element animation
     const animation = () =>{
         if (isDragging){
             answerElement.style.transform=`translateX(${offsetX}px)`;
@@ -45,7 +46,7 @@ const SubmittedAnswer = ({submittedAnswer, onDelete, roundNum, questionNum}) =>{
         // remove element from list
         if (offsetX > 0 && offsetX > tolerance || offsetX < 0 && -offsetX > tolerance){
             //delete answer element from list using function prop
-            onDelete(submittedAnswer);
+            handleDelete(submittedAnswer);
         }
 
         // cancel animation (after this animation will rerun one last time)
@@ -53,9 +54,11 @@ const SubmittedAnswer = ({submittedAnswer, onDelete, roundNum, questionNum}) =>{
 
     }
 
+    // add event listeners after DOM first loads
     useEffect(()=>{
         answerElement=document.getElementById(`sd-${roundNum}-${questionNum}-${submittedAnswer.id}`);
 
+        // prevent default browser scroll and refresh behavior
         answerElement?.addEventListener("touchstart",(e)=>e.preventDefault());
         answerElement?.addEventListener("touchstart",handleTouchStart);
         answerElement?.addEventListener("touchmove",handleTouchMove);

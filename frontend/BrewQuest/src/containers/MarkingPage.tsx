@@ -61,7 +61,7 @@ const MarkingPage = () =>{
             <div className="submitted-answers-list">
                 {/* answers to be fetched from database */}
                 {submittedAnswers && submittedAnswers.map((submittedAnswer)=>[
-                <SubmittedAnswer roundNum={roundNum} questionNum={questionNum} submittedAnswer={submittedAnswer} onDelete={handleDelete} key={submittedAnswer.id}></SubmittedAnswer>]
+                <SubmittedAnswer roundNum={roundNum} questionNum={questionNum} submittedAnswer={submittedAnswer} handleDelete={handleDelete} key={submittedAnswer.id}></SubmittedAnswer>]
                 )}
             </div>
         </div>
