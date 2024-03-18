@@ -100,9 +100,37 @@ const QuizEdit = () => {
     }
   };
 
-  const handleNewRound = () => {};
+  const handleNewRound = () => {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('access_token')}`;
+    axios
+      .post('http://localhost:8000/api/createRound/', {
+        quiz_id: quizId,
+      })
+      .then()
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-  const handleDelRound = () => {};
+  const handleDelRound = () => {
+    if (roundIds.length == 1) {
+      alert('Each Quiz must have at least one round.');
+      return;
+    }
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('access_token')}`;
+    axios
+      .post('http://localhost:8000/api/deleteRound/', {
+        round_id: selectedRound,
+      })
+      .then()
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className='box'>
@@ -172,43 +200,30 @@ const QuizEdit = () => {
         </div>
       </div>
 
-      <div className='d-flex justify-content-between questionButtonBar'>
-        <div className='scrollMenuEdit p-2'>
+      <div className='scrollMenuEdit p-2'>
+        <button
+          type='button'
+          className='btn questionButton'
+          id='newQuestionButton'
+          onClick={() => {
+            handleNewQuestion();
+          }}
+        >
+          <h1 className='fw-bolder'>+</h1>
+        </button>
+        {prompts.map((_prompt, index) => (
           <button
             type='button'
             className='btn questionButton'
-            id='newQuestionButton'
+            id={index == question_index ? 'selectedButton' : ''}
+            key={'button_' + index}
             onClick={() => {
-              handleNewQuestion();
+              setQuestion_index(index);
             }}
           >
-            <h1 className='fw-bolder'>+</h1>
+            <h4>Q{index + 1}</h4>
           </button>
-          {prompts.map((_prompt, index) => (
-            <button
-              type='button'
-              className='btn questionButton'
-              id={index == question_index ? 'selectedButton' : ''}
-              key={'button_' + index}
-              onClick={() => {
-                setQuestion_index(index);
-              }}
-            >
-              <h4>Q{index + 1}</h4>
-            </button>
-          ))}
-        </div>
-        <div className=' p-2'>
-          <button
-            type='button'
-            className='btn deleteButton questionButton '
-            onClick={() => {
-              handleNewQuestion();
-            }}
-          >
-            <h1 className='fw-bolder'>-</h1>
-          </button>
-        </div>
+        ))}
       </div>
 
       <div className='questionDiv'>

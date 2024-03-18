@@ -57,13 +57,6 @@ def quizzes(request):
 
 
 @api_view(['POST'])
-@permission_classes((IsAuthenticated, ))
-def createQuiz(request):
-    new_quiz = Quiz(title="New Quiz", user_id=request.user)
-    new_quiz.save()
-    return Response({'Status': 'Success'})
-
-@api_view(['POST'])
 def quizInfo(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
@@ -72,15 +65,16 @@ def quizInfo(request):
     name = quiz.title
     rounds = Round.objects.filter(quiz_id=quiz_id)
     round_serializer = RoundSerializer(rounds, many=True)
-    
+
     data = {
-        'name': name, 
+        'name': name,
         'rounds': round_serializer.data
     }
-    
-    return JsonResponse(data, safe=False)
-    
 
+    return JsonResponse(data, safe=False)
+
+
+# HOST QUIZ EDIT PAGE -------------------
 @api_view(['POST'])
 def questionsAndAnswers(request):
     body_unicode = request.body.decode('utf-8')
@@ -90,6 +84,54 @@ def questionsAndAnswers(request):
     serializer = HostQuestionSerializer(questions, many=True)
     data = serializer.data
     return JsonResponse(data, safe=False)
+
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def createRound(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    quiz_id = body['quiz_id']
+    quiz = Quiz.objects.get(id=quiz_id)
+    index = Round.objects.filter(quiz_id=quiz).count()
+
+    new_round = Round(title="New Round", quiz_id=quiz, index=index, time=30)
+    new_round.save()
+    new_question = Question(prompt="Enter question here...",
+                            answer="Enter answer here...", last_changed=timezone.now(), round_id=new_round, time=30, index=0)
+    new_question.save()
+    return Response({'Status': 'Success'})
+
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def deleteRound(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    round_id = body['round_id']
+
+    r = Round.objects.get(id=round_id)
+    r.delete()
+
+    return Response({'Status': 'Success'})
+
+# ---------------------------------------
+
+# HOST QUIZ LIST PAGE -------------------
+
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def createQuiz(request):
+    new_quiz = Quiz(title="New Quiz", user_id=request.user)
+    new_quiz.save()
+    new_round = Round(title="New Round", quiz_id=new_quiz, index=0, time=30)
+    new_round.save()
+    new_question = Question(prompt="Enter question here...",
+                            answer="Enter answer here...", last_changed=timezone.now(), round_id=new_round, time=30, index=0)
+    new_question.save()
+    return Response({'Status': 'Success'})
+
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
@@ -127,6 +169,10 @@ def deleteQuiz(request):
     quiz.delete()
     return Response({'Status': 'Success'})
 
+# ---------------------------------------
+
+
+# Authentication ------------------------
 
 class HomeView(APIView):
 
