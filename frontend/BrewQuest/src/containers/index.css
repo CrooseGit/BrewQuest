@@ -8,6 +8,10 @@ h1, h2, .question-selection, .submitted-answers-list, .arrow-guide{
   font-weight: bold;
 }
 
+.question-selection-input{
+  display: none; /* hide radio input button*/
+}
+
 .marking-page-div{
   /* make unscrollable */
   width: 100vw;
@@ -74,7 +78,7 @@ h1, h2, .question-selection, .submitted-answers-list, .arrow-guide{
 }
 
 .round-questions{
-  width: 90%;
+  width: 94%;
   margin: 0px auto;
   margin-bottom: 20px;
 }
@@ -88,8 +92,10 @@ h1, h2, .question-selection, .submitted-answers-list, .arrow-guide{
   text-align: center;
 }
 
-.question-selection{
+.question-selection-label{
   background-color: #212922;
+  color: white;
+  font-family: "Quicksand";
   border-radius: 25px;
   text-align: center;
   width: 50px;
@@ -98,6 +104,12 @@ h1, h2, .question-selection, .submitted-answers-list, .arrow-guide{
   border-width: 2px;
   border-style: solid;
   border-color: #080808;
+  transition-property: background-color;
+  transition-duration: 0.2s;
+}
+
+.question-selection-input:checked + .question-selection-label{
+  background-color: #6a8d73;
 }
 
 .question-selection-container{

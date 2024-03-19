@@ -4,6 +4,7 @@ import SubmittedAnswer from "./SubmittedAnswer";
 
 const MarkingPage = () =>{
 
+    // ALL TO BE FETCHED FROM DATABASE !!!!!!!!!!!
     // answers object
     // id for each submitted answer to a question, unique id
     // player to identify player, which player submitted the answer (might be in different order than id)
@@ -22,8 +23,45 @@ const MarkingPage = () =>{
         {id: 12, player: 12, contents: "Swiss"}
     ]);
 
-    // for identifying unique html elements
-    let roundNum=1, questionNum=1;
+    // current
+    const [roundNum, setRoundNum] = useState(1);
+    const [questionNum, setQuestionNum] = useState(1);
+
+    // for displaying radio selections
+    const [questionsPerRound, setQuestionsPerRound] = useState(8);
+    // store elements
+    let radioButtons = [];
+
+    // change variable
+    const changeQSelection = (e) => {
+        // value contains question number
+        setQuestionNum(parseInt(e.target.value));
+    }
+    // verify that variable does change
+    useEffect(()=>{
+        console.log(questionNum);
+        // setSubmittedAnswers to new set of submitted answers
+    },[questionNum]);
+
+    for (let i=1; i <= questionsPerRound; i++){
+        if (i===1){
+            radioButtons.push(
+                <input key={"QSI"+i} type="radio" value={i} className="question-selection-input" name="questionList" id={"QS"+i} defaultChecked onChange={changeQSelection}></input>
+            );
+            radioButtons.push(
+                <label key={"QSL"+i} className="question-selection-label" htmlFor={"QS"+i}>Q{i}</label>
+            );
+        } else {
+            radioButtons.push(
+                <input key={"QSI"+i} type="radio" value={i} className="question-selection-input" name="questionList" id={"QS"+i} onChange={changeQSelection}></input>
+            );
+            radioButtons.push(
+                <label key={"QSL"+i} className="question-selection-label" htmlFor={"QS"+i}>Q{i}</label>
+            );
+        }
+    }
+
+
 
     // react to dynamic list of submitted answers
     useEffect(()=>{},[submittedAnswers]);
@@ -39,19 +77,11 @@ const MarkingPage = () =>{
             <h1 className="branding-heading">BrewQuest</h1>
             <div className="round-questions">
                 {/* to fetch from database */}
-                <h2 className="round-subtitle">Round X</h2>
+                <h2 className="round-subtitle">Round {roundNum}</h2>
                 <div className="question-selection-container">
                     {/* to fetch from database */}
-                    <div className="question-selection">Q1</div>
-                    <div className="question-selection">Q2</div>
-                    <div className="question-selection">Q3</div>
-                    <div className="question-selection">Q4</div>
-                    <div className="question-selection">Q5</div>
-                    <div className="question-selection">Q6</div>
-                    <div className="question-selection">Q7</div>
-                    <div className="question-selection">Q8</div>
-                    <div className="question-selection">Q9</div>
-                    <div className="question-selection">Q10</div>
+                    {/* display radio buttons */}
+                    {radioButtons}
                 </div>
             </div>
             <h2 className="marked-question">The selected question to be swiped on &#40;left or right&#41;</h2>
@@ -60,8 +90,8 @@ const MarkingPage = () =>{
             <div className="arrow-guide right-arrow">&#8594;</div>
             <div className="submitted-answers-list">
                 {/* answers to be fetched from database */}
-                {submittedAnswers && submittedAnswers.map((submittedAnswer)=>[
-                <SubmittedAnswer roundNum={roundNum} questionNum={questionNum} submittedAnswer={submittedAnswer} handleDelete={handleDelete} key={submittedAnswer.id}></SubmittedAnswer>]
+                {submittedAnswers && submittedAnswers.map((submittedAnswer)=>
+                <SubmittedAnswer roundNum={roundNum} questionNum={questionNum} submittedAnswer={submittedAnswer} handleDelete={handleDelete} key={submittedAnswer.id}></SubmittedAnswer>
                 )}
             </div>
         </div>
