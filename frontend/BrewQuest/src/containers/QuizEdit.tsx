@@ -6,97 +6,214 @@ import '../containers/QuizEdit.css';
 const QuizEdit = () => {
   const location = useLocation();
   const { state } = location;
+
   const quizId = state && state.quiz_id;
   const [quizName, setQuizName] = useState('Loading');
-  const [rounds, setRounds] = useState<string[]>(['Loading']);
-  const [roundIds, setRoundIds] = useState([]);
-  const [selectedRound, setSelectedRound] = useState(0);
-  const [selectedRoundId, setSelectedRoundId] = useState(0);
-  const [roundName, setRoundName] = useState('Loading');
-  const [question_index, setQuestion_index] = useState(0);
+  const [quizNameChanged, setQuizNameChanged] = useState(false);
+
+  const [rounds, setRounds] = useState<string[]>(['Loading']); // Array of round titles
+  const [roundIds, setRoundIds] = useState([]); // Array of round record PKs
+  const [selectedRoundIndex, setSelectedRoundIndex] = useState(0); // Index of currently selected relative to the roundIds and Rounds arrays
+  const [isRoundNameChanged, setRoundNameChanged] = useState(false);
+
+  const [questionChanged, setQuestionChanged] = useState(false);
+  const [questionIds, setQuestionIds] = useState([]); // Ids of question in current round
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [prompts, setPrompts] = useState(['Loading']);
   const [answers, setAnswers] = useState(['Loading']);
 
   useEffect(() => {
+    getQuiz();
+  }, []);
+
+  useEffect(() => {
+    // Runs getRound to populate questions for selected round when roundIds becomes defined
+    console.log('getting round ', rounds[selectedRoundIndex]);
+    roundIds[0] && getRound();
+  }, [roundIds, selectedRoundIndex]);
+
+  useEffect(() => {}, []);
+  const getQuiz = () => {
+    // Gets Quiz name and round information
+
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
       .post('http://localhost:8000/api/quizInfo/', { quiz_id: quizId })
       .then((response) => {
         const data = response.data;
         setQuizName(data.name);
-        const roundNames = data.rounds.map((round) => round.title);
-        const roundIds = data.rounds.map((round) => round.id);
+        const roundNames = data.rounds.map(
+          (round: { title: string; id: number }) => round.title
+        );
+        const roundIds = data.rounds.map(
+          (round: { title: string; id: number }) => round.id
+        );
+        console.log(roundNames);
         setRounds(roundNames);
         setRoundIds(roundIds);
-        setSelectedRoundId(roundIds[0]);
-        setRoundName(roundNames[0]);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  };
 
-  useEffect(() => {
+  const getRound = () => {
+    // Gets questions from a round
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('access_token')}`;
+    console.log('getting questions from ', rounds[selectedRoundIndex]);
     axios
       .post('http://localhost:8000/api/questionsAndAnswers/', {
-        round_id: selectedRoundId,
+        round_id: roundIds[selectedRoundIndex],
       })
       .then((response) => {
         const data = response.data;
-        const prompts = data.map((question) => question.prompt);
-        const answers = data.map((question) => question.answer);
+        const prompts = data.map(
+          (question: { prompt: string }) => question.prompt
+        );
+        const answers = data.map(
+          (question: { answer: string }) => question.answer
+        );
+        const ids = data.map((question: { id: number }) => question.id);
         setPrompts(prompts);
         setAnswers(answers);
+        setQuestionIds(ids);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [selectedRoundId]);
+  };
+
+  const updateRoundName = () => {
+    if (!isRoundNameChanged) {
+      // If round name has not been edited, don't bother
+      return;
+    }
+    console.log('Updating Round Name');
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('access_token')}`;
+    axios
+      .post('http://localhost:8000/api/updateRoundName/', {
+        round_id: roundIds[selectedRoundIndex],
+        name: rounds[selectedRoundIndex],
+      })
+      .then(() => {
+        setRoundNameChanged(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const updateQuizName = () => {
+    if (!quizNameChanged) {
+      // If round name has not been edited, don't bother
+      return;
+    }
+    console.log('Updating Quiz Name');
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('access_token')}`;
+    axios
+      .post('http://localhost:8000/api/updateQuizName/', {
+        quiz_id: quizId,
+        name: quizName,
+      })
+      .then(() => {
+        setQuizNameChanged(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const updateQuestion = () => {
+    if (!questionChanged) return;
+    console.log('Updating Quiz Name');
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('access_token')}`;
+    axios
+      .post('http://localhost:8000/api/updateQuestion/', {
+        question_id: questionIds[questionIndex],
+        prompt: prompts[questionIndex],
+        answer: answers[questionIndex],
+      })
+      .then(() => {
+        setQuestionChanged(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const handleNameInputChange = (input: string) => {
     setQuizName(input);
+    setQuizNameChanged(true);
   };
 
   const handleRoundNameInputChange = (input: string) => {
+    setRoundNameChanged(true);
     const updatedRounds = rounds.map((round, index) => {
-      if (index == selectedRound) {
+      if (index == selectedRoundIndex) {
         return input;
       }
       return round;
     });
+    console.log('updated rounds', updatedRounds);
     setRounds(updatedRounds);
   };
 
   const handleAnswerInputChange = (input: string) => {
     const a = JSON.parse(JSON.stringify(answers));
-    a[question_index] = input;
+    a[questionIndex] = input;
     setAnswers(a);
+    setQuestionChanged(true);
   };
 
   const handleQuestionInputChange = (input: string) => {
     const a = JSON.parse(JSON.stringify(prompts));
-    a[question_index] = input;
+    a[questionIndex] = input;
     setPrompts(a);
+    setQuestionChanged(true);
   };
 
   const handleNewQuestion = () => {
-    setPrompts((prevPrompts) => [...prevPrompts, '']);
-    setAnswers((prevAnswers) => [...prevAnswers, '']);
-    setQuestion_index(prompts.length);
+    // setPrompts((prevPrompts) => [...prevPrompts, '']);
+    // setAnswers((prevAnswers) => [...prevAnswers, '']);
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('access_token')}`;
+    axios
+      .post('http://localhost:8000/api/createQuestion/', {
+        round_id: roundIds[selectedRoundIndex],
+      })
+      .then(getRound)
+      .catch((error) => {
+        console.log(error);
+      });
+    setQuestionIndex(prompts.length);
   };
 
-  const handleDelQuestion = (index: number) => {
-    setPrompts((prevPrompts) => {
-      const updatedPrompts = [...prevPrompts];
-      updatedPrompts.splice(index, 1);
-      return updatedPrompts;
-    });
-    setAnswers((prevAnswers) => {
-      const updatedAnswers = [...prevAnswers];
-      updatedAnswers.splice(index, 1);
-      return updatedAnswers;
-    });
-    if (question_index >= prompts.length - 1) {
-      setQuestion_index(question_index - 1);
+  const handleDelQuestion = () => {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${localStorage.getItem('access_token')}`;
+    axios
+      .post('http://localhost:8000/api/deleteQuestion/', {
+        question_id: questionIds[questionIndex],
+      })
+      .then(getRound)
+      .catch((error) => {
+        console.log(error);
+      });
+
+    if (questionIndex != 0) {
+      setQuestionIndex(questionIndex - 1);
     }
   };
 
@@ -108,7 +225,7 @@ const QuizEdit = () => {
       .post('http://localhost:8000/api/createRound/', {
         quiz_id: quizId,
       })
-      .then()
+      .then(getQuiz)
       .catch((error) => {
         console.log(error);
       });
@@ -124,9 +241,16 @@ const QuizEdit = () => {
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
       .post('http://localhost:8000/api/deleteRound/', {
-        round_id: selectedRound,
+        round_id: roundIds[selectedRoundIndex],
       })
-      .then()
+      .then(() => {
+        if (selectedRoundIndex == 0) {
+          setSelectedRoundIndex(1);
+        } else {
+          setSelectedRoundIndex(selectedRoundIndex - 1);
+        }
+        getQuiz();
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -139,7 +263,7 @@ const QuizEdit = () => {
           <input
             className='form-control'
             placeholder='Round name goes here...'
-            value={rounds[selectedRound]}
+            value={rounds[selectedRoundIndex]}
             onChange={(e) => handleRoundNameInputChange(e.target.value)}
           />
           <button
@@ -152,29 +276,40 @@ const QuizEdit = () => {
             {rounds.map((round, index) => (
               <button
                 className='dropdown-item'
-                key={round}
+                key={roundIds[index]}
                 onClick={() => {
-                  setSelectedRound(index);
-                  setSelectedRoundId(roundIds[index]);
+                  updateQuestion();
+                  setSelectedRoundIndex(index);
+                  setQuestionIndex(0);
+                  updateRoundName();
                 }}
               >
                 {round}
               </button>
             ))}
-            <li>
+            <li key={'divider'}>
               <hr className='dropdown-divider'></hr>
             </li>
             <button
               className='dropdown-item'
               id='newRoundBtn'
-              onClick={handleNewRound}
+              onClick={() => {
+                updateQuestion();
+                updateRoundName();
+                handleNewRound();
+              }}
+              key={'new round'}
             >
               New
             </button>
             <button
               className='dropdown-item'
               id='delRoundBtn'
-              onClick={handleDelRound}
+              onClick={() => {
+                updateRoundName();
+                handleDelRound();
+              }}
+              key={'delete round'}
             >
               Delete
             </button>
@@ -193,7 +328,15 @@ const QuizEdit = () => {
         </div>
         <div>
           <Link to='/host/quizlist'>
-            <button type='button' className='btn p-2 submitAllButton'>
+            <button
+              type='button'
+              className='btn p-2 submitAllButton'
+              onClick={() => {
+                updateQuestion();
+                updateRoundName();
+                updateQuizName();
+              }}
+            >
               <h5 className='text'>Exit</h5>
             </button>
           </Link>
@@ -205,7 +348,9 @@ const QuizEdit = () => {
           type='button'
           className='btn questionButton'
           id='newQuestionButton'
+          key={'new button'}
           onClick={() => {
+            updateQuestion();
             handleNewQuestion();
           }}
         >
@@ -215,10 +360,11 @@ const QuizEdit = () => {
           <button
             type='button'
             className='btn questionButton'
-            id={index == question_index ? 'selectedButton' : ''}
+            id={index == questionIndex ? 'selectedButton' : ''}
             key={'button_' + index}
             onClick={() => {
-              setQuestion_index(index);
+              updateQuestion();
+              setQuestionIndex(index);
             }}
           >
             <h4>Q{index + 1}</h4>
@@ -235,7 +381,10 @@ const QuizEdit = () => {
             <button
               type='button'
               className='btn btn-custom delBtn'
-              onClick={() => handleDelQuestion(question_index)}
+              onClick={() => {
+                updateQuestion();
+                handleDelQuestion();
+              }}
               disabled={prompts.length === 1}
             >
               <h6 className='text'>Delete</h6>
@@ -244,7 +393,7 @@ const QuizEdit = () => {
           <input
             id='questionInput'
             className='form-control questionEditText'
-            value={prompts[question_index]}
+            value={prompts[questionIndex]}
             placeholder='Question goes here...'
             onChange={(e) => handleQuestionInputChange(e.target.value)}
           />
@@ -256,7 +405,7 @@ const QuizEdit = () => {
               id='textInput'
               className='form-control'
               placeholder='Answer goes here...'
-              value={answers[question_index]}
+              value={answers[questionIndex]}
               onChange={(e) => handleAnswerInputChange(e.target.value)}
             />
           </form>
@@ -270,7 +419,10 @@ const QuizEdit = () => {
             type='button'
             className='btn btn-lg'
             onClick={() => {
-              if (question_index != 0) setQuestion_index(question_index - 1);
+              if (questionIndex != 0) {
+                updateQuestion();
+                setQuestionIndex(questionIndex - 1);
+              }
             }}
           >
             <h3>&lt; Back</h3>
@@ -281,8 +433,10 @@ const QuizEdit = () => {
             type='button'
             className='btn btn-lg'
             onClick={() => {
-              if (question_index != prompts.length - 1)
-                setQuestion_index(question_index + 1);
+              if (questionIndex != prompts.length - 1) {
+                setQuestionIndex(questionIndex + 1);
+                updateQuestion();
+              }
             }}
           >
             <h3>Next &gt;</h3>

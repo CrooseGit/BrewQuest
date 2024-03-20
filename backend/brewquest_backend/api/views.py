@@ -56,26 +56,26 @@ def quizzes(request):
     return JsonResponse(data, safe=False)
 
 
-@api_view(['POST'])
-def quizInfo(request):
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
-    quiz_id = body['quiz_id']
-    quiz = Quiz.objects.get(id=quiz_id)
-    name = quiz.title
-    rounds = Round.objects.filter(quiz_id=quiz_id)
-    round_serializer = RoundSerializer(rounds, many=True)
-
-    data = {
-        'name': name,
-        'rounds': round_serializer.data
-    }
-
-    return JsonResponse(data, safe=False)
 
 
 # HOST QUIZ EDIT PAGE -------------------
+
 @api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def updateQuizName(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    quiz_id = body['quiz_id']
+    name = body['name']
+    q = Quiz.objects.get(id=quiz_id)
+    q.title = name
+    q.save()
+
+    return Response({'Status': 'Success'})
+
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
 def questionsAndAnswers(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
@@ -109,11 +109,84 @@ def deleteRound(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     round_id = body['round_id']
-
     r = Round.objects.get(id=round_id)
     r.delete()
 
     return Response({'Status': 'Success'})
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def updateRoundName(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    round_id = body['round_id']
+    name = body['name']
+    r = Round.objects.get(id=round_id)
+    r.title = name
+    r.save()
+
+    return Response({'Status': 'Success'})
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def createQuestion(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    round_id = body['round_id']
+    r = Round.objects.get(id=round_id)
+    print(r.title + " New question added")
+    
+    new_question = Question(prompt="Enter question here...",
+                            answer="Enter answer here...", last_changed=timezone.now(), round_id=r, time=30, index=0)
+    new_question.save()
+    return Response({'Status': 'Success'})
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def deleteQuestion(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    question_id = body['question_id']
+    q = Question.objects.get(id=question_id)
+    q.delete()
+
+    return Response({'Status': 'Success'})
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def updateQuestion(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    question_id = body['question_id']
+    prompt = body['prompt']
+    answer = body['answer']
+    q = Question.objects.get(id=question_id)
+    q.prompt = prompt
+    q.answer = answer
+    q.save()
+
+    return Response({'Status': 'Success'})
+
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def quizInfo(request):
+    # Provides information on the name of the quiz and the rounds
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    quiz_id = body['quiz_id']
+    quiz = Quiz.objects.get(id=quiz_id)
+    name = quiz.title
+    rounds = Round.objects.filter(quiz_id=quiz_id)
+    round_serializer = RoundSerializer(rounds, many=True)
+
+    data = {
+        'name': name,
+        'rounds': round_serializer.data
+    }
+
+    return JsonResponse(data, safe=False)
+
 
 # ---------------------------------------
 

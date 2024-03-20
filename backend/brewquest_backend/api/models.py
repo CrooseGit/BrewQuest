@@ -100,8 +100,7 @@ class Question(models.Model):
         round_id = self.round_id
         return_value = super().delete(*args, **kwargs)
         self.updateRoundTime()
-
-        return_value = super().delete(*args, **kwargs)
+        
         for q in list(Question.objects.filter(round_id=round_id)):
             if q.index > index:
                 q.index = q.index - 1
