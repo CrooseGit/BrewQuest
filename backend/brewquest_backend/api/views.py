@@ -95,10 +95,10 @@ def createRound(request):
     quiz = Quiz.objects.get(id=quiz_id)
     index = Round.objects.filter(quiz_id=quiz).count()
 
-    new_round = Round(title="New Round", quiz_id=quiz, index=index, time=30)
+    new_round = Round(title="", quiz_id=quiz, index=index, time=30)
     new_round.save()
-    new_question = Question(prompt="Enter question here...",
-                            answer="Enter answer here...", last_changed=timezone.now(), round_id=new_round, time=30, index=0)
+    new_question = Question(prompt="",
+                            answer="", last_changed=timezone.now(), round_id=new_round, time=30, index=0)
     new_question.save()
     return Response({'Status': 'Success'})
 
@@ -136,8 +136,8 @@ def createQuestion(request):
     r = Round.objects.get(id=round_id)
     print(r.title + " New question added")
     
-    new_question = Question(prompt="Enter question here...",
-                            answer="Enter answer here...", last_changed=timezone.now(), round_id=r, time=30, index=0)
+    new_question = Question(prompt="",
+                            answer="", last_changed=timezone.now(), round_id=r, time=30, index=0)
     new_question.save()
     return Response({'Status': 'Success'})
 
@@ -198,10 +198,10 @@ def quizInfo(request):
 def createQuiz(request):
     new_quiz = Quiz(title="New Quiz", user_id=request.user)
     new_quiz.save()
-    new_round = Round(title="New Round", quiz_id=new_quiz, index=0, time=30)
+    new_round = Round(title="", quiz_id=new_quiz, index=0, time=30)
     new_round.save()
-    new_question = Question(prompt="Enter question here...",
-                            answer="Enter answer here...", last_changed=timezone.now(), round_id=new_round, time=30, index=0)
+    new_question = Question(prompt="",
+                            answer="", last_changed=timezone.now(), round_id=new_round, time=30, index=0)
     new_question.save()
     return Response({'Status': 'Success'})
 

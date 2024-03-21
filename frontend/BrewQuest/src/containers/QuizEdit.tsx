@@ -284,7 +284,7 @@ const QuizEdit = () => {
                   updateRoundName();
                 }}
               >
-                {round}
+                {round == '' ? 'Unnamed Round' : round}
               </button>
             ))}
             <li key={'divider'}>
