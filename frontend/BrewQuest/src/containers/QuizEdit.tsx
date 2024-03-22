@@ -225,7 +225,10 @@ const QuizEdit = () => {
       .post('http://localhost:8000/api/createRound/', {
         quiz_id: quizId,
       })
-      .then(getQuiz)
+      .then(() => {
+        setSelectedRoundIndex(roundIds.length)
+        getQuiz()
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -277,6 +280,7 @@ const QuizEdit = () => {
               <button
                 className='dropdown-item'
                 key={roundIds[index]}
+                id = {index == selectedRoundIndex ? 'selectedButton' : ''}
                 onClick={() => {
                   updateQuestion();
                   setSelectedRoundIndex(index);
