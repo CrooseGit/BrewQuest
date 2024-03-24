@@ -11,3 +11,4 @@ export { default as TobyEdit } from './TobyEdit';
 export { default as Leaderboard } from './Leaderboard';
 export { default as Logout } from './Logout';
 export { default as Host } from './Host';
+export { default as EditProfile } from './EditProfile';

@@ -43,6 +43,11 @@ const Navbar = () => {
                 </span>
               </li>
               <li className='nav-item'>
+                <a className='nav-link text' href='/editprofile'>
+                  Edit Profile
+                </a>
+              </li>
+              <li className='nav-item'>
                 <a
                   className='nav-link text'
                   aria-current='page'

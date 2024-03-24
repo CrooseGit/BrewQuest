@@ -9,9 +9,9 @@ import {
   QuizEdit,
   Leaderboard,
   Host,
+  EditProfile,
 } from './containers/index';
 import { AuthProvider } from './context/AuthContext';
-import PrivateRoute from './components/Protection/PrivateRouting';
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
         <Routes>
             <Route path='/' element={<Landing></Landing>} />
             <Route path='/gamepin' element={<GamePin />} />
-            <Route path='/quizlist' element={<PrivateRoute><QuizListPage /></PrivateRoute>} />
+            <Route path='/quizlist' element={<QuizListPage />} />
             <Route path='/quizedit' element={<QuizEdit />} />
             <Route path='/tobyedit' element={<TobyEdit />} />
             <Route path='/register' element={<Register />} />
@@ -28,6 +28,7 @@ function App() {
             {/* <Route path='/login' element={<Login />} />
             <Route path='/logout' element={<Logout />} /> */}
             <Route path='/host/*' element={<Host />} />
+            <Route path='/editprofile' element={<EditProfile />} />
         </Routes>
       </AuthProvider>
     </>

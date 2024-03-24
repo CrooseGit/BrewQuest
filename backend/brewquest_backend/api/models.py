@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-
 # Create your models here.
 
 # This model may be unnecessary, I guess we will see
@@ -96,3 +95,6 @@ class Game(models.Model):
 
     def __str__(self):
         return f"User: {self.user_id}, Pin: {self.pin}"
+    
+
+
