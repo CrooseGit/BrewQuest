@@ -8,10 +8,16 @@ body {
   height: 100%;
 }
 
-.scrollMenu {
-  margin-top: 3rem;
+.scrollMenuEdit {
   overflow: auto;
   white-space: nowrap;
+  flex: 0 1 auto;
+}
+
+.questionButtonBar {
+  margin-top: 3rem;
+  margin-left: 3rem;
+  margin-right: 3rem;
 }
 
 .text {
@@ -32,7 +38,7 @@ body {
   border: 0rem;
 }
 #newQuestionButton {
-  background-color: #939D89;
+  background-color: #939d89;
   color: white;
 }
 
@@ -63,19 +69,19 @@ body {
 
 .delBtn {
   color: white;
-  background-color: #E61610;
+  background-color: #e61610;
   border: 0rem;
 }
 
 #delRoundBtn {
   color: white;
-  background-color: #E61610;
+  background-color: #e61610;
   border: 0rem;
 }
 
 #newRoundBtn {
   color: white;
-  background-color: #939D89;
+  background-color: #939d89;
   border: 0rem;
 }
 
@@ -98,17 +104,13 @@ body {
   height: 100%;
 }
 .questionDiv {
-  margin-top: 3rem;
-  margin-bottom: 3rem;
+  margin: 3rem;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 .topBar {
-  flex: 0 1 auto;
-}
-.scrollMenu {
   flex: 0 1 auto;
 }
 
@@ -119,4 +121,8 @@ body {
 }
 .navigationButtons button h3 {
   font-weight: bold;
+}
+
+.deleteButton {
+  background-color: red !important;
 }
