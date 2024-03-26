@@ -76,10 +76,21 @@ def updateQuizName(request):
 
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
-def questionsAndAnswers(request):
+def getRoundsQuestions(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
-    round_id = body['round_id']
+    print("Current highest round " + str(Round.objects.last().id))
+    print("Round ids:")
+    print(*body['r'])
+    try:
+        print("round index "+str(body['number']))
+        
+        round_id = body['round_id']
+        print(round_id)
+    except:
+        print("Key error")
+        return Response({'Status': 'Fail'})
+    
     questions = Question.objects.filter(round_id=round_id)
     serializer = HostQuestionSerializer(questions, many=True)
     data = serializer.data

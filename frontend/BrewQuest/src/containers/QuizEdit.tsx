@@ -28,12 +28,11 @@ const QuizEdit = () => {
 
   useEffect(() => {
     // Runs getRound to populate questions for selected round when roundIds becomes defined
-    console.log('getting round ', rounds[selectedRoundIndex]);
     roundIds[0] && getRound();
   }, [roundIds, selectedRoundIndex]);
 
   useEffect(() => {}, []);
-  const getQuiz = () => {
+  const getQuiz = (roundIndex: number = -1) => {
     // Gets Quiz name and round information
 
     axios.defaults.headers.common[
@@ -50,9 +49,12 @@ const QuizEdit = () => {
         const roundIds = data.rounds.map(
           (round: { title: string; id: number }) => round.id
         );
-        console.log(roundNames);
+
         setRounds(roundNames);
         setRoundIds(roundIds);
+        if (roundIndex != -1) {
+          setSelectedRoundIndex(roundIndex);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -61,12 +63,15 @@ const QuizEdit = () => {
 
   const getRound = () => {
     // Gets questions from a round
+    console.log('getting rounds');
     axios.defaults.headers.common[
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
-    console.log('getting questions from ', rounds[selectedRoundIndex]);
+    console.log('roundIds[selectedRoundIndex]' + roundIds[selectedRoundIndex]);
     axios
-      .post('http://localhost:8000/api/questionsAndAnswers/', {
+      .post('http://localhost:8000/api/getRoundsQuestions/', {
+        number: selectedRoundIndex,
+        r: roundIds,
         round_id: roundIds[selectedRoundIndex],
       })
       .then((response) => {
@@ -92,7 +97,7 @@ const QuizEdit = () => {
       // If round name has not been edited, don't bother
       return;
     }
-    console.log('Updating Round Name');
+
     axios.defaults.headers.common[
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
@@ -114,7 +119,7 @@ const QuizEdit = () => {
       // If round name has not been edited, don't bother
       return;
     }
-    console.log('Updating Quiz Name');
+
     axios.defaults.headers.common[
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
@@ -133,7 +138,6 @@ const QuizEdit = () => {
 
   const updateQuestion = () => {
     if (!questionChanged) return;
-    console.log('Updating Quiz Name');
     axios.defaults.headers.common[
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
@@ -164,7 +168,7 @@ const QuizEdit = () => {
       }
       return round;
     });
-    console.log('updated rounds', updatedRounds);
+
     setRounds(updatedRounds);
   };
 
@@ -218,6 +222,7 @@ const QuizEdit = () => {
   };
 
   const handleNewRound = () => {
+    updateQuizName();
     axios.defaults.headers.common[
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
@@ -225,9 +230,10 @@ const QuizEdit = () => {
       .post('http://localhost:8000/api/createRound/', {
         quiz_id: quizId,
       })
-      .then(() => {
-        setSelectedRoundIndex(roundIds.length);
-        getQuiz();
+      .then((response) => {
+        console.log(response);
+        getQuiz(roundIds.length);
+        //setSelectedRoundIndex(roundIds.length);
       })
       .catch((error) => {
         console.log(error);
