@@ -148,3 +148,18 @@ body {
   margin-bottom: 7%;
 }
 
+.scrollMenu {
+  margin-top: 3rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  max-height: 200px;
+  max-width: 80%;
+  margin-left: 10%;
+  background-color: #a3d1c2;
+  border-radius: 25px;
+}
+.scrollMenu::-webkit-scrollbar{
+    display: none;
+}
+
+

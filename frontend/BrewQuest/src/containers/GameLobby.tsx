@@ -1,4 +1,4 @@
-import "./channels.css";
+import "./index.css";
 //import { Link } from "react-router-dom";
 
 import { useState, useEffect } from 'react';
@@ -23,6 +23,10 @@ const GameLobby = ({ room, name, setRoom, setName }:
   const navigate = useNavigate();
   const [players, setPlayers] = useState<{ playername: string, score: number }[]>([]);
   const [connected, setConnected] = useState(false);
+
+  const handleStartClicked = () => {
+        //should start the quiz(go to the marking page)
+  };
 
 
   let client: W3CWebSocket;
@@ -210,22 +214,39 @@ const GameLobby = ({ room, name, setRoom, setName }:
 
   return (
     <>
-      { // If connected, render the lobby, otherwise render a message
-        connected ?
+    { // If connected, render the lobby, otherwise render a message
+      connected ?
+
 
           <div className="container-fluid">
-            <h1>Connected to Lobby : {room}</h1>
             <BackButton onClick={() => { navigate("/"); removePlayer() }} className="btn"></BackButton>
-            <div className="container">
-              {makeGrid(players.map((n: any) => n.playername))}
+            <h1 className="text">BrewQuest</h1>
+            <h2 className="text center-text">Connected to Lobby : {room}</h2>
+            <h2 className="text center-text">Player Count: {players.length}</h2>
+            <div className='scrollMenu'>
+                {players.map((n: any) => (
+                  <label className="user">
+              <h4 className="text">{n.playername}</h4>
+                </label>
+            ))}
             </div>
-          </div> :
+            <div className='d-flex justify-content-center'>
+                <button
+                type='button'
+                className='btn btn-lg startButton'
+                onClick={() => handleStartClicked()}>
+                <h2 className='text'>Start</h2>
+                </button>
+            </div> 
+          </div>:
           <div className="container-fluid">
         <BackButton onClick={() => { navigate("/"); removePlayer() }} className="btn"></BackButton>
-          <h1>Not Connected</h1>
+          <h1 className="text">Not Connected</h1>
           </div>}
 
     </>
+
+    
   );
 }
 
