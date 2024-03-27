@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'channels',
     "daphne",
     'livequiz',
-    
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -49,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-   
+    #"django.contrib.sites",
 
     'rest_framework',
     'corsheaders',

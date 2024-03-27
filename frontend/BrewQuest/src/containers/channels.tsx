@@ -8,13 +8,6 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 //const socket = io('ws://localhost:8000/ws/mychannel/'); // Replace with your WS URL and port
 
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import Container from "@material-ui/core/Container";
-//import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import Paper from "@material-ui/core/Paper";
 
 
 function Channel() {
@@ -29,7 +22,7 @@ function Channel() {
   const [room, setRoom] = useState('test');
   //const [count,setCount] = useState(0);
 
-  const client = new W3CWebSocket('ws://127.0.0.1:8000/ws/' + room + '/');
+  const client: W3CWebSocket = new W3CWebSocket('ws://127.0.0.1:8000/ws/' + room + '/');
 
 
   useEffect(() => {
@@ -72,53 +65,54 @@ function Channel() {
  
 
   return (
-    <Container component="main" maxWidth="xs">
+    <div className="container"  >
       {filledForm ? (
         <div style={{ marginTop: 50 }}>
           Room Name: {room}
-          <Paper
+          <div className="paper"
             style={{ height: 500, maxHeight: 500, overflow: "auto", boxShadow: "none", }}
           >
             {messages.map((message,index) => (
              
                 <div className="card"  key={index.toString()}>
-                  <CardHeader title={message.name} subheader={message.msg} />
+                  <p className="card-text" title={message.name}  />
+                  <p className="card-text" title={message.msg}  />
                 </div>
               
             ))}
-          </Paper>
+          </div>
           <form
             className="form"
             noValidate
             onSubmit={onButtonClicked}
           >
-            <TextField id="outlined-helperText" label="Write text" defaultValue="Default Value"
-              variant="outlined"
+            <input type="text" id="outlined-helperText"  defaultValue="Default Value"
+        
               value={value}
-              fullWidth
+         
               onChange={(e) => {
                 setValue(e.target.value);
                 //value = Rvalue
 
-              }}
+}}
             />
-            <Button type="submit" fullWidth variant="contained" color="primary"
+            <button type="submit" 
               className="btn btn-primary btn-lg btn-block submit"
             >
               Send Message
-            </Button>
+            </button>
           </form>
         </div>
       ) : (
         <div>
-          <CssBaseline />
+         
           <div className="paper">
             <form
               className="form"
               noValidate
               onSubmit={handleSubmit}
             >
-              <TextField variant="outlined" margin="normal" required fullWidth label="Room name"
+              <input type="text" 
                 name="Room name"
                 autoFocus
                 value={room}
@@ -128,8 +122,8 @@ function Channel() {
 
                 }}
               />
-              <TextField variant="outlined" margin="normal" required fullWidth name="sender" label="sender"
-                type="sender"
+              <input className="form-control" name="sender"
+                type="text"
                 id="sender"
                 value={name}
                 onChange={(e) => {
@@ -137,16 +131,14 @@ function Channel() {
                  
                 }}
               />
-              <Button type="submit" fullWidth variant="contained" color="primary"
-                className="btn bg-body-secondary"
-              >
+              <button type="submit" className="btn bg-body-secondary">
                 Submit
-              </Button>
+              </button>
             </form>
           </div>
         </div>
       )}
-    </Container>
+    </div>
   );
 }
 
