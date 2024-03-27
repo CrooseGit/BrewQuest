@@ -194,13 +194,13 @@ const GameLobby = ({ room, name, setRoom, setName }:
     //returns an array of React component elements representing the grid.
     const grid = [];
     let count = 0;
-    console.log("this is player array: ", arr)
+
     //the input
     // this is the grid formed by having the input array in groups of 3 in a row
     for (let i = 0; i < arr.length; i = i + 3) {
       grid.push(
         <div key={"player row" + (count / 3).toString()} className="row">
-          {arr.slice(i, i + 3).map((n: any, id: number) => <p className="text-center col-md-4 text-light" key={id + count}>{n}</p>)}
+          {arr.slice(i, i + 3).map((n: any, id: number) => <p className="text-center col-md-4 " key={id + count}>{n}</p>)}
         </div>
       )
       count = count + 3
@@ -214,14 +214,16 @@ const GameLobby = ({ room, name, setRoom, setName }:
         connected ?
 
           <div className="container-fluid">
-            <h1 className="text-light">Connected to Lobby : {room}</h1>
+            <h1>Connected to Lobby : {room}</h1>
             <BackButton onClick={() => { navigate("/"); removePlayer() }} className="btn"></BackButton>
             <div className="container">
               {makeGrid(players.map((n: any) => n.playername))}
             </div>
           </div> :
-
-          <h1>Not Connected</h1>}
+          <div className="container-fluid">
+        <BackButton onClick={() => { navigate("/"); removePlayer() }} className="btn"></BackButton>
+          <h1>Not Connected</h1>
+          </div>}
 
     </>
   );
