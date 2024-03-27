@@ -6,7 +6,7 @@ const MarkingPage = () =>{
 
     // ALL TO BE FETCHED FROM DATABASE !!!!!!!!!!!
     // answers object
-    // id for each submitted answer to a question, unique id
+    // IMPORTANTL: id for each submitted answer to a question, used for HTML element and key
     // player to identify player, which player submitted the answer (might be in different order than id)
     const [submittedAnswers, setSubmittedAnswers] = useState([
         {id: 1, player: 2, contents: "happy birthday to you happy birthday to you happy"},
@@ -29,20 +29,15 @@ const MarkingPage = () =>{
 
     // for displaying radio selections
     const [questionsPerRound, setQuestionsPerRound] = useState(8);
-    // store elements
-    let radioButtons = [];
 
     // change variable
     const changeQSelection = (e) => {
         // value contains question number
         setQuestionNum(parseInt(e.target.value));
     }
-    // verify that variable does change
-    useEffect(()=>{
-        console.log(questionNum);
-        // setSubmittedAnswers to new set of submitted answers
-    },[questionNum]);
 
+    // store elements
+    let radioButtons = [];
     for (let i=1; i <= questionsPerRound; i++){
         if (i===1){
             radioButtons.push(
@@ -61,16 +56,17 @@ const MarkingPage = () =>{
         }
     }
 
-
-
-    // react to dynamic list of submitted answers
-    useEffect(()=>{},[submittedAnswers]);
-
     // remove element from list
     const handleDelete = (element) => {
-        const newAnswersList = submittedAnswers.filter((answer) => answer !== element);
-        setSubmittedAnswers(newAnswersList);
+
+        // IMPORTANT: functional setState update approach to ensure latest submittedAnswers value is used
+        setSubmittedAnswers(submittedAnswers=>submittedAnswers.filter((answer) => answer !== element));
+
     }
+
+    const submittedAnswerElements = submittedAnswers && submittedAnswers.map((submittedAnswer)=>
+    <SubmittedAnswer roundNum={roundNum} questionNum={questionNum} submittedAnswer={submittedAnswer} handleDelete={handleDelete} key={submittedAnswer.id}></SubmittedAnswer>
+    );
 
     return (
         <div className="marking-page-div">
@@ -90,9 +86,7 @@ const MarkingPage = () =>{
             <div className="arrow-guide right-arrow">&#8594;</div>
             <div className="submitted-answers-list">
                 {/* answers to be fetched from database */}
-                {submittedAnswers && submittedAnswers.map((submittedAnswer)=>
-                <SubmittedAnswer roundNum={roundNum} questionNum={questionNum} submittedAnswer={submittedAnswer} handleDelete={handleDelete} key={submittedAnswer.id}></SubmittedAnswer>
-                )}
+                {submittedAnswerElements}
             </div>
         </div>
     );
