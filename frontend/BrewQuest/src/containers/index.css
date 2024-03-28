@@ -90,10 +90,15 @@ h1, h2, .question-selection, .submitted-answers-list, .arrow-guide{
 
 .round-dpdn-menu{
   position: absolute;
+  display: none; /* default to hide */
   width: max-content;
   z-index: 1;
   font-size: 18px;
   overflow: auto;
+}
+
+.show-menu{ /* show dropdown menu */
+  display: block;
 }
 
 .round-dpdn-btn{

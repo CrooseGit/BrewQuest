@@ -27,7 +27,12 @@ const MarkingPage = () =>{
     // when roundNum is changed
     useEffect(()=>{
         console.log("Fetch questionsPerRound");
+
         console.log("Initialize questionNum to 1");
+        setQuestionNum(1);
+        if (document.getElementById("QS1"))
+            document.getElementById("QS1").checked=true;
+
         console.log("Fetch new questionTitle and submittedAnswers");
     },[roundNum]);
 
@@ -56,25 +61,19 @@ const MarkingPage = () =>{
         {id: 12, player: 12, contents: "Swiss"}
     ]);
 
-    // change variable
-    const changeQSelection = (e) => {
-        // value contains question number
-        setQuestionNum(parseInt(e.target.value));
-    }
-
     // render question radio elements
     let questionButtons = [];
     for (let i=1; i <= questionsPerRound; i++){
         if (i===1){
             questionButtons.push(
-                <input key={"QSI"+i} type="radio" value={i} className="question-selection-input" name="questionList" id={"QS"+i} defaultChecked onChange={changeQSelection}></input>
+                <input key={"QSI"+i} type="radio" value={i} className="question-selection-input" name="questionList" id={"QS"+i} defaultChecked onChange={()=>setQuestionNum(i)}></input>
             );
             questionButtons.push(
                 <label key={"QSL"+i} className="question-selection-label" htmlFor={"QS"+i}>Q{i}</label>
             );
         } else {
             questionButtons.push(
-                <input key={"QSI"+i} type="radio" value={i} className="question-selection-input" name="questionList" id={"QS"+i} onChange={changeQSelection}></input>
+                <input key={"QSI"+i} type="radio" value={i} className="question-selection-input" name="questionList" id={"QS"+i} onChange={()=>setQuestionNum(i)}></input>
             );
             questionButtons.push(
                 <label key={"QSL"+i} className="question-selection-label" htmlFor={"QS"+i}>Q{i}</label>
@@ -86,7 +85,7 @@ const MarkingPage = () =>{
     let roundSelection = [];
     for (let i=1; i<=roundsPerQuiz; i++){
         roundSelection.push(
-            <button>Round {i}</button>
+            <button onClick={()=>{setRoundNum(i)}}>Round {i}</button>
         );
     }
 
@@ -103,14 +102,18 @@ const MarkingPage = () =>{
     <SubmittedAnswer roundNum={roundNum} questionNum={questionNum} submittedAnswer={submittedAnswer} handleDelete={handleDelete} key={submittedAnswer.id}></SubmittedAnswer>
     );
 
+    const toggleRoundDpdn = () => {
+        document.getElementById("round-dpdn-menu").classList.toggle("show-menu");
+    }
+
     return (
         <div className="marking-page-div">
             <h1 className="branding-heading">BrewQuest</h1>
             <div className="round-questions">
                 {/* to fetch from database */}
                 <div className="round-dpdn">
-                    <button className="round-dpdn-btn">Round {roundNum}</button>
-                    <div className="round-dpdn-menu">
+                    <button onClick={toggleRoundDpdn} className="round-dpdn-btn">Round {roundNum}</button>
+                    <div id="round-dpdn-menu" className="round-dpdn-menu">
                         {roundSelection}
                     </div>
                 </div>
