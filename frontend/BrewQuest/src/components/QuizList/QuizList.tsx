@@ -4,10 +4,10 @@ import OptionButton from '../OptionButton/OptionButton';
 import './QuizList.css';
 import '../../containers/index';
 
-const QuizList = () => {
+const QuizList = (props: { setQuizToHost: React.Dispatch<React.SetStateAction<{title:string, id:number}>> }) => {
   // set up items list structure
   // sample quiz array
-
+  
   const [quizzes, setQuizzes] = useState([{ title: 'Loading', id: -1 }]);
 
   //set selected item structure
@@ -61,7 +61,7 @@ const QuizList = () => {
         name='quizList'
         id={quizItem.id.toString()}
         // called when item is selected and selected item has changed
-        onChange={() => setSelectedQuiz(quizItem)}
+        onChange={() => {setSelectedQuiz(quizItem); props.setQuizToHost(quizItem)}}
       ></input>,
 
       <label

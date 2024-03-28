@@ -11,5 +11,8 @@ export { default as Logout } from './Logout';
 export { default as Host } from './Host';
 export { default as Channel } from './channels';
 export { default as GameLobby } from './GameLobby';
+export { default as InGame } from './InGame';
+
+
 
 
