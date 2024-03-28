@@ -32,14 +32,14 @@ h1, h2, .question-selection, .submitted-answers-list, .arrow-guide{
 
 .left-arrow{
   border-radius: 15px 1px 1px 15px;
-  margin-left: 5%;
+  margin-left: 0;
   background-color: #bb1818;
 }
 
 .right-arrow{
   float: right;
   border-radius: 1px 15px 15px 1px;
-  margin-right: 5%;
+  margin-right: 0;
   background-color: #49ab2e;
 }
 
@@ -121,7 +121,7 @@ h1, h2, .question-selection, .submitted-answers-list, .arrow-guide{
   font-weight: normal;
   font-size: 25px;
   margin: 0px auto;
-  margin-bottom: -30px;
+  margin-bottom: 30px;
   width: 80%;
   text-align: center;
 }

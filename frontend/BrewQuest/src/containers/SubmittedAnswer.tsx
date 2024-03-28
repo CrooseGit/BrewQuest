@@ -85,6 +85,10 @@ const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum})
         answerElement?.addEventListener("touchstart",handleTouchStart);
         answerElement?.addEventListener("touchmove",handleTouchMove);
         answerElement?.addEventListener("touchend",handleTouchEnd);
+        answerElement?.addEventListener("mousedown",handleTouchStart);
+        answerElement?.addEventListener("mousemove",handleTouchMove);
+        answerElement?.addEventListener("mouseup",handleTouchEnd);
+        answerElement?.addEventListener("mouseleave",handleTouchEnd);
     },[]);
 
     return (

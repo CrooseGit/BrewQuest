@@ -4,6 +4,7 @@ import SubmittedAnswer from "./SubmittedAnswer";
 
 const MarkingPage = () =>{
 
+    // FETCH roundsPerQuiz, questionsPerRound, questionTitle, submittedAnswers from database
     // current
     const [questionTitle, setQuestionTitle] = useState("The selected question to be swiped on (left or right)");
     // default to 1
@@ -11,34 +12,22 @@ const MarkingPage = () =>{
     const [questionNum, setQuestionNum] = useState(1);
 
     // for rendering radio elements (FETCH FROM DATABASE)
-    const [roundsPerQuiz, setRoundsPerQuiz] = useState(0);
-    const [questionsPerRound, setQuestionsPerRound] = useState(0);
-
-    // initialize variables
-    useEffect(()=>{
-        //from database (message for backend: may just use useState hook to initialize)
-        console.log("Only for the first time, fetch roundsPerQuiz and questionsPerRound from database");
-        console.log("Fetch question and answers");
-        //test data
-        setRoundsPerQuiz(3);
-        setQuestionsPerRound(8);
-    },[]);
+    const [roundsPerQuiz, setRoundsPerQuiz] = useState(3);
+    const [questionsPerRound, setQuestionsPerRound] = useState(8);
 
     // when roundNum is changed
     useEffect(()=>{
-        console.log("Fetch questionsPerRound");
-
+        console.log("Fetch questionsPerRound based on round");
         console.log("Initialize questionNum to 1");
+        //initializes to check QS1 after first render and every time roundNum changes
         setQuestionNum(1);
         if (document.getElementById("QS1"))
             document.getElementById("QS1").checked=true;
-
-        console.log("Fetch new questionTitle and submittedAnswers");
     },[roundNum]);
 
     //when questionNum is changed
     useEffect(()=>{
-        console.log("Fetch new questionTitle and submittedAnswers");
+        console.log("Fetch new questionTitle and submittedAnswers based on questionNum");
     },[questionNum]);
 
     // ALL TO BE FETCHED FROM DATABASE !!!!!!!!!!!
@@ -66,14 +55,14 @@ const MarkingPage = () =>{
     for (let i=1; i <= questionsPerRound; i++){
         if (i===1){
             questionButtons.push(
-                <input key={"QSI"+i} type="radio" value={i} className="question-selection-input" name="questionList" id={"QS"+i} defaultChecked onChange={()=>setQuestionNum(i)}></input>
+                <input key={"QSI"+i} type="radio" value={i} className="question-selection-input" name="questionList" id={"QS"+i} onClick={()=>setQuestionNum(i)}></input>
             );
             questionButtons.push(
                 <label key={"QSL"+i} className="question-selection-label" htmlFor={"QS"+i}>Q{i}</label>
             );
         } else {
             questionButtons.push(
-                <input key={"QSI"+i} type="radio" value={i} className="question-selection-input" name="questionList" id={"QS"+i} onChange={()=>setQuestionNum(i)}></input>
+                <input key={"QSI"+i} type="radio" value={i} className="question-selection-input" name="questionList" id={"QS"+i} onClick={()=>setQuestionNum(i)}></input>
             );
             questionButtons.push(
                 <label key={"QSL"+i} className="question-selection-label" htmlFor={"QS"+i}>Q{i}</label>
@@ -112,7 +101,7 @@ const MarkingPage = () =>{
             <div className="round-questions">
                 {/* to fetch from database */}
                 <div className="round-dpdn">
-                    <button onClick={toggleRoundDpdn} className="round-dpdn-btn">Round {roundNum}</button>
+                    <button onClick={toggleRoundDpdn} className="round-dpdn-btn">Round {roundNum} {"▼"}</button>
                     <div id="round-dpdn-menu" className="round-dpdn-menu">
                         {roundSelection}
                     </div>
@@ -125,8 +114,8 @@ const MarkingPage = () =>{
             </div>
             <h2 className="marked-question">{questionTitle}</h2>
             {/* arrows to indicate swipe */}
-            <div className="arrow-guide left-arrow">&#8592;</div>
-            <div className="arrow-guide right-arrow">&#8594;</div>
+            {/* <div className="arrow-guide left-arrow">&#8592;</div>
+            <div className="arrow-guide right-arrow">&#8594;</div> */}
             <div className="submitted-answers-list">
                 {/* answers to be fetched from database */}
                 {submittedAnswerElements}
