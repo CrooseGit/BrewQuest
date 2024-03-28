@@ -162,4 +162,12 @@ body {
     display: none;
 }
 
+img {
+  display: block;
+  height: 300px;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 150px;
+}
 
