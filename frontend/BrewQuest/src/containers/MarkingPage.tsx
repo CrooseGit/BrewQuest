@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import SubmittedAnswer from "./SubmittedAnswer";
 
 const MarkingPage = () =>{
-
-    // FETCH roundsPerQuiz, questionsPerRound, questionTitle, submittedAnswers from database
+    // Message for backend: look at console to know what to do
+    // Initialize roundsPerQuiz, questionsPerRound, questionTitle, submittedAnswers from database
     // current
     const [questionTitle, setQuestionTitle] = useState("The selected question to be swiped on (left or right)");
     // default to 1
@@ -18,7 +18,6 @@ const MarkingPage = () =>{
     // when roundNum is changed
     useEffect(()=>{
         console.log("Fetch questionsPerRound based on round");
-        console.log("Initialize questionNum to 1");
         //initializes to check QS1 after first render and every time roundNum changes
         setQuestionNum(1);
         if (document.getElementById("QS1"))
@@ -74,7 +73,7 @@ const MarkingPage = () =>{
     let roundSelection = [];
     for (let i=1; i<=roundsPerQuiz; i++){
         roundSelection.push(
-            <button onClick={()=>{setRoundNum(i)}}>Round {i}</button>
+            <button key={i} onClick={()=>{setRoundNum(i)}}>Round {i}</button>
         );
     }
 

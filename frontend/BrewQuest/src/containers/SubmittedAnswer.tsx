@@ -5,7 +5,7 @@ const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum})
 
     let answerElement, backgroundColor;
     let startX=0, offsetX=0, isDragging=false, animationID=0;
-    const tolerance=80;
+    const tolerance=35;
 
     // html element animation
     const animation = () =>{
