@@ -4,10 +4,43 @@ import SubmittedAnswer from "./SubmittedAnswer";
 
 const MarkingPage = () =>{
 
+    // current
+    const [questionTitle, setQuestionTitle] = useState("The selected question to be swiped on (left or right)");
+    // default to 1
+    const [roundNum, setRoundNum] = useState(1);
+    const [questionNum, setQuestionNum] = useState(1);
+
+    // for rendering radio elements (FETCH FROM DATABASE)
+    const [roundsPerQuiz, setRoundsPerQuiz] = useState(0);
+    const [questionsPerRound, setQuestionsPerRound] = useState(0);
+
+    // initialize variables
+    useEffect(()=>{
+        //from database (message for backend: may just use useState hook to initialize)
+        console.log("Only for the first time, fetch roundsPerQuiz and questionsPerRound from database");
+        console.log("Fetch question and answers");
+        //test data
+        setRoundsPerQuiz(3);
+        setQuestionsPerRound(8);
+    },[]);
+
+    // when roundNum is changed
+    useEffect(()=>{
+        console.log("Fetch questionsPerRound");
+        console.log("Initialize questionNum to 1");
+        console.log("Fetch new questionTitle and submittedAnswers");
+    },[roundNum]);
+
+    //when questionNum is changed
+    useEffect(()=>{
+        console.log("Fetch new questionTitle and submittedAnswers");
+    },[questionNum]);
+
     // ALL TO BE FETCHED FROM DATABASE !!!!!!!!!!!
     // answers object
     // IMPORTANTL: id for each submitted answer to a question, used for HTML element and key
     // player to identify player, which player submitted the answer (might be in different order than id)
+    // should fetch each time questionNum or roundNum variable changes, using useEffect
     const [submittedAnswers, setSubmittedAnswers] = useState([
         {id: 1, player: 2, contents: "happy birthday to you happy birthday to you happy"},
         {id: 2, player: 1, contents: "She sells sea shells by the sea shore but they're just picking shells up off the floor"},
@@ -23,37 +56,38 @@ const MarkingPage = () =>{
         {id: 12, player: 12, contents: "Swiss"}
     ]);
 
-    // current
-    const [roundNum, setRoundNum] = useState(1);
-    const [questionNum, setQuestionNum] = useState(1);
-
-    // for displaying radio selections
-    const [questionsPerRound, setQuestionsPerRound] = useState(8);
-
     // change variable
     const changeQSelection = (e) => {
         // value contains question number
         setQuestionNum(parseInt(e.target.value));
     }
 
-    // store elements
-    let radioButtons = [];
+    // render question radio elements
+    let questionButtons = [];
     for (let i=1; i <= questionsPerRound; i++){
         if (i===1){
-            radioButtons.push(
+            questionButtons.push(
                 <input key={"QSI"+i} type="radio" value={i} className="question-selection-input" name="questionList" id={"QS"+i} defaultChecked onChange={changeQSelection}></input>
             );
-            radioButtons.push(
+            questionButtons.push(
                 <label key={"QSL"+i} className="question-selection-label" htmlFor={"QS"+i}>Q{i}</label>
             );
         } else {
-            radioButtons.push(
+            questionButtons.push(
                 <input key={"QSI"+i} type="radio" value={i} className="question-selection-input" name="questionList" id={"QS"+i} onChange={changeQSelection}></input>
             );
-            radioButtons.push(
+            questionButtons.push(
                 <label key={"QSL"+i} className="question-selection-label" htmlFor={"QS"+i}>Q{i}</label>
             );
         }
+    }
+
+    // render round selection elements
+    let roundSelection = [];
+    for (let i=1; i<=roundsPerQuiz; i++){
+        roundSelection.push(
+            <button>Round {i}</button>
+        );
     }
 
     // remove element from list
@@ -64,6 +98,7 @@ const MarkingPage = () =>{
 
     }
 
+    // render submitted answer elements
     const submittedAnswerElements = submittedAnswers && submittedAnswers.map((submittedAnswer)=>
     <SubmittedAnswer roundNum={roundNum} questionNum={questionNum} submittedAnswer={submittedAnswer} handleDelete={handleDelete} key={submittedAnswer.id}></SubmittedAnswer>
     );
@@ -73,14 +108,19 @@ const MarkingPage = () =>{
             <h1 className="branding-heading">BrewQuest</h1>
             <div className="round-questions">
                 {/* to fetch from database */}
-                <h2 className="round-subtitle">Round {roundNum}</h2>
+                <div className="round-dpdn">
+                    <button className="round-dpdn-btn">Round {roundNum}</button>
+                    <div className="round-dpdn-menu">
+                        {roundSelection}
+                    </div>
+                </div>
                 <div className="question-selection-container">
                     {/* to fetch from database */}
                     {/* display radio buttons */}
-                    {radioButtons}
+                    {questionButtons}
                 </div>
             </div>
-            <h2 className="marked-question">The selected question to be swiped on &#40;left or right&#41;</h2>
+            <h2 className="marked-question">{questionTitle}</h2>
             {/* arrows to indicate swipe */}
             <div className="arrow-guide left-arrow">&#8592;</div>
             <div className="arrow-guide right-arrow">&#8594;</div>

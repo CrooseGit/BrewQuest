@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum}) =>{
 
-    let answerElement;
+    let answerElement, backgroundColor;
     let startX=0, offsetX=0, isDragging=false, animationID=0;
     const tolerance=80;
 
@@ -19,8 +19,19 @@ const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum})
         }
     }
 
+    const getPositionX = (e) => {
+        if (e.type.includes("mouse")){
+            return e.pageX;
+        } else {
+            return e.touches[0].clientX;
+        }
+    }
+
     const handleTouchStart = (e)=>{
-        startX=e.touches[0].clientX;
+        // prevent default browser scroll and refresh behavior
+        e.preventDefault();
+
+        startX=getPositionX(e);
         offsetX=0;
         isDragging=true;
 
@@ -30,7 +41,17 @@ const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum})
 
     const handleTouchMove = (e)=>{
         //update endX for final offset
-        offsetX=e.touches[0].clientX-startX;
+        if (isDragging){
+            offsetX=getPositionX(e)-startX;
+            if (offsetX > 0 && offsetX > tolerance){
+                answerElement.style.backgroundColor = "#49ab2e";
+            } else if (offsetX < 0 && -offsetX > tolerance){
+                answerElement.style.backgroundColor = "#bb1818";
+            } else {
+                answerElement.style.backgroundColor = backgroundColor;
+            }
+        }
+        
     }
 
     const handleTouchEnd = ()=>{
@@ -55,11 +76,12 @@ const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum})
     }
 
     // add event listeners after DOM first loads
+    // runs twice
     useEffect(()=>{
-        answerElement=document.getElementById(`sd-${roundNum}-${questionNum}-${submittedAnswer.id}`);
 
-        // prevent default browser scroll and refresh behavior
-        answerElement?.addEventListener("touchstart",(e)=>e.preventDefault());
+        answerElement=document.getElementById(`sd-${roundNum}-${questionNum}-${submittedAnswer.id}`);
+        backgroundColor=answerElement?.style.backgroundColor;
+
         answerElement?.addEventListener("touchstart",handleTouchStart);
         answerElement?.addEventListener("touchmove",handleTouchMove);
         answerElement?.addEventListener("touchend",handleTouchEnd);
