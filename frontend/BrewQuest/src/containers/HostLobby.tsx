@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import BackButton from '../components/BackButton/BackButton';
 import StartButton from '../components/StartButton/StartButton';
 import ip from '../info';
+
 const HostLobby = ({
   room,
   quizTitle,
@@ -24,10 +25,10 @@ const HostLobby = ({
   const navigate = useNavigate();
   const [players, setPlayers] = useState<
     { playername: string; score: number }[]
-  >([]);
+  >([]); // Have  a fiddle
   const [connected, setConnected] = useState(false);
 
-  const livequizhttp = 'http://' + ip + ':8000/livequiz/';
+  const livequizhttp = 'http://' + ip + ':8000/livequiz/'; // for http requests
   let client: W3CWebSocket;
   client = new W3CWebSocket('ws://' + ip + ':8000/room/' + room + '/');
 
