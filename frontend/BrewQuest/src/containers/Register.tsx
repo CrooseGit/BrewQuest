@@ -3,6 +3,7 @@ import BackButton from '../components/BackButton/BackButton';
 import '../containers/Login.css';
 import { MouseEvent, useState } from 'react';
 import axios from 'axios';
+import ip from '../info';
 const Register = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -33,7 +34,7 @@ const Register = () => {
       };
 
       axios
-        .post('http://localhost:8000/api/register/', user)
+        .post('http://' + ip + ':8000/api/register/', user)
         .then((response) => {
           console.log(response);
           if (response.data.status === 'failed') {

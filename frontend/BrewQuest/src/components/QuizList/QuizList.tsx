@@ -1,13 +1,18 @@
 import axios from 'axios';
+import ip from '../../info';
 import { useState, useEffect } from 'react';
 import OptionButton from '../OptionButton/OptionButton';
 import './QuizList.css';
 import '../../containers/index';
 
-const QuizList = (props: { setQuizToHost: React.Dispatch<React.SetStateAction<{title:string, id:number}>> }) => {
+const QuizList = (props: {
+  setQuizToHost: React.Dispatch<
+    React.SetStateAction<{ title: string; id: number }>
+  >;
+}) => {
   // set up items list structure
   // sample quiz array
-  
+
   const [quizzes, setQuizzes] = useState([{ title: 'Loading', id: -1 }]);
 
   //set selected item structure
@@ -18,7 +23,7 @@ const QuizList = (props: { setQuizToHost: React.Dispatch<React.SetStateAction<{t
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .get('http://localhost:8000/api/quizzes/', {
+      .get('http://' + ip + ':8000/api/quizzes/', {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -37,7 +42,7 @@ const QuizList = (props: { setQuizToHost: React.Dispatch<React.SetStateAction<{t
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .post('http://localhost:8000/api/createQuiz/')
+      .post('http://' + ip + ':8000/api/createQuiz/')
       .then(loadQuizzes)
       .catch((error) => {
         console.log(error);
@@ -61,7 +66,10 @@ const QuizList = (props: { setQuizToHost: React.Dispatch<React.SetStateAction<{t
         name='quizList'
         id={quizItem.id.toString()}
         // called when item is selected and selected item has changed
-        onChange={() => {setSelectedQuiz(quizItem); props.setQuizToHost(quizItem)}}
+        onChange={() => {
+          setSelectedQuiz(quizItem);
+          props.setQuizToHost(quizItem);
+        }}
       ></input>,
 
       <label

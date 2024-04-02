@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import ip from '../info';
 import '../containers/QuestionPageClient.css';
 const QuestionPageClient = () => {
   const [question_index, setQuestion_index] = useState(0);
@@ -20,7 +21,7 @@ const QuestionPageClient = () => {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .get('http://localhost:8000/api/questions/')
+      .get('http://' + ip + ':8000/api/questions/')
       .then((response) => {
         setTime(response.data.time);
         setPrompts(
