@@ -5,7 +5,7 @@ import StartButton from '../components/StartButton/StartButton';
 
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import axios from 'axios';
-
+import ip from '../info';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
@@ -30,10 +30,10 @@ const GameLobby = ({
   const [inGame, setInGame] = useState(false);
 
   let client: W3CWebSocket;
-  const livequizhttp = 'http://127.0.0.1:8000/livequiz/';
+  const livequizhttp = 'http://' + ip + ':8000/livequiz/';
 
-  //[client,setClient] = useState(new W3CWebSocket('ws://127.0.0.1:8000/ws/' + room + '/'))
-  client = new W3CWebSocket('ws://127.0.0.1:8000/room/' + room + '/');
+  //[client,setClient] = useState(new W3CWebSocket('ws://'+ip+':8000/ws/' + room + '/'))
+  client = new W3CWebSocket('ws://' + ip + ':8000/room/' + room + '/');
 
   const getPlayerStates = () => {
     const payload = { pin: room, playername: name };

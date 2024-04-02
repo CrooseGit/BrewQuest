@@ -2,7 +2,7 @@ import './channels.css';
 //import { Link } from "react-router-dom";
 
 import { useState, useEffect } from 'react';
-
+import ip from '../info';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 
 //const socket = io('ws://'+ip+':8000/ws/mychannel/'); // Replace with your WS URL and port
@@ -16,7 +16,7 @@ function Channel() {
   //const [count,setCount] = useState(0);
 
   const client: W3CWebSocket = new W3CWebSocket(
-    'ws://127.0.0.1:8000/ws/' + room + '/'
+    'ws://' + ip + ':8000/ws/' + room + '/'
   );
 
   useEffect(() => {
