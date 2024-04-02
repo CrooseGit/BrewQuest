@@ -2,16 +2,21 @@ import { useNavigate } from "react-router-dom";
 
 
 type HostButtonProps = {
-    quizToHost: {};
+    quizToHost: {},
+    setQuizToHost: React.Dispatch<React.SetStateAction<{title:string, id:number}>>
 }
-const HostButton = (props:{quizToHost: {title:string, id:number}}) => {
-    const navigate = useNavigate();
+
+
+const HostButton = (props:{quizToHost: {title:string, id:number}, 
+    setHostToLobby: React.Dispatch<React.SetStateAction<boolean>>}) => {
+    
     const hostButtonClicked = () => {
         if (props.quizToHost.id!==-1 && props.quizToHost.title!=='Loading') {
 
-            navigate('/host/hostLobby'); // bad code
+            props.setHostToLobby(true);
             
         }
+
         
       }
     return (

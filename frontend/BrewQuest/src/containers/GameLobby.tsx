@@ -53,6 +53,10 @@ const GameLobby = ({ room, name, setRoom, setName }:
                 console.log(error);
             });
     }
+    
+    const roomClosed = () => {
+        navigate("/");
+    }
 
     /**
      * Remove a player from the lobby and update the state accordingly.
@@ -90,7 +94,6 @@ const GameLobby = ({ room, name, setRoom, setName }:
      */
         client.onmessage = async (m: any) => {
 
-
             if (typeof (m.data) === 'string') {
                 const dataFromServer = JSON.parse(m.data);
                 console.log("on message this is the data from the server", dataFromServer)
@@ -109,6 +112,18 @@ const GameLobby = ({ room, name, setRoom, setName }:
                             {
                                 console.log("PlayerLeftLobby");
                                 getPlayerStates();
+                                break;
+                            }
+                        case "LobbyClosedByHost":
+                            {
+                                console.log("LobbyClosedByHost");
+                                roomClosed();
+                                break;
+                            }
+                        case "HostStartGame":
+                            {
+                                console.log("HostStartGame");
+                                //goToGame();
                                 break;
                             }
                     }
