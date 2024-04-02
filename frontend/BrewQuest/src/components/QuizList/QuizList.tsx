@@ -5,10 +5,10 @@ import OptionButton from '../OptionButton/OptionButton';
 import './QuizList.css';
 import '../../containers/index';
 
-const QuizList = (props: {
-  setQuizToHost: React.Dispatch<
-    React.SetStateAction<{ title: string; id: number }>
-  >;
+const QuizList = ({
+  onQuizSelected,
+}: {
+  onQuizSelected: (quiz: { title: string; id: number }) => void;
 }) => {
   // set up items list structure
   // sample quiz array
@@ -29,7 +29,6 @@ const QuizList = (props: {
         },
       })
       .then((response) => {
-        console.log(response.data.quizzes);
         setQuizzes(response.data.quizzes);
       })
       .catch((error) => {
@@ -52,10 +51,6 @@ const QuizList = (props: {
     loadQuizzes();
   }, []);
 
-  useEffect(() => {
-    console.log(selectedQuiz);
-  });
-
   const quizElements =
     quizzes &&
     quizzes.map((quizItem) => [
@@ -68,7 +63,7 @@ const QuizList = (props: {
         // called when item is selected and selected item has changed
         onChange={() => {
           setSelectedQuiz(quizItem);
-          props.setQuizToHost(quizItem);
+          onQuizSelected(quizItem);
         }}
       ></input>,
 

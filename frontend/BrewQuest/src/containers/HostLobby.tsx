@@ -1,20 +1,17 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import BackButton from '../components/BackButton/BackButton';
 import StartButton from '../components/StartButton/StartButton';
 import ip from '../info';
 
-const HostLobby = ({
-  room,
-  quizTitle,
-  quizId,
-}: {
-  room: String;
-  quizTitle: String;
-  quizId: number;
-}) => {
+interface Player {
+  playername: string;
+  score: number;
+}
+
+const HostLobby = () => {
   /*
     1) create room to host quiz
     2) create channel
@@ -22,15 +19,25 @@ const HostLobby = ({
     4) add start game message sent to all players
     */
 
+  // The next 4 lines gets all the props, has to be done this way because of react routing
+  const location = useLocation();
+  const quizId = location.state.id;
+  const room = location.state.room;
+  const quizTitle = location.state.title;
+  // -----------------------------------
+
   const navigate = useNavigate();
-  const [players, setPlayers] = useState<
-    { playername: string; score: number }[]
-  >([]); // Have  a fiddle
+
+  // Stores an array of player objects representing players in attendance
+  const [players, setPlayers] = useState<Player[]>([]);
+
   const [connected, setConnected] = useState(false);
 
-  const livequizhttp = 'http://' + ip + ':8000/livequiz/'; // for http requests
-  let client: W3CWebSocket;
-  client = new W3CWebSocket('ws://' + ip + ':8000/room/' + room + '/');
+  // Address used for making http requests to the backend
+  const livequizhttp = 'http://' + ip + ':8000/livequiz/';
+
+  // Initializing websocket
+  const client = new W3CWebSocket('ws://' + ip + ':8000/room/' + room + '/');
 
   const createNewRoom = () => {
     const payload = {
@@ -42,10 +49,11 @@ const HostLobby = ({
     axios
       .post(livequizhttp + 'createRoom/', payload)
       .then((response) => {
-        console.log(response.data);
+        console.log('createNewRoom response: ');
+        console.log(response);
       })
       .catch((error) => {
-        console.error(error);
+        console.error('Error: ' + error);
       });
   };
 
@@ -58,7 +66,7 @@ const HostLobby = ({
           data: { room_id: room },
         })
       );
-      console.log('starting game');
+      console.log('startQuiz(): Starting quiz');
     }
   }
 
@@ -80,17 +88,14 @@ const HostLobby = ({
             })
           );
         }
-        navigate('/');
+
+        console.log('deleteRoom() response: ');
         console.log(response.data);
       })
       .catch((error) => {
-        console.error(error);
+        console.error('error: ' + error);
       });
-
-    // JsonResponse({'status', 'message'})
   };
-
-  //[client,setClient] = useState(new W3CWebSocket('ws://127.0.0.1:8000/ws/' + room + '/'))
 
   // THIS IS TO BE UNTOUCHED
   const getPlayerStates = () => {
@@ -99,7 +104,8 @@ const HostLobby = ({
     axios
       .post(livequizhttp + 'getLobbyPlayerStates/', payload)
       .then((response) => {
-        console.log(' this is the response: ', response);
+        console.log(' getPlayerStates response: ');
+        console.log(response);
         if (response.data.status === 'success') {
           setPlayers(response.data.playerScores);
         } else {
@@ -123,7 +129,7 @@ const HostLobby = ({
      *
      * @param {any} m - The message received from the client. (not sure of specific type)
      */
-    client.onmessage = async (m: any) => {
+    client.onmessage = async (m: { data: unknown }) => {
       if (typeof m.data === 'string') {
         const dataFromServer = JSON.parse(m.data);
         console.log(
@@ -136,7 +142,6 @@ const HostLobby = ({
             case 'PlayerJoinedLobby': {
               console.log('PlayerJoinedLobby');
               getPlayerStates();
-              //axios.get('http://127.0.0.1:8000/room/' + room + '/')
               break;
             }
             case 'PlayerLeftLobby': {
@@ -174,7 +179,7 @@ const HostLobby = ({
     client.onclose = () => {
       // delete room
       deleteRoom();
-      navigate('/');
+      navigate('/host/QuizList');
     };
   }, []);
 
@@ -214,7 +219,7 @@ const HostLobby = ({
   );
 
   // DO NOT TOUCH EXCEPT ADDING CSS
-  const makeGrid = (arr: any) => {
+  const makeGrid = (arr: string[]) => {
     //This code defines a function makeGrid that takes an input array and creates a
     //grid by grouping the elements of the array in rows of three. The function
     //returns an array of React component elements representing the grid.
@@ -226,7 +231,7 @@ const HostLobby = ({
     for (let i = 0; i < arr.length; i = i + 3) {
       grid.push(
         <div key={'player row' + (count / 3).toString()} className='row'>
-          {arr.slice(i, i + 3).map((n: any, id: number) => (
+          {arr.slice(i, i + 3).map((n: string, id: number) => (
             <p className='text-center col-md-4 text-light' key={id + count}>
               {n}
             </p>
@@ -248,9 +253,9 @@ const HostLobby = ({
 
             <BackButton
               onClick={() => {
-                navigate('/');
-                // FIXME: Notify all clients that room has closed
                 deleteRoom();
+                navigate('/host/QuizList');
+                // FIXME: Notify all clients that room has closed
               }}
               className='btn'
             ></BackButton>
@@ -262,7 +267,7 @@ const HostLobby = ({
               className='btn'
             ></StartButton>
             <div className='container'>
-              {makeGrid(players.map((n: any) => n.playername))}
+              {makeGrid(players.map((n: Player) => n.playername))}
             </div>
           </div>
         ) : (

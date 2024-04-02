@@ -1,39 +1,33 @@
 import './channels.css';
 
 import BackButton from '../components/BackButton/BackButton';
-import StartButton from '../components/StartButton/StartButton';
-
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import axios from 'axios';
 import ip from '../info';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 // TODO: Add feature
+interface Player {
+  playername: string;
+  score: number;
+}
+const GameLobby = () => {
+  // The next 3 lines gets all the props, has to be done this way because of react routing
+  const location = useLocation();
 
-const GameLobby = ({
-  room,
-  name,
-  setRoom,
-  setName,
-}: {
-  room: string;
-  name: string;
-  setRoom: React.Dispatch<React.SetStateAction<string>>;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-}) => {
+  const room = location.state.room;
+  const name = location.state.name;
+  // -----------------------------------
+
   const navigate = useNavigate();
-  const [players, setPlayers] = useState<
-    { playername: string; score: number }[]
-  >([]);
+
+  const [players, setPlayers] = useState<Player[]>([]);
   const [connected, setConnected] = useState(false);
   const [inGame, setInGame] = useState(false);
 
-  let client: W3CWebSocket;
   const livequizhttp = 'http://' + ip + ':8000/livequiz/';
-
-  //[client,setClient] = useState(new W3CWebSocket('ws://'+ip+':8000/ws/' + room + '/'))
-  client = new W3CWebSocket('ws://' + ip + ':8000/room/' + room + '/');
+  const client = new W3CWebSocket('ws://' + ip + ':8000/room/' + room + '/');
 
   const getPlayerStates = () => {
     const payload = { pin: room, playername: name };
@@ -94,7 +88,8 @@ const GameLobby = ({
      *
      * @param {any} m - The message received from the client. (not sure of specific type)
      */
-    client.onmessage = async (m: any) => {
+
+    client.onmessage = async (m: { data: unknown }) => {
       if (typeof m.data === 'string') {
         const dataFromServer = JSON.parse(m.data);
         console.log(
@@ -107,7 +102,6 @@ const GameLobby = ({
             case 'PlayerJoinedLobby': {
               console.log('PlayerJoinedLobby');
               getPlayerStates();
-              //axios.get('http://127.0.0.1:8000/room/' + room + '/')
               break;
             }
             case 'PlayerLeftLobby': {
@@ -208,7 +202,7 @@ const GameLobby = ({
    * @param  arr - the input array
    * @return {ReactComponentElement[]} the grid created from the input array
    */
-  const makeGrid = (arr: any) => {
+  const makeGrid = (arr: string[]) => {
     //This code defines a function makeGrid that takes an input array and creates a
     //grid by grouping the elements of the array in rows of three. The function
     //returns an array of React component elements representing the grid.
@@ -220,7 +214,7 @@ const GameLobby = ({
     for (let i = 0; i < arr.length; i = i + 3) {
       grid.push(
         <div key={'player row' + (count / 3).toString()} className='row'>
-          {arr.slice(i, i + 3).map((n: any, id: number) => (
+          {arr.slice(i, i + 3).map((n: string, id: number) => (
             <p className='text-center col-md-4 text-light' key={id + count}>
               {n}
             </p>
@@ -251,7 +245,7 @@ const GameLobby = ({
                 className='btn'
               ></BackButton>
               <div className='container'>
-                {makeGrid(players.map((n: any) => n.playername))}
+                {makeGrid(players.map((n: Player) => n.playername))}
               </div>
             </div>
           )
