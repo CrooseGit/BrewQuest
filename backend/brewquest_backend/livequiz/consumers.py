@@ -144,7 +144,14 @@ class RoomConsumer(AsyncWebsocketConsumer):
             'room': room_id
         }))
 
-
+    async def HostStartGame(self, event):
+        action = event['type']
+        room_id = event['room_id']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'action': action,
+            'room': room_id
+        }))
 
 
 

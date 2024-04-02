@@ -174,3 +174,5 @@ def deleteRoom(request):
     room_id.delete()
     return JsonResponse({'status': 'success', 'message': 'Room deleted'})
 
+
+

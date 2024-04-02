@@ -1,13 +1,13 @@
 import "./channels.css";
 
-
-import { useState, useEffect } from 'react';
 import BackButton from "../components/BackButton/BackButton";
-
+import StartButton from "../components/StartButton/StartButton";
 
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import axios from "axios";
+
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
 
 
 // TODO: Add feature
@@ -23,6 +23,7 @@ const GameLobby = ({ room, name, setRoom, setName }:
     const navigate = useNavigate();
     const [players, setPlayers] = useState<{ playername: string, score: number }[]>([]);
     const [connected, setConnected] = useState(false);
+    const [inGame, setInGame] = useState(false);
 
 
     let client: W3CWebSocket;
@@ -57,6 +58,11 @@ const GameLobby = ({ room, name, setRoom, setName }:
     const roomClosed = () => {
         navigate("/");
     }
+
+    function startGame() {
+       setInGame(true);
+    }
+    
 
     /**
      * Remove a player from the lobby and update the state accordingly.
@@ -123,7 +129,7 @@ const GameLobby = ({ room, name, setRoom, setName }:
                         case "HostStartGame":
                             {
                                 console.log("HostStartGame");
-                                //goToGame();
+                                startGame();
                                 break;
                             }
                     }
@@ -229,15 +235,18 @@ const GameLobby = ({ room, name, setRoom, setName }:
     return (
         <>
             { // If connected, render the lobby, otherwise render a message
-                connected ?
+                connected ? ( inGame 
+                    ? <h1>InGame</h1>
+                    :
 
-                    <div className="container-fluid">
+                    (<div className="container-fluid">
                         <h1 className="text-light">Connected to Lobby : {room}</h1>
+                        
                         <BackButton onClick={() => { navigate("/"); removePlayer() }} className="btn"></BackButton>
                         <div className="container">
                             {makeGrid(players.map((n: any) => n.playername))}
                         </div>
-                    </div> :
+                    </div>)) :
 
                     <h1>Not Connected</h1>}
 
@@ -246,3 +255,4 @@ const GameLobby = ({ room, name, setRoom, setName }:
 }
 
 export default GameLobby;
+

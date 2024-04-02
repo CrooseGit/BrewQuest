@@ -3,6 +3,7 @@ import { useEffect,useState } from "react";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { useNavigate } from "react-router-dom";
 import BackButton from "../components/BackButton/BackButton";
+import StartButton from "../components/StartButton/StartButton";
 
 const HostLobby = ({room, quizTitle, quizId}:
     {room:String, quizTitle:String, quizId:number}) => {
@@ -19,8 +20,10 @@ const HostLobby = ({room, quizTitle, quizId}:
     
 
 
-    let client: W3CWebSocket;
+    
     const livequizhttp = 'http://127.0.0.1:8000/livequiz/';
+    let client: W3CWebSocket;
+    client = new W3CWebSocket('ws://127.0.0.1:8000/room/' + room + '/');
 
     const createNewRoom = () => {
         const payload = {"quiz_id": quizId, "room_name": quizTitle,
@@ -33,6 +36,18 @@ const HostLobby = ({room, quizTitle, quizId}:
             console.error(error);
         })
 
+    }
+
+    function startQuiz() {
+        //throw new Error("Function not implemented.");
+        if (players.length > 0) {
+            client.send(JSON.stringify({
+                type: "HostStartGame",
+                data: { "room_id": room },
+            
+            }))
+        }
+        console.log("starting game");
     }
 
     const deleteRoom = () => {
@@ -62,7 +77,7 @@ const HostLobby = ({room, quizTitle, quizId}:
 
 
     //[client,setClient] = useState(new W3CWebSocket('ws://127.0.0.1:8000/ws/' + room + '/'))
-    client = new W3CWebSocket('ws://127.0.0.1:8000/room/' + room + '/');
+    
     // THIS IS TO BE UNTOUCHED
     const getPlayerStates = () => {
         const payload = { 'pin': room, "nonsense": "nonsense" };
@@ -119,6 +134,7 @@ const HostLobby = ({room, quizTitle, quizId}:
                                 getPlayerStates();
                                 break;
                             }
+                        
                     }
     
                 };
@@ -169,7 +185,7 @@ const HostLobby = ({room, quizTitle, quizId}:
             if (response.data.status === "success") {
                 client.send(JSON.stringify({
                     type: "LobbyClosedByHost",
-                    data: { "room_id": room },
+                    data: { "room_id": quizTitle.replace(/ /g,"_")+"_"+quizId.toString() },
                 
                 }))
 
@@ -182,7 +198,9 @@ const HostLobby = ({room, quizTitle, quizId}:
         // websocket will close when tab is closed
         // so message all clients to close their sockets
     }), [])
-// DO NOT TOUCH
+
+
+// DO NOT TOUCH EXCEPT ADDING CSS
     const makeGrid = (arr: any) => {
         //This code defines a function makeGrid that takes an input array and creates a 
         //grid by grouping the elements of the array in rows of three. The function 
@@ -203,6 +221,8 @@ const HostLobby = ({room, quizTitle, quizId}:
         return grid
     }
 
+    
+
     return (
         <>
             { // If connected, render the lobby, otherwise render a message
@@ -210,11 +230,15 @@ const HostLobby = ({room, quizTitle, quizId}:
 
                     <div className="container-fluid">
                         <h1 className="text-light">Connected to Lobby : {room}</h1>
+                        
+                        
                         <BackButton onClick={() => { navigate("/");
-                         // TODO: Notify all clients that room has closed
+                         // FIXME: Notify all clients that room has closed
                          deleteRoom();
                          }} 
                          className="btn"></BackButton>
+
+                        <StartButton onClick={() => { startQuiz() }} className = "btn"></StartButton>
                         <div className="container">
                             {makeGrid(players.map((n: any) => n.playername))}
                         </div>
