@@ -72,12 +72,38 @@ class RoomConsumer(AsyncWebsocketConsumer):
             'room_id':msg["data"]["room_id"],
             })
 
-        if msg["type"]=="PlayerLeftLobby": # when player leaves lobby
+        elif msg["type"]=="PlayerLeftLobby": # when player leaves lobby
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {'type':"PlayerLeftLobby",
             'room_id':msg["data"]["room_id"],
             })
+
+        elif msg["type"]=="LobbyClosedByHost":
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {'type':"LobbyClosedByHost",
+            'room_id':msg["data"]["room_id"],
+            })
+        
+        elif msg["type"]=="HostStartGame":
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {'type':"HostStartGame",
+            'room_id':msg["data"]["room_id"]
+            }
+            )
+
+# -------------------------
+# functions called inside recieve(self, text_data)
+    async def LobbyClosedByHost(self, event):
+        action = event['type']
+        room_id = event['room_id']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'action': action,
+            'room': room_id
+        }))
 
     async def PlayerLeftLobby(self, event):
         """
@@ -118,7 +144,14 @@ class RoomConsumer(AsyncWebsocketConsumer):
             'room': room_id
         }))
 
-
+    async def HostStartGame(self, event):
+        action = event['type']
+        room_id = event['room_id']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'action': action,
+            'room': room_id
+        }))
 
 
 
