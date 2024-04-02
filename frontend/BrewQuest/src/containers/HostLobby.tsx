@@ -46,8 +46,9 @@ const HostLobby = ({room, quizTitle, quizId}:
                 data: { "room_id": room },
             
             }))
+            console.log("starting game");
         }
-        console.log("starting game");
+        
     }
 
     const deleteRoom = () => {

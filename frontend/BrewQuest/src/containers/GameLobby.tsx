@@ -236,7 +236,7 @@ const GameLobby = ({ room, name, setRoom, setName }:
         <>
             { // If connected, render the lobby, otherwise render a message
                 connected ? ( inGame 
-                    ? <h1>InGame</h1>
+                    ? <h1 className="text-light">InGame</h1>
                     :
 
                     (<div className="container-fluid">
