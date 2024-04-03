@@ -6,24 +6,30 @@ from .serializer import *
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import permission_classes
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils import timezone
 # Create your views here.
 
-# This is a temporary function, just a place holder.
 
+@api_view(['POST'])
+@permission_classes((AllowAny, ))
+def clientGetRound(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    round_id = body['round_id']
 
-@api_view(['GET'])
-def questions(request):
-    quiz = Quiz.objects.last()
-    round_ = Round.objects.get(quiz_id=quiz)
-    time = round_.time
-    questions = Question.objects.filter(round_id=round_)
-    serializer = ClientQuestionSerializer(questions, many=True)
-    data = {'questions': serializer.data, 'time': time, 'round': round_.index}
+    
+    r = Round.objects.get(id=round_id)
+
+    
+    questions = Question.objects.filter(round_id=round_id)
+    q_serializer = HostQuestionSerializer(questions, many=True)
+    r_serializer = RoundSerializer(r);
+    data = {'round' :r_serializer.data, 'questions':q_serializer.data}
     return JsonResponse(data, safe=False)
+
 
 
 @api_view(['POST'])

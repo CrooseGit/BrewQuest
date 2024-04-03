@@ -2,14 +2,20 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import ip from '../info';
 import '../containers/QuestionPageClient.css';
-const QuestionPageClient = () => {
+
+interface props {
+  quizId: number;
+  roundIndex: number;
+}
+
+const QuestionPageClient = ({ quizId, roundIndex }: props) => {
   const [question_index, setQuestion_index] = useState(0);
 
   const [prompts, setPrompts] = useState(['Loading']);
 
   const [time, setTime] = useState(0);
 
-  const [round, setRound] = useState(0);
+  // const [round, setRound] = useState(0);
 
   type Question = {
     prompt: string;
@@ -17,17 +23,18 @@ const QuestionPageClient = () => {
   };
 
   useEffect(() => {
-    axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${localStorage.getItem('access_token')}`;
+    console.log('Getting questions');
     axios
-      .get('http://' + ip + ':8000/api/questions/')
+      .post('http://' + ip + ':8000/api/clientGetRound/',{round_id:})
       .then((response) => {
-        setTime(response.data.time);
+        console.log(response);
+        setTime(response.data.round.time);
         setPrompts(
-          response.data.questions.map((question: Question) => question.prompt)
+          response.data.questions.questions.map(
+            (question: Question) => question.prompt
+          )
         );
-        setRound(response.data.round);
+
         setAnswers(new Array(prompts.length).fill(''));
         setSubmitted(new Array(prompts.length).fill(false));
       })
@@ -57,7 +64,7 @@ const QuestionPageClient = () => {
     <div className='box'>
       <div className='topBar d-flex justify-content-between'>
         <div>
-          <h5 className='text p-2'>Round {round}</h5>
+          <h5 className='text p-2'>Round {roundIndex + 1}</h5>
         </div>
         <div>
           <h5 className='text p-2'>

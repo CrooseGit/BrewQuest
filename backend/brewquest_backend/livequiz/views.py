@@ -116,6 +116,23 @@ Permissions:
     data = {'status': 'success', 'players': serializer.data}
     return JsonResponse(data, safe=False)
 
+@api_view(['POST'])
+@permission_classes((AllowAny, ))
+def getQuizId(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    pin = body['pin']
+    playername = body['playername']
+    room_id = Room.objects.filter(pin=pin)
+
+    if not room_id.exists():
+        return JsonResponse({'status': 'failed', 'message': 'Room does not exist'})
+    
+    quiz_id = Room.objects.get(pin=pin).quiz_id;
+
+    data = {'status': 'success', 'id': quiz_id}
+    return JsonResponse(data, safe=False)
 
 # ---------------------------------------
 

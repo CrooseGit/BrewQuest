@@ -7,4 +7,5 @@ urlpatterns = [
     path('playerLeftLobby/', views.playerLeftLobby, name='playerLeftLobby'),
     path('createRoom/', views.createRoom, name='createRoom'),
     path('deleteRoom/', views.deleteRoom, name='deleteRoom'),
+    path('getQuizId/', views.getQuizId, name='getQuizId'),
 ]
