@@ -3,8 +3,7 @@ import './channels.css';
 import BackButton from '../components/BackButton/BackButton';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import axios from 'axios';
-import ip from '../info';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 // This is the client Lobby
@@ -13,22 +12,30 @@ interface Player {
   playername: string;
   score: number;
 }
-const GameLobby = () => {
-  // The next 3 lines gets all the props, has to be done this way because of react routing
-  const location = useLocation();
-
-  const room = location.state.room;
-  const name = location.state.name;
-  // -----------------------------------
-
+interface props {
+  client: W3CWebSocket;
+  connected: boolean;
+  setConnected: (b: boolean) => void;
+  livequizhttp: string;
+  room: string;
+  name: string;
+}
+const GameLobby = ({
+  client,
+  connected,
+  setConnected,
+  livequizhttp,
+  room,
+  name,
+}: props) => {
   const navigate = useNavigate();
 
   const [players, setPlayers] = useState<Player[]>([]);
-  const [connected, setConnected] = useState(false);
-  const [inGame, setInGame] = useState(false);
+  // const [connected, setConnected] = useState(false);
+  // const [inGame, setInGame] = useState(false);
 
-  const livequizhttp = 'http://' + ip + ':8000/livequiz/';
-  const client = new W3CWebSocket('ws://' + ip + ':8000/room/' + room + '/');
+  // const livequizhttp = 'http://' + ip + ':8000/livequiz/';
+  // const client = new W3CWebSocket('ws://' + ip + ':8000/room/' + room + '/');
 
   const getPlayerStates = () => {
     const payload = { pin: room, playername: name };
@@ -53,7 +60,7 @@ const GameLobby = () => {
   };
 
   function startGame() {
-    setInGame(true);
+    // start game
   }
 
   /**
@@ -90,7 +97,7 @@ const GameLobby = () => {
      * @param {any} m - The message received from the client. (not sure of specific type)
      */
 
-    client.onmessage = async (m: any) => {
+    client.onmessage = async (m: { data: unknown }) => {
       if (typeof m.data === 'string') {
         const dataFromServer = JSON.parse(m.data);
         console.log('on message this is the data from the server', m);
@@ -231,7 +238,7 @@ const GameLobby = () => {
         <div key={'player row' + (count / 3).toString()} className='row'>
           {arr.slice(i, i + 3).map((n: string, id: number) => (
             <p className='text-center col-md-4 text-light' key={id + count}>
-              {n}
+              <h4>{n}</h4>
             </p>
           ))}
         </div>
@@ -246,24 +253,20 @@ const GameLobby = () => {
       {
         // If connected, render the lobby, otherwise render a message
         connected ? (
-          inGame ? (
-            <h1 className='text-light'>InGame</h1>
-          ) : (
-            <div className='container-fluid'>
-              <h1 className='text-light'>Connected to Lobby : {room}</h1>
+          <div className='container-fluid'>
+            <h1 className='text-light'>Connected to Lobby : {room}</h1>
 
-              <BackButton
-                onClick={() => {
-                  navigate('/');
-                  removePlayer();
-                }}
-                className='btn'
-              ></BackButton>
-              <div className='container'>
-                {makeGrid(players.map((n: Player) => n.playername))}
-              </div>
+            <BackButton
+              onClick={() => {
+                navigate('/');
+                removePlayer();
+              }}
+              className='btn'
+            ></BackButton>
+            <div className='container'>
+              {makeGrid(players.map((n: Player) => n.playername))}
             </div>
-          )
+          </div>
         ) : (
           <h1>Not Connected</h1>
         )

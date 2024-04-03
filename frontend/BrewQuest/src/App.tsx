@@ -8,7 +8,7 @@ import {
   Leaderboard,
   Host,
   Channel,
-  GameLobby,
+  ClientGame,
 } from './containers/index';
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
         <Route path='/host/*' element={<Host />} />
         <Route path='/channel' element={<Channel />} />
         <Route path='/gamepin' element={<GamePin />} />
-        <Route path='/lobby' element={<GameLobby />} />
+        <Route path='/game' element={<ClientGame />} />
       </Routes>
     </>
   );

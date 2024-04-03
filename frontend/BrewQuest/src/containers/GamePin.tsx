@@ -49,7 +49,7 @@ const GamePin = () => {
           if (response.data.status === 'success') {
             console.log(response.data.players);
 
-            navigate('/lobby', {
+            navigate('/game', {
               state: {
                 name: name,
                 room: room,
