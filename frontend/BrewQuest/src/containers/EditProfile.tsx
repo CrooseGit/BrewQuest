@@ -83,9 +83,9 @@ const EditProfile = () => {
                     alert("Current password was not correct")
                 }
             }
-            // localStorage.clear();
-            // axios.defaults.headers.common['Authorization'] = null;
-            // window.location.href = '/host/login';
+            localStorage.clear();
+            axios.defaults.headers.common['Authorization'] = null;
+            window.location.href = '/host/login';
 
 
           // update message saying credentials changed
