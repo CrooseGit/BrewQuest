@@ -20,5 +20,9 @@ urlpatterns = [
     path('duplicateQuiz/', views.duplicateQuiz, name='duplicateQuiz'),
     path('quizzes/', views.quizzes, name='quizzes'),
     path('home/', views.HomeView.as_view(), name='home'),
-    path('logout/', views.LogoutView.as_view(), name='logout')
+    path('logout/', views.LogoutView.as_view(), name='logout'),
+    path('change_username/<int:pk>', views.changeName, name='change_username'),
+    path('change_email/<int:pk>', views.changeEmail, name='change_email'),
+    path('check_password/<int:pk>', views.checkPassword, name='check_password'),
+    path('change_password/<int:pk>', views.changePassword, name='change_password'),
 ]

@@ -8,15 +8,18 @@ import {
   Leaderboard,
   Host,
   Channel,
+  EditProfile,
 } from './containers/index';
 import { useState } from 'react';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   const [room, setRoom] = useState('');
   const [name, setName] = useState('');
   return (
     <>
-      <Routes>
+    <AuthProvider>
+    <Routes>
         <Route path='/' element={<Landing></Landing>} />
 
         <Route path='/quizEdit' element={<QuizEdit />} />
@@ -42,6 +45,7 @@ function App() {
           }
         />
       </Routes>
+    </AuthProvider>
     </>
   );
 }
