@@ -71,12 +71,12 @@ def getLobbyPlayerStates(request):
     player_ids = Player.objects.filter(room_id = room_id[0])
     
     # if there are players in the lobby
-    if player_ids:
-        serializer = PlayerBaseSerializer(player_ids,many=True) # playernames, scores
-        data = {'status': 'success','playerScores': serializer.data}
+    #if player_ids:
+    serializer = PlayerBaseSerializer(player_ids,many=True) # playernames, scores
+    data = {'status': 'success','playerScores': serializer.data}
     # if there are no players in the lobby   
-    else:
-        data={'status': 'failed', 'message': 'Room does not exist or no players in lobby'}
+    # else:
+    #     data={'status': 'failed', 'message': 'Room does not exist or no players in lobby'}
     return JsonResponse(data, safe=False)
     
     
