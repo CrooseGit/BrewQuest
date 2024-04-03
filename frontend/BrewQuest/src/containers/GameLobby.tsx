@@ -19,12 +19,14 @@ interface props {
   livequizhttp: string;
   room: string;
   name: string;
+  triggerGameStart: () => void;
 }
 const GameLobby = ({
   client,
   connected,
   setConnected,
   livequizhttp,
+  triggerGameStart,
   room,
   name,
 }: props) => {
@@ -58,10 +60,6 @@ const GameLobby = ({
   const roomClosed = () => {
     navigate('/');
   };
-
-  function startGame() {
-    // start game
-  }
 
   /**
    * Remove a player from the lobby and update the state accordingly.
@@ -121,7 +119,7 @@ const GameLobby = ({
             }
             case 'HostStartGame': {
               console.log('HostStartGame');
-              startGame();
+              triggerGameStart();
               break;
             }
             case 'HostKicksPlayer': {

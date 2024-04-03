@@ -1,9 +1,8 @@
 import GameLobby from './GameLobby';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import QuestionPageClient from './QuestionPageClient';
 import { useLocation } from 'react-router-dom';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
-import axios from 'axios';
 import ip from '../info';
 
 // ClientGame.tsx
@@ -11,7 +10,7 @@ const ClientGame = () => {
   // Page Management
   enum GAME_PAGE {
     Lobby,
-    QUIZ,
+    Quiz,
   }
   const [currentPage, setCurrentPage] = useState(GAME_PAGE.Lobby);
   // End
@@ -24,7 +23,6 @@ const ClientGame = () => {
 
   // WebSocket State Management + initializing
   const [connected, setConnected] = useState(false);
-  const [inGame, setInGame] = useState(false);
   const client = new W3CWebSocket('ws://' + ip + ':8000/room/' + room + '/');
   // End
 
@@ -44,11 +42,14 @@ const ClientGame = () => {
             connected={connected}
             setConnected={setConnected}
             livequizhttp={livequizhttp}
+            triggerGameStart={() => {
+              setCurrentPage(GAME_PAGE.Quiz);
+            }}
             room={room}
             name={name}
           />
         );
-      case GAME_PAGE.QUIZ:
+      case GAME_PAGE.Quiz:
         return <QuestionPageClient />;
     }
   };
