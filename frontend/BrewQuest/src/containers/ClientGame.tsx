@@ -1,5 +1,5 @@
 import GameLobby from './GameLobby';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import QuestionPageClient from './QuestionPageClient';
 import { useLocation } from 'react-router-dom';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
@@ -15,6 +15,7 @@ const ClientGame = () => {
   }
   const [currentPage, setCurrentPage] = useState(GAME_PAGE.Lobby);
   const [quizId, setQuizId] = useState(-1);
+  const [roundIds, setRoundIds] = useState([]);
   const [roundIndex, setRoundIndex] = useState(0);
   // End
 
@@ -33,22 +34,29 @@ const ClientGame = () => {
   const livequizhttp = 'http://' + ip + ':8000/livequiz/';
   // End
 
-  // Gets the quiz ID from the server
-  const getQuizId = async () => {
+  // Gets the quiz ID and round ids from the server
+  const getQuizInfo = () => {
     console.log('getQuizId(): ');
-    await axios
-      .post(livequizhttp + 'getQuizId/', { pin: room, playername: name })
+    axios
+      .post(livequizhttp + 'getQuizInfo/', { pin: room, playername: name })
       .then((response) => {
         console.log(response.data);
 
         if (response.data.status === 'success') {
           setQuizId(response.data.id);
+          setRoundIds(response.data.round_ids);
         }
       })
       .catch((error) => {
         console.log(error);
       });
   };
+  // End
+
+  // Gets quiz info on start up
+  useEffect(() => {
+    getQuizInfo();
+  }, []);
   // End
 
   // When each GAME_PAGE is opened,
@@ -71,7 +79,13 @@ const ClientGame = () => {
           />
         );
       case GAME_PAGE.Quiz:
-        return <QuestionPageClient quizId={quizId} />;
+        return (
+          <QuestionPageClient
+            quizId={quizId}
+            roundIndex={roundIndex}
+            roundIds={roundIds}
+          />
+        );
     }
   };
 

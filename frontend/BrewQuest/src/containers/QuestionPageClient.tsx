@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import axios from 'axios';
 import ip from '../info';
 import '../containers/QuestionPageClient.css';
@@ -6,59 +6,65 @@ import '../containers/QuestionPageClient.css';
 interface props {
   quizId: number;
   roundIndex: number;
+  roundIds: number[];
 }
 
-const QuestionPageClient = ({ quizId, roundIndex }: props) => {
+const QuestionPageClient = ({ quizId, roundIndex, roundIds }: props) => {
+  // State management
   const [question_index, setQuestion_index] = useState(0);
-
   const [prompts, setPrompts] = useState(['Loading']);
-
+  const [answers, setAnswers] = useState<string[]>([]);
+  const [isSubmitted, setSubmitted] = useState<boolean[]>([]);
   const [time, setTime] = useState(0);
+  // End
 
   // const [round, setRound] = useState(0);
 
+  // Define question type
   type Question = {
     prompt: string;
     index: number;
   };
+  // End
 
-  useEffect(() => {
-    console.log('Getting questions');
+  // Fetches and sets prompts and answers, updates state of Answers and Submitted with default values
+  const clientGetRound = () => {
+    console.log('clientGetRound(): ');
     axios
-      .post('http://' + ip + ':8000/api/clientGetRound/',{round_id:})
+      .post('http://' + ip + ':8000/api/clientGetRound/', {
+        round_id: roundIds[roundIndex],
+      })
       .then((response) => {
         console.log(response);
         setTime(response.data.round.time);
         setPrompts(
-          response.data.questions.questions.map(
-            (question: Question) => question.prompt
-          )
+          response.data.questions.map((question: Question) => question.prompt)
         );
-
         setAnswers(new Array(prompts.length).fill(''));
         setSubmitted(new Array(prompts.length).fill(false));
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [prompts.length]);
+  };
+  // End
 
-  const [answers, setAnswers] = useState(new Array(prompts.length).fill(''));
+  // Runs on startup, and when round Index changed
+  useEffect(() => {
+    clientGetRound();
+  }, [roundIndex]); //[prompts.length]);
+  // End
 
-  const [isSubmitted, setSubmitted] = useState(
-    new Array(prompts.length).fill(false)
-  );
-
-  const handleAnswerInputChange = (input: string) => {
-    const a = JSON.parse(JSON.stringify(answers));
-    a[question_index] = input;
-    setAnswers(a);
+  const handleAnswerInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const updatedAnswers = [...answers];
+    updatedAnswers[question_index] = e.target.value;
+    setAnswers(updatedAnswers);
   };
 
   const handleSubmitClicked = () => {
-    const s = JSON.parse(JSON.stringify(isSubmitted));
-    s[question_index] = true;
-    setSubmitted(s);
+    const updatedIsSubmitted = [...isSubmitted];
+    updatedIsSubmitted[question_index] = true;
+    setSubmitted(updatedIsSubmitted);
   };
   return (
     <div className='box'>
@@ -111,15 +117,16 @@ const QuestionPageClient = ({ quizId, roundIndex }: props) => {
               disabled={isSubmitted[question_index]}
               placeholder='Your answer goes here...'
               value={answers[question_index]}
-              onChange={(e) => handleAnswerInputChange(e.target.value)}
+              onChange={handleAnswerInputChange}
             />
           </form>
         </div>
         <div className='d-flex justify-content-center'>
           <button
             type='button'
+            disabled={isSubmitted[question_index]}
             className='btn btn-lg submitButton'
-            onClick={() => handleSubmitClicked()}
+            onClick={handleSubmitClicked}
           >
             <h2 className='text'>Submit</h2>
           </button>

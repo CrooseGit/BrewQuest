@@ -85,7 +85,7 @@ const HostLobby = () => {
       room_name: quizTitle,
       pin: quizTitle.replace(/ /g, '_') + '_' + quizId.toString(),
     };
-    // JsonResponse({'status', 'message'})
+
     axios
       .post(livequizhttp + 'deleteRoom/', payload)
       .then((response) => {
@@ -199,26 +199,7 @@ const HostLobby = () => {
         e.preventDefault();
         e.returnValue = '';
 
-        const payload = { quiz_id: quizId, room_name: quizTitle };
-        // JsonResponse({'status', 'message'})
-        axios
-          .post('http://' + ip + ':8000/livequiz/' + 'deleteRoom/', payload)
-          .then((response) => {
-            if (response.data.status === 'success') {
-              client.send(
-                JSON.stringify({
-                  type: 'LobbyClosedByHost',
-                  data: {
-                    room_id:
-                      quizTitle.replace(/ /g, '_') + '_' + quizId.toString(),
-                  },
-                })
-              );
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+        deleteRoom();
 
         // TODO: delete room code then send message to channel
         // websocket will close when tab is closed

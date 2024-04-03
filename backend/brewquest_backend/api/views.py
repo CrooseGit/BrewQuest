@@ -18,9 +18,10 @@ from django.utils import timezone
 def clientGetRound(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
-    round_id = body['round_id']
-
     
+    round_id = body['round_id']
+    
+
     r = Round.objects.get(id=round_id)
 
     

@@ -118,7 +118,7 @@ Permissions:
 
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
-def getQuizId(request):
+def getQuizInfo(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
 
@@ -129,9 +129,13 @@ def getQuizId(request):
     if not room_id.exists():
         return JsonResponse({'status': 'failed', 'message': 'Room does not exist'})
     
-    quiz_id = Room.objects.get(pin=pin).quiz_id;
-
-    data = {'status': 'success', 'id': quiz_id}
+    quiz = Room.objects.filter(pin=pin)[0].quiz_id
+    
+    print("QUIZ_ID "+str(quiz.id))
+    round_ids = Round.objects.filter(quiz_id=quiz)
+    r_serializer = RoundIDSerializer(round_ids, many=True)
+    r_array = list(map(lambda x : x['id'],r_serializer.data))
+    data = {'status': 'success', 'id': quiz.id, 'round_ids':r_array}
     return JsonResponse(data, safe=False)
 
 # ---------------------------------------
@@ -144,6 +148,8 @@ def createRoom(request):
     # request.body = {"quiz_id": 1, "room_name": "test", pin: <quiz_id>+"_"+<round_id>}
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
+    print("Request user")
+    print(request.user)
     # checks if quiz exists
     if not Quiz.objects.filter(id=body["quiz_id"]).exists():
         return JsonResponse({'status': 'failed', 'message': 'Quiz does not exist', 'data': "NoQuizFound"})
@@ -160,14 +166,17 @@ def createRoom(request):
         body = json.loads(body_unicode)
         quiz_id = Quiz.objects.get(id=body["quiz_id"])
         round_id = Round.objects.filter(quiz_id=quiz_id,index = 0)
-        #round_id = rounds.filter(index=body["round_index"])[0]
+        print("here")
         if Host.objects.filter(user_id=request.user.id).count()==0:
             Host.objects.create(user_id=request.user.id)
-            host_id = Host.objects.filter(user_id=request.user.id)
-        #
-        
-
-        Room.objects.create(pin=body["pin"], host_id=host_id[0], 
+        print("there2")
+        host_id = Host.objects.get(user_id=request.user.id)
+        print("there3")
+        # Delete rooms if rooms by same name exists
+        if (Room.objects.filter(pin=body["pin"]).count()!=0):
+            Room.objects.delete(pin=body["pin"])
+        print("there4")
+        Room.objects.create(pin=body["pin"], host_id=host_id, 
                             quiz_id = quiz_id, round_id= round_id[0])
         return JsonResponse({'status': 'success', 'message': 'Room created'})
     except Exception as e:
