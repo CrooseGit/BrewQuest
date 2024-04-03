@@ -7,15 +7,24 @@ interface props {
   quizId: number;
   roundIndex: number;
   roundIds: number[];
+  livequizhttp: string;
+  pin: string;
 }
 
-const QuestionPageClient = ({ quizId, roundIndex, roundIds }: props) => {
+const QuestionPageClient = ({
+  quizId,
+  roundIndex,
+  roundIds,
+  livequizhttp,
+  pin,
+}: props) => {
   // State management
   const [question_index, setQuestion_index] = useState(0);
   const [prompts, setPrompts] = useState(['Loading']);
   const [answers, setAnswers] = useState<string[]>([]);
   const [isSubmitted, setSubmitted] = useState<boolean[]>([]);
-  const [time, setTime] = useState(0);
+  const [endTime, setEndTime] = useState(new Date(Date.now()));
+  const [timer, setTimer] = useState({ minutes: 0, seconds: 0 });
   // End
 
   // const [round, setRound] = useState(0);
@@ -27,16 +36,33 @@ const QuestionPageClient = ({ quizId, roundIndex, roundIds }: props) => {
   };
   // End
 
+  // Calculates minutes remaining from datetime
+  const calculateMinutes = () => {
+    const timeLeft = endTime.getTime() - Date.now();
+    return Math.floor((timeLeft / 1000 / 60) % 60);
+  };
+  // End
+
+  // Calculates minutes remaining from datetime
+  const calculateSeconds = () => {
+    const timeLeft = endTime.getTime() - Date.now();
+    return Math.floor((timeLeft / 1000) % 60);
+  };
+  // End
+
   // Fetches and sets prompts and answers, updates state of Answers and Submitted with default values
   const clientGetRound = () => {
     console.log('clientGetRound(): ');
+    const payload = {
+      pin: pin,
+      round_id: roundIds[roundIndex],
+    };
     axios
-      .post('http://' + ip + ':8000/api/clientGetRound/', {
-        round_id: roundIds[roundIndex],
-      })
+      .post(livequizhttp + 'clientGetRound/', payload)
       .then((response) => {
         console.log(response);
-        setTime(response.data.round.time);
+        console.log('end_time ', response.data.end_time);
+        setEndTime(new Date(Date.parse(response.data.end_time)));
         setPrompts(
           response.data.questions.map((question: Question) => question.prompt)
         );
@@ -53,6 +79,16 @@ const QuestionPageClient = ({ quizId, roundIndex, roundIds }: props) => {
   useEffect(() => {
     clientGetRound();
   }, [roundIndex]); //[prompts.length]);
+  // End
+
+  // Controls timer
+  useEffect(() => {
+    const timerInterval = setInterval(() => {
+      setTimer({ minutes: calculateMinutes(), seconds: calculateSeconds() });
+    }, 1000);
+
+    return () => clearInterval(timerInterval);
+  }, []);
   // End
 
   const handleAnswerInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +110,7 @@ const QuestionPageClient = ({ quizId, roundIndex, roundIds }: props) => {
         </div>
         <div>
           <h5 className='text p-2'>
-            {Math.floor(time / 60)}:{time - Math.floor(time / 60) * 60}
+            {calculateMinutes()}:{calculateSeconds()}
           </h5>
         </div>
         <div>

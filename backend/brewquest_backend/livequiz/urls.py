@@ -8,4 +8,6 @@ urlpatterns = [
     path('createRoom/', views.createRoom, name='createRoom'),
     path('deleteRoom/', views.deleteRoom, name='deleteRoom'),
     path('getQuizInfo/', views.getQuizInfo, name='getQuizInfo'),
+    path('updateRoundData/', views.updateRoundData, name='updateRoundData'),
+    path('clientGetRound/', views.clientGetRound, name='clientGetRound'),
 ]

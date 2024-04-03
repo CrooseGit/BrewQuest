@@ -45,7 +45,7 @@ const HostLobby = () => {
       room_name: quizTitle,
       pin: quizTitle.replace(/ /g, '_') + '_' + quizId.toString(),
     };
-    // JsonResponse({'status', 'message'})
+
     axios
       .post(livequizhttp + 'createRoom/', payload)
       .then((response) => {
@@ -57,17 +57,34 @@ const HostLobby = () => {
       });
   };
 
-  function startQuiz() {
-    if (players.length > 0) {
-      client.send(
-        JSON.stringify({
-          type: 'HostStartGame',
-          data: { room_id: room },
-        })
-      );
-      console.log('startQuiz(): Starting quiz');
-    }
-  }
+  const startQuiz = () => {
+    // IK this is weird, but its important that the round data is updated before the clients are given the go ahead
+    updateRoundData(0);
+  };
+  const updateRoundData = (roundIndex: number) => {
+    console.log('updateRoundData(): ');
+    const payload = {
+      pin: quizTitle.replace(/ /g, '_') + '_' + quizId.toString(),
+      roundIndex: roundIndex,
+    };
+    axios
+      .post(livequizhttp + 'updateRoundData/', payload)
+      .then((response) => {
+        console.log(response);
+        if (players.length > 0) {
+          console.log('startQuiz(): Starting quiz');
+          client.send(
+            JSON.stringify({
+              type: 'HostStartGame',
+              data: { room_id: room },
+            })
+          );
+        }
+      })
+      .catch((error) => {
+        console.error('Error: ' + error);
+      });
+  };
 
   const kickPlayer = (player: string) => {
     client.send(

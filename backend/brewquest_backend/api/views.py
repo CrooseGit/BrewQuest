@@ -13,25 +13,6 @@ from django.utils import timezone
 # Create your views here.
 
 
-@api_view(['POST'])
-@permission_classes((AllowAny, ))
-def clientGetRound(request):
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
-    
-    round_id = body['round_id']
-    
-
-    r = Round.objects.get(id=round_id)
-
-    
-    questions = Question.objects.filter(round_id=round_id)
-    q_serializer = HostQuestionSerializer(questions, many=True)
-    r_serializer = RoundSerializer(r);
-    data = {'round' :r_serializer.data, 'questions':q_serializer.data}
-    return JsonResponse(data, safe=False)
-
-
 
 @api_view(['POST'])
 def register(request):

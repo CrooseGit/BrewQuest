@@ -23,7 +23,8 @@ class Room(models.Model):
     round_id = models.ForeignKey(Round, on_delete=models.CASCADE)
     # password to join
     pin = models.CharField(max_length=16)
-
+    # time current round ends
+    round_end_time = models.DateTimeField()
     def __str__(self):
         return f"room_id: {id}, pin: {self.pin}"
 

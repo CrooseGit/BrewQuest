@@ -84,6 +84,8 @@ const ClientGame = () => {
             quizId={quizId}
             roundIndex={roundIndex}
             roundIds={roundIds}
+            livequizhttp={livequizhttp}
+            pin={room}
           />
         );
     }

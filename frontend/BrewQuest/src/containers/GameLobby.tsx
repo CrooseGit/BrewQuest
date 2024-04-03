@@ -33,11 +33,6 @@ const GameLobby = ({
   const navigate = useNavigate();
 
   const [players, setPlayers] = useState<Player[]>([]);
-  // const [connected, setConnected] = useState(false);
-  // const [inGame, setInGame] = useState(false);
-
-  // const livequizhttp = 'http://' + ip + ':8000/livequiz/';
-  // const client = new W3CWebSocket('ws://' + ip + ':8000/room/' + room + '/');
 
   const getPlayerStates = () => {
     const payload = { pin: room, playername: name };

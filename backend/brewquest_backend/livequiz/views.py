@@ -2,6 +2,8 @@ from django.shortcuts import render
 import json
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
+
 from .models import *
 from .serializer import *
 from django.http import JsonResponse
@@ -17,6 +19,27 @@ from django.utils import timezone
 # ---------------------------------------
 
 # Player Views -------------------
+@api_view(['POST'])
+@permission_classes((AllowAny, ))
+def clientGetRound(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    
+    round_id = body['round_id']
+    pin = body['pin']
+    
+
+    r = Round.objects.get(id=round_id)
+    room = Room.objects.get(pin=pin)
+
+
+    
+    questions = Question.objects.filter(round_id=round_id)
+    q_serializer = HostQuestionSerializer(questions, many=True)
+    r_serializer = RoundSerializer(r);
+    
+    data = {'round' :r_serializer.data, 'questions':q_serializer.data, 'end_time':room.round_end_time}
+    return JsonResponse(data, safe=False)
 
 @api_view(['POST'])
 @permission_classes((AllowAny, ))  
@@ -166,18 +189,14 @@ def createRoom(request):
         body = json.loads(body_unicode)
         quiz_id = Quiz.objects.get(id=body["quiz_id"])
         round_id = Round.objects.filter(quiz_id=quiz_id,index = 0)
-        print("here")
         if Host.objects.filter(user_id=request.user.id).count()==0:
             Host.objects.create(user_id=request.user.id)
-        print("there2")
         host_id = Host.objects.get(user_id=request.user.id)
-        print("there3")
         # Delete rooms if rooms by same name exists
         if (Room.objects.filter(pin=body["pin"]).count()!=0):
             Room.objects.delete(pin=body["pin"])
-        print("there4")
         Room.objects.create(pin=body["pin"], host_id=host_id, 
-                            quiz_id = quiz_id, round_id= round_id[0])
+                            quiz_id = quiz_id, round_id= round_id[0], round_end_time=timezone.now())
         return JsonResponse({'status': 'success', 'message': 'Room created'})
     except Exception as e:
         return JsonResponse({'status': 'failed', 'message': str(e), "issue_where":"creatingRoom"})
@@ -200,5 +219,20 @@ def deleteRoom(request):
     room_id.delete()
     return JsonResponse({'status': 'success', 'message': 'Room deleted'})
 
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def updateRoundData(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    room = Room.objects.get(pin= body["pin"])
+    quiz = room.quiz_id
+    r = Round.objects.filter(quiz_id=quiz)[body["roundIndex"]]
+    room.round_end_time = timezone.now()  + timezone.timedelta(seconds=r.time)
+    print("round end time")
+    print(room.round_end_time)
+    room.round_id = r
+    room.save()
+    
+    return JsonResponse({'status': 'success'})
 
 
