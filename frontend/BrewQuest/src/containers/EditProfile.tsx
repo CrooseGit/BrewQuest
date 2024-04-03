@@ -28,7 +28,6 @@ const EditProfile = () => {
             const token = localStorage.getItem('access_token')!;
             const decoded : any = jwtDecode(token);
             const id = decoded.user_id;
-
             // updating each individually incase there is a blank field
             if (!(email == '')){
                 // make an update call to the API URL for email
@@ -48,6 +47,7 @@ const EditProfile = () => {
                     username: username
                 }).then(async (response) => {
                     alert("Username Successfully Changed")
+                    console.log(localStorage.getItem('access_token')!);
                 }).catch(async (err) => {
                     console.log(err);
                 })
@@ -68,15 +68,24 @@ const EditProfile = () => {
                     console.log(err);
                 })
                 if (passwordmatches){
-                    alert("wowie it works")
+                    if (newPassword === confirmNewPassword){
+                        await axios
+                        .put('http://localhost:8000/' + `api/change_password/${id}`, {
+                            password: newPassword
+                        }).then(async (response) => {
+                            alert("Password Successfully Changed")
+                        }).catch(async (err) => {
+                            console.log(err);
+                        })
+                    }   
                 }
                 else{
                     alert("Current password was not correct")
                 }
             }
-            localStorage.clear();
-            axios.defaults.headers.common['Authorization'] = null;
-            window.location.href = '/host/login';
+            // localStorage.clear();
+            // axios.defaults.headers.common['Authorization'] = null;
+            // window.location.href = '/host/login';
 
 
           // update message saying credentials changed

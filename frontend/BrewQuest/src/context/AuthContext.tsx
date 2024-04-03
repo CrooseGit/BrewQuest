@@ -34,6 +34,9 @@ export const AuthProvider : React.FC<props> = ({children}) => {
             console.log("tokens generated")
             localStorage.setItem('access_token', response.data.access);
             localStorage.setItem('refresh_token', response.data.refresh);
+            axios.defaults.headers.common[
+                'Authorization'
+            ] = `Bearer ${localStorage.getItem('access_token')}`;
         } else {
             console.log("token expired")
         }
