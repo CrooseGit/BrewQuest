@@ -93,6 +93,14 @@ class RoomConsumer(AsyncWebsocketConsumer):
             'room_id':msg["data"]["room_id"]
             }
             )
+        elif msg["type"]=="HostKicksPlayer":
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {'type':"HostKicksPlayer",
+            'room_id':msg["data"]["room_id"],
+            'playername':msg["data"]["playername"]
+            }
+            )
 
 # -------------------------
 # functions called inside recieve(self, text_data)
@@ -151,6 +159,17 @@ class RoomConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'action': action,
             'room': room_id
+        }))
+
+    async def HostKicksPlayer(self, event):
+        action = event['type']
+        room_id = event['room_id']
+        playername = event['playername']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'action': action,
+            'room': room_id,
+            'playername' : playername,
         }))
 
 

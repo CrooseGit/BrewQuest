@@ -7,7 +7,8 @@ import ip from '../info';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-// TODO: Add feature
+// This is the client Lobby
+
 interface Player {
   playername: string;
   score: number;
@@ -89,13 +90,10 @@ const GameLobby = () => {
      * @param {any} m - The message received from the client. (not sure of specific type)
      */
 
-    client.onmessage = async (m: { data: unknown }) => {
+    client.onmessage = async (m: any) => {
       if (typeof m.data === 'string') {
         const dataFromServer = JSON.parse(m.data);
-        console.log(
-          'on message this is the data from the server',
-          dataFromServer
-        );
+        console.log('on message this is the data from the server', m);
 
         if (dataFromServer) {
           switch (dataFromServer.action) {
@@ -117,6 +115,17 @@ const GameLobby = () => {
             case 'HostStartGame': {
               console.log('HostStartGame');
               startGame();
+              break;
+            }
+            case 'HostKicksPlayer': {
+              console.log('HostKicksPlayer');
+              if (dataFromServer.playername == name) {
+                console.log('You have been kicked');
+                removePlayer();
+              } else {
+                console.log('Someone has be kicked');
+                getPlayerStates();
+              }
               break;
             }
           }
@@ -157,6 +166,34 @@ const GameLobby = () => {
       removePlayer();
     };
   }, []);
+
+  const playerLeftLobby = async () => {
+    console.log('PlayerLeftLobby(): ');
+    await axios
+      .post(livequizhttp + 'playerLeftLobby/', {
+        pin: room,
+        playername: name,
+      })
+      .then((response) => {
+        console.log('response.data: ');
+        console.log(response.data);
+
+        if (response.data.status === 'success') {
+          setConnected(false);
+        }
+        // synchrounous function btw
+        client.send(
+          JSON.stringify({
+            type: 'PlayerLeftLobby',
+            data: { room_id: room, playername: name },
+          })
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   // code that runs when tab is closed
   // this will just remove the player from the game
   // updating the database and letting all the other players know someone has left
@@ -165,29 +202,7 @@ const GameLobby = () => {
       window.addEventListener('beforeunload', async (e) => {
         e.preventDefault();
         e.returnValue = '';
-
-        await axios
-          .post(livequizhttp + 'playerLeftLobby/', {
-            pin: room,
-            playername: name,
-          })
-          .then((response) => {
-            console.log(response.data);
-
-            if (response.data.status === 'success') {
-              setConnected(false);
-            }
-            // synchrounous function btw
-            client.send(
-              JSON.stringify({
-                type: 'PlayerLeftLobby',
-                data: { room_id: room, playername: name },
-              })
-            );
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        playerLeftLobby();
       }),
     []
   );

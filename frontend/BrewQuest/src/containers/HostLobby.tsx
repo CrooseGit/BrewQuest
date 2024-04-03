@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import { useNavigate, useLocation } from 'react-router-dom';
 import BackButton from '../components/BackButton/BackButton';
-import StartButton from '../components/StartButton/StartButton';
 import ip from '../info';
+import './index.css';
 
 interface Player {
   playername: string;
@@ -58,7 +58,6 @@ const HostLobby = () => {
   };
 
   function startQuiz() {
-    //throw new Error("Function not implemented.");
     if (players.length > 0) {
       client.send(
         JSON.stringify({
@@ -69,6 +68,16 @@ const HostLobby = () => {
       console.log('startQuiz(): Starting quiz');
     }
   }
+
+  const kickPlayer = (player: string) => {
+    client.send(
+      JSON.stringify({
+        type: 'HostKicksPlayer',
+        data: { room_id: room, playername: player },
+      })
+    );
+    console.log('kickPlayer(): kicking Player' + player);
+  };
 
   const deleteRoom = () => {
     const payload = {
@@ -219,22 +228,28 @@ const HostLobby = () => {
   );
 
   // DO NOT TOUCH EXCEPT ADDING CSS
-  const makeGrid = (arr: string[]) => {
+  const makeGrid = (playernames: string[]) => {
     //This code defines a function makeGrid that takes an input array and creates a
     //grid by grouping the elements of the array in rows of three. The function
     //returns an array of React component elements representing the grid.
     const grid = [];
     let count = 0;
-    console.log('this is player array: ', arr);
+    console.log('this is player array: ', playernames);
     //the input
     // this is the grid formed by having the input array in groups of 3 in a row
-    for (let i = 0; i < arr.length; i = i + 3) {
+    for (let i = 0; i < playernames.length; i = i + 3) {
       grid.push(
         <div key={'player row' + (count / 3).toString()} className='row'>
-          {arr.slice(i, i + 3).map((n: string, id: number) => (
-            <p className='text-center col-md-4 text-light' key={id + count}>
-              {n}
-            </p>
+          {playernames.slice(i, i + 3).map((name: string, id: number) => (
+            <div
+              className='text-center col-md-4 text-light player-div'
+              key={id + count}
+              onClick={() => {
+                kickPlayer(name);
+              }}
+            >
+              <h4>{name}</h4>
+            </div>
           ))}
         </div>
       );
@@ -260,12 +275,16 @@ const HostLobby = () => {
               className='btn'
             ></BackButton>
 
-            <StartButton
+            <button
               onClick={() => {
                 startQuiz();
               }}
-              className='btn'
-            ></StartButton>
+              disabled={players.length == 0}
+              className='button btn btn-primary btn-lg '
+              type='button'
+            >
+              Start
+            </button>
             <div className='container'>
               {makeGrid(players.map((n: Player) => n.playername))}
             </div>

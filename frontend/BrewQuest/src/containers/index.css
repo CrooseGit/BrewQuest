@@ -1,6 +1,17 @@
 body {
   background-color: #212922;
 }
+.button {
+  background-color: #6a8d73;
+}
+.button:disabled {
+  background-color: #4b4b4b;
+}
+.player-div {
+}
+.player-div :hover {
+  text-decoration: line-through;
+}
 
 .option-dropdown {
   position: relative;
