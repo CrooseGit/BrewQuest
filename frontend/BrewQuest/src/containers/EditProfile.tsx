@@ -1,4 +1,5 @@
 import BackButton from '../components/BackButton/BackButton';
+import Dialog from '../components/Dialog/Dialog';
 import '../containers/Login.css';
 import { MouseEvent, useContext, useState } from 'react';
 import axios from 'axios';
@@ -12,6 +13,20 @@ const EditProfile = () => {
     const [currentPassword, setPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
+    const [showAccountDialog, setShowAccountDialog] = useState(false);
+
+
+    const confirm = () => {
+        console.log('confirm');
+
+        setShowAccountDialog(false);
+
+    };
+
+    const cancel = () => {
+        setShowAccountDialog(false);
+
+    };
 
     const handleSubmit = async (e: MouseEvent<HTMLElement>) => {
         e.preventDefault();
@@ -99,6 +114,13 @@ const EditProfile = () => {
     return (
         <div>
             <div>
+                <Dialog show={showAccountDialog} 
+                title="Deleting Account" 
+                description="Are you sure you want to permanently delete your account?" 
+                confirm={confirm}
+                cancel={cancel} />
+            </div>
+            <div>
                 <h1 className='text display-1'>Edit Profile</h1>
             </div>
             <div className='container login-form'>
@@ -172,8 +194,14 @@ const EditProfile = () => {
                     Update details
                     </button>
                 </div>
+                
                 </form>
+                <div className='btn-container center-text'>
+                    <button className='dlt_btn' onClick={() => { setShowAccountDialog(true) }}>Delete Profile</button>
+                </div>
             </div>
+            
+
         </div>
     );
 };
