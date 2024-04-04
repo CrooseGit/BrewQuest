@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import ip from '../info';
 import axios from 'axios';
+import { Leaderboard } from '.';
 
 // ClientGame.tsx
 const ClientGame = () => {
@@ -12,7 +13,9 @@ const ClientGame = () => {
   enum GAME_PAGE {
     Lobby,
     Quiz,
+    LeaderBoard,
   }
+  const [gameOver, setGameOver] = useState(false);
   const [currentPage, setCurrentPage] = useState(GAME_PAGE.Lobby);
   const [quizId, setQuizId] = useState(-1);
   const [roundIds, setRoundIds] = useState([]);
@@ -86,6 +89,19 @@ const ClientGame = () => {
             roundIds={roundIds}
             livequizhttp={livequizhttp}
             pin={room}
+            timesUp={() => {
+              setCurrentPage(GAME_PAGE.LeaderBoard);
+            }}
+          />
+        );
+      case GAME_PAGE.LeaderBoard:
+        return (
+          <Leaderboard
+            gameOver={gameOver}
+            livequizhttp={livequizhttp}
+            pin={room}
+            client={client}
+            name={name}
           />
         );
     }

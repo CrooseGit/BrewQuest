@@ -9,6 +9,7 @@ interface props {
   roundIds: number[];
   livequizhttp: string;
   pin: string;
+  timesUp: () => void;
 }
 
 const QuestionPageClient = ({
@@ -17,14 +18,15 @@ const QuestionPageClient = ({
   roundIds,
   livequizhttp,
   pin,
+  timesUp,
 }: props) => {
   // State management
   const [question_index, setQuestion_index] = useState(0);
   const [prompts, setPrompts] = useState(['Loading']);
   const [answers, setAnswers] = useState<string[]>([]);
   const [isSubmitted, setSubmitted] = useState<boolean[]>([]);
-  const [endTime, setEndTime] = useState(new Date(Date.now()));
-  const [timer, setTimer] = useState({ minutes: 0, seconds: 0 });
+  const [endTime, setEndTime] = useState(new Date(Date.now() + 10000));
+  const [timer, setTimer] = useState({ minutes: '00', seconds: '00' });
   // End
 
   // const [round, setRound] = useState(0);
@@ -39,14 +41,20 @@ const QuestionPageClient = ({
   // Calculates minutes remaining from datetime
   const calculateMinutes = () => {
     const timeLeft = endTime.getTime() - Date.now();
-    return Math.floor((timeLeft / 1000 / 60) % 60);
+    return Math.floor((timeLeft / 1000 / 60) % 60).toLocaleString('en-US', {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    });
   };
   // End
 
   // Calculates minutes remaining from datetime
   const calculateSeconds = () => {
     const timeLeft = endTime.getTime() - Date.now();
-    return Math.floor((timeLeft / 1000) % 60);
+    return Math.floor((timeLeft / 1000) % 60).toLocaleString('en-US', {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    });
   };
   // End
 
@@ -61,7 +69,7 @@ const QuestionPageClient = ({
       .post(livequizhttp + 'clientGetRound/', payload)
       .then((response) => {
         console.log(response);
-        console.log('end_time ', response.data.end_time);
+        console.log('end_time ', new Date(Date.parse(response.data.end_time)));
         setEndTime(new Date(Date.parse(response.data.end_time)));
         setPrompts(
           response.data.questions.map((question: Question) => question.prompt)
@@ -84,11 +92,16 @@ const QuestionPageClient = ({
   // Controls timer
   useEffect(() => {
     const timerInterval = setInterval(() => {
+      if (endTime.getTime() - Date.now() <= 0) {
+        console.log('end', endTime.getTime() - Date.now());
+        clearInterval(timerInterval);
+        timesUp();
+      }
       setTimer({ minutes: calculateMinutes(), seconds: calculateSeconds() });
     }, 1000);
 
     return () => clearInterval(timerInterval);
-  }, []);
+  }, [endTime]);
   // End
 
   const handleAnswerInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -110,7 +123,7 @@ const QuestionPageClient = ({
         </div>
         <div>
           <h5 className='text p-2'>
-            {calculateMinutes()}:{calculateSeconds()}
+            {timer.minutes}:{timer.seconds}
           </h5>
         </div>
         <div>

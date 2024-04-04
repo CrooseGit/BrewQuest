@@ -10,4 +10,5 @@ urlpatterns = [
     path('getQuizInfo/', views.getQuizInfo, name='getQuizInfo'),
     path('updateRoundData/', views.updateRoundData, name='updateRoundData'),
     path('clientGetRound/', views.clientGetRound, name='clientGetRound'),
+    path('getLeaderboard/', views.getLeaderboard, name='getLeaderboard'),
 ]

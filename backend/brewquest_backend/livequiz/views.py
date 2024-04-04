@@ -21,6 +21,24 @@ from django.utils import timezone
 # Player Views -------------------
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
+def getLeaderboard(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    
+    
+    pin = body['pin']
+    room = Room.objects.get(pin=pin)
+    
+    players = Player.objects.filter(room_id=room).order_by('-score').values()
+    p_serializer = PlayerBaseSerializer(players,many=True)
+    
+    data = {'status':'success','players' :p_serializer.data}
+    return JsonResponse(data, safe=False)
+
+
+
+@api_view(['POST'])
+@permission_classes((AllowAny, ))
 def clientGetRound(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
