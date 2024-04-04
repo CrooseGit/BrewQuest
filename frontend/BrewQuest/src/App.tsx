@@ -32,7 +32,7 @@ function App() {
           }
         />
         <Route path='/channel' element={<Channel />} />
-
+        <Route path='/editprofile' element={<EditProfile />} />
         <Route
           path='/gamepin'
           element={
