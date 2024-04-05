@@ -1,6 +1,4 @@
-import './channels.css';
-
-import BackButton from '../components/BackButton/BackButton';
+import BackButton from '../../components/BackButton/BackButton';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';

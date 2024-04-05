@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
-import './index.css';
+import '../index.css';
 import axios from 'axios';
 interface props {
   gameOver: boolean;

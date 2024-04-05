@@ -186,33 +186,29 @@ def getQuizInfo(request):
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def createRoom(request):
-    # request.body = {"quiz_id": 1, "room_name": "test", pin: <quiz_id>+"_"+<round_id>}
+    # Get body of request
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
-    print("Request user")
-    print(request.user)
-    # checks if quiz exists
+
+    # If quiz does not exist, send failure.
     if not Quiz.objects.filter(id=body["quiz_id"]).exists():
         return JsonResponse({'status': 'failed', 'message': 'Quiz does not exist', 'data': "NoQuizFound"})
-    quiz_id = Quiz.objects.get(id=body["quiz_id"])
-    round_id = Round.objects.filter(quiz_id=quiz_id,index = 0)[0]
-    questions = Question.objects.filter(round_id=round_id)
-    # checks if there are questions to answer
-    # TODO: make sure that if there are more than one round, then these extra rounds only 
-    #       play if there are questions in the next round others skip to next round until end of game reached
-    if questions.count() == 0:
-        return JsonResponse({'status': 'failed', 'message': 'Round does not exist', 'data': "NoQuestionsFound"})
+    
     try:
-        body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
+        # Get quiz and first round
         quiz_id = Quiz.objects.get(id=body["quiz_id"])
         round_id = Round.objects.filter(quiz_id=quiz_id,index = 0)
+
+        # Create host for user if does not exist
         if Host.objects.filter(user_id=request.user.id).count()==0:
             Host.objects.create(user_id=request.user.id)
+
+        # Get Host
         host_id = Host.objects.get(user_id=request.user.id)
+
         # Delete rooms if rooms by same name exists
-        if (Room.objects.filter(pin=body["pin"]).count()!=0):
-            Room.objects.delete(pin=body["pin"])
+        Room.objects.filter(pin=body["pin"]).delete()
+
         Room.objects.create(pin=body["pin"], host_id=host_id, 
                             quiz_id = quiz_id, round_id= round_id[0], round_end_time=timezone.now())
         return JsonResponse({'status': 'success', 'message': 'Room created'})
@@ -240,8 +236,10 @@ def deleteRoom(request):
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))
 def updateRoundData(request):
+    # Get request body
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
+    
     room = Room.objects.get(pin= body["pin"])
     quiz = room.quiz_id
     r = Round.objects.filter(quiz_id=quiz)[body["roundIndex"]]

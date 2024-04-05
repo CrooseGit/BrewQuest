@@ -55,7 +55,7 @@ const QuizList = ({
     quizzes &&
     quizzes.map((quizItem) => [
       <input
-        key={'quiz_' + quizItem.id}
+        key={'quiz_' + quizItem.id + '_input'}
         type='radio'
         className='btn-check quiz-item-input'
         name='quizList'
@@ -68,11 +68,15 @@ const QuizList = ({
       ></input>,
 
       <label
+        key={'quiz_' + quizItem.id + '_label'}
         className='btn quiz-item-selection'
         htmlFor={quizItem.id.toString()}
       >
-        <div className='quiz-item-title'>{quizItem.title}</div>
+        <div key={'quiz_' + quizItem.id + '_title'} className='quiz-item-title'>
+          {quizItem.title}
+        </div>
         <OptionButton
+          key={'quiz_' + quizItem.id + '_optionButton'}
           quizId={quizItem.id}
           reloadFunction={loadQuizzes}
         ></OptionButton>

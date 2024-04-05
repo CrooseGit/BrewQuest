@@ -10,7 +10,8 @@ import {
   Channel,
   ClientGame,
 } from './containers/index';
-
+import MarkingPage from './containers/HostGame/MarkingPage';
+import SubmittedAnswer from './components/SubmittedAnswer/SubmittedAnswer';
 function App() {
   return (
     <>
@@ -18,7 +19,6 @@ function App() {
         <Route path='/' element={<Landing></Landing>} />
         <Route path='/quizEdit' element={<QuizEdit />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/leaderboard' element={<Leaderboard />} />
         <Route path='/host/*' element={<Host />} />
         <Route path='/channel' element={<Channel />} />
         <Route path='/gamepin' element={<GamePin />} />

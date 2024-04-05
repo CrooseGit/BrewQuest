@@ -1,7 +1,8 @@
 import { Route, Routes } from 'react-router-dom';
 import { Login, Logout, QuizEdit, QuizListPage, Register } from '.';
-import HostLobby from './HostLobby';
-import QuestionPageClient from './QuestionPageClient';
+import HostLobby from './HostGame/HostLobby';
+import QuestionPageClient from './ClientGame/QuestionPageClient';
+import HostGame from './HostGame/HostGame';
 const Host = () => {
   //   {
   //   room,
@@ -20,11 +21,10 @@ const Host = () => {
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/logout' element={<Logout />} />
-        <Route path='/qpc' element={<QuestionPageClient />} />
         <Route path='/QuizList' element={<QuizListPage />} />
         <Route path='/edit' element={<QuizEdit />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/lobby' element={<HostLobby />}></Route>
+        <Route path='/game' element={<HostGame />} />
       </Routes>
     </>
   );

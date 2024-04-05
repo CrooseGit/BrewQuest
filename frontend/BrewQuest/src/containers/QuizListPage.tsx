@@ -22,7 +22,7 @@ const QuizListPage = () => {
             }}
           ></QuizList>
           <Link
-            to={'/host/lobby'}
+            to={'/host/game'}
             style={{ textDecoration: 'none' }}
             state={{
               title: quizToHost.title,

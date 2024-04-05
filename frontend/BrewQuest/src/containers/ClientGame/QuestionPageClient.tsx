@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import axios from 'axios';
-import ip from '../info';
-import '../containers/QuestionPageClient.css';
+import ip from '../../info';
+import './QuestionPageClient.css';
 
 interface props {
   quizId: number;

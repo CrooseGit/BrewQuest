@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import QuestionPageClient from './QuestionPageClient';
 import { useLocation } from 'react-router-dom';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
-import ip from '../info';
+import ip from '../../info';
 import axios from 'axios';
-import { Leaderboard } from '.';
+import { Leaderboard } from '..';
 
 // ClientGame.tsx
 const ClientGame = () => {
