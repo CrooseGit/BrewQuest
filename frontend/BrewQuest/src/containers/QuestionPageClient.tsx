@@ -85,6 +85,7 @@ const QuestionPageClient = ({
 
   // Runs on startup, and when round Index changed
   useEffect(() => {
+    setEndTime(new Date(Date.now() + 10000));
     clientGetRound();
   }, [roundIndex]); //[prompts.length]);
   // End

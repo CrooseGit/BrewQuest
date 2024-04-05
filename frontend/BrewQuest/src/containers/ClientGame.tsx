@@ -91,6 +91,7 @@ const ClientGame = () => {
             pin={room}
             timesUp={() => {
               setCurrentPage(GAME_PAGE.LeaderBoard);
+              setRoundIndex(roundIndex + 1);
             }}
           />
         );
@@ -102,6 +103,9 @@ const ClientGame = () => {
             pin={room}
             client={client}
             name={name}
+            nextRound={() => {
+              setCurrentPage(GAME_PAGE.Quiz);
+            }}
           />
         );
     }

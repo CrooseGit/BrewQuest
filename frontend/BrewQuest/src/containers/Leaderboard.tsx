@@ -8,12 +8,20 @@ interface props {
   pin: string;
   client: W3CWebSocket;
   name: string;
+  nextRound: () => void;
 }
 interface Player {
   playername: string;
   score: number;
 }
-function Leaderboard({ gameOver, livequizhttp, pin, client, name }: props) {
+function Leaderboard({
+  gameOver,
+  livequizhttp,
+  pin,
+  client,
+  name,
+  nextRound,
+}: props) {
   const [players, setPlayers] = useState<Player[]>([]);
 
   // For if the player disconnects, or leaves
@@ -92,7 +100,7 @@ function Leaderboard({ gameOver, livequizhttp, pin, client, name }: props) {
             }
             case 'HostStartsNextRound': {
               console.log('HostStartsNextRound');
-              //hostStartsNextRound()
+              nextRound();
               break;
             }
           }
@@ -169,7 +177,7 @@ function Leaderboard({ gameOver, livequizhttp, pin, client, name }: props) {
             type='button'
             className='btn btn-block btn-lg'
             disabled={gameOver}
-            onClick={getLeaderboard}
+            onClick={nextRound}
           >
             {gameOver ? <>Return To Menu</> : <>Waiting for host</>}
           </button>
