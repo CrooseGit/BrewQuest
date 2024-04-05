@@ -10,7 +10,7 @@ interface props {
   name: string;
 }
 interface Player {
-  name: string;
+  playername: string;
   score: number;
 }
 function Leaderboard({ gameOver, livequizhttp, pin, client, name }: props) {
@@ -45,6 +45,7 @@ function Leaderboard({ gameOver, livequizhttp, pin, client, name }: props) {
   // Gets players in order
   const getLeaderboard = () => {
     const payload = { pin: pin };
+    console.log('getLeaderboard(): ');
 
     axios
       .post(livequizhttp + 'getLeaderboard/', payload)
@@ -147,14 +148,17 @@ function Leaderboard({ gameOver, livequizhttp, pin, client, name }: props) {
 
       <div className='container player-bubble-container'>
         {players.map((player, index) => (
-          <div className='d-flex align-items-center text player-bubble'>
+          <div
+            key={index + '_' + player}
+            className='d-flex align-items-center text player-bubble'
+          >
             <div className='p-2  player-bubble-index d-flex align-items-center'>
               <div>
-                <h4>{index}.</h4>
+                <h4>{index + 1}.</h4>
               </div>
             </div>
             <div className='p-2 flex-grow-1 player-bubble-name'>
-              <h4>{player.name}</h4>
+              <h4>{player.playername}</h4>
             </div>
           </div>
         ))}

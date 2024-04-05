@@ -21,7 +21,7 @@ const QuestionPageClient = ({
   timesUp,
 }: props) => {
   // State management
-  const [question_index, setQuestion_index] = useState(0);
+  const [questionIndex, setQuestion_index] = useState(0);
   const [prompts, setPrompts] = useState(['Loading']);
   const [answers, setAnswers] = useState<string[]>([]);
   const [isSubmitted, setSubmitted] = useState<boolean[]>([]);
@@ -74,8 +74,8 @@ const QuestionPageClient = ({
         setPrompts(
           response.data.questions.map((question: Question) => question.prompt)
         );
-        setAnswers(new Array(prompts.length).fill(''));
-        setSubmitted(new Array(prompts.length).fill(false));
+        setAnswers(new Array(response.data.questions.length).fill(''));
+        setSubmitted(new Array(response.data.questions.length).fill(false));
       })
       .catch((error) => {
         console.log(error);
@@ -104,15 +104,15 @@ const QuestionPageClient = ({
   }, [endTime]);
   // End
 
-  const handleAnswerInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleAnswerInputChange = (a: string) => {
     const updatedAnswers = [...answers];
-    updatedAnswers[question_index] = e.target.value;
+    updatedAnswers[questionIndex] = a;
     setAnswers(updatedAnswers);
   };
 
   const handleSubmitClicked = () => {
-    const updatedIsSubmitted = [...isSubmitted];
-    updatedIsSubmitted[question_index] = true;
+    const updatedIsSubmitted = JSON.parse(JSON.stringify(isSubmitted));
+    updatedIsSubmitted[questionIndex] = true;
     setSubmitted(updatedIsSubmitted);
   };
   return (
@@ -141,7 +141,7 @@ const QuestionPageClient = ({
           <button
             type='button'
             className='btn questionButton'
-            id={index == question_index ? 'selectedButton' : ''}
+            id={index == questionIndex ? 'selectedButton' : ''}
             key={'button_' + index}
             onClick={() => {
               setQuestion_index(index);
@@ -154,7 +154,7 @@ const QuestionPageClient = ({
 
       <div className='questionDiv'>
         <div>
-          <h1 className='text questionText'>{prompts[question_index]}</h1>
+          <h1 className='text questionText'>{prompts[questionIndex]}</h1>
         </div>
 
         <div>
@@ -163,17 +163,17 @@ const QuestionPageClient = ({
               id='textInput'
               type='text'
               className='form-control'
-              disabled={isSubmitted[question_index]}
+              disabled={isSubmitted[questionIndex]}
               placeholder='Your answer goes here...'
-              value={answers[question_index]}
-              onChange={handleAnswerInputChange}
+              value={answers[questionIndex]}
+              onChange={(e) => handleAnswerInputChange(e.target.value)}
             />
           </form>
         </div>
         <div className='d-flex justify-content-center'>
           <button
             type='button'
-            disabled={isSubmitted[question_index]}
+            disabled={isSubmitted[questionIndex]}
             className='btn btn-lg submitButton'
             onClick={handleSubmitClicked}
           >
@@ -188,7 +188,7 @@ const QuestionPageClient = ({
             type='button'
             className='btn btn-lg'
             onClick={() => {
-              if (question_index != 0) setQuestion_index(question_index - 1);
+              if (questionIndex != 0) setQuestion_index(questionIndex - 1);
             }}
           >
             <h3>&lt; Back</h3>
@@ -199,8 +199,8 @@ const QuestionPageClient = ({
             type='button'
             className='btn btn-lg'
             onClick={() => {
-              if (question_index != prompts.length - 1)
-                setQuestion_index(question_index + 1);
+              if (questionIndex != prompts.length - 1)
+                setQuestion_index(questionIndex + 1);
             }}
           >
             <h3>Next &gt;</h3>

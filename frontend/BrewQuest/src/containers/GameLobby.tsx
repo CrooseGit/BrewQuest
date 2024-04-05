@@ -230,9 +230,9 @@ const GameLobby = ({
       grid.push(
         <div key={'player row' + (count / 3).toString()} className='row'>
           {arr.slice(i, i + 3).map((n: string, id: number) => (
-            <p className='text-center col-md-4 text-light' key={id + count}>
-              <h4>{n}</h4>
-            </p>
+            <h4 className='text-center col-md-4 text-light' key={id + count}>
+              {n}
+            </h4>
           ))}
         </div>
       );
