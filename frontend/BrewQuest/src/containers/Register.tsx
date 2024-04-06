@@ -20,6 +20,7 @@ const Register = () => {
   };
 
   const tryRegister = (e: MouseEvent<HTMLElement>) => {
+    axios.defaults.headers.common['Authorization'] = null;
     e.preventDefault();
     setAlertVisible(false);
     if (confirmPassword !== password) {

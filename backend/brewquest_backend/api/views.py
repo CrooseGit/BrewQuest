@@ -303,6 +303,13 @@ def changePassword(request,pk):
         
     return Response({'Status': 'Success'})
 
+@api_view(['PUT'])
+@permission_classes((IsAuthenticated,))
+def deleteUser(request,pk):
+    user = User.objects.get(id=pk)
+    user.delete()
+    return Response({'Status': 'Success'})
+
 
 class HomeView(APIView):
 

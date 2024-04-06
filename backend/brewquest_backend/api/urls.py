@@ -25,4 +25,6 @@ urlpatterns = [
     path('change_email/<int:pk>', views.changeEmail, name='change_email'),
     path('check_password/<int:pk>', views.checkPassword, name='check_password'),
     path('change_password/<int:pk>', views.changePassword, name='change_password'),
+    path('delete_user/<int:pk>', views.deleteUser, name='delete_user'),
+
 ]
