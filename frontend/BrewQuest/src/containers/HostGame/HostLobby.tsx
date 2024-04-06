@@ -93,15 +93,6 @@ const HostLobby = ({
   }, []);
   // End
 
-  // Round index is incremented to signify the start of a new round,
-  // that will trigger this function and start the quiz for the clients
-  useEffect(() => {
-    console.log('useEffect');
-
-    //tellClientStartQuiz();
-    // TODO: take host to marking page
-  }, [roundIndex]);
-
   // DO NOT TOUCH EXCEPT ADDING CSS
   const makeGrid = (playernames: string[]) => {
     //This code defines a function makeGrid that takes an input array and creates a
@@ -148,9 +139,7 @@ const HostLobby = ({
         <button
           onClick={() => {
             // Hand me down function that actually sets round end time then starts round.
-            console.log('client.readyState ', client.readyState);
             startQuiz();
-            console.log('client.readyState ', client.readyState);
           }}
           disabled={players.length == 0}
           className='button btn btn-primary btn-lg '

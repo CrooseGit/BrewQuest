@@ -4,6 +4,7 @@ import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import ip from '../../info';
+import MarkingPage from './MarkingPage';
 
 interface Player {
   playername: string;
@@ -16,8 +17,8 @@ const HostGame = () => {
   enum HOST_PAGE {
     CreatingRoom,
     Lobby,
-    Quiz,
     LeaderBoard,
+    Marking,
   }
   const [gameOver, setGameOver] = useState(false);
   const [currentPage, setCurrentPage] = useState(HOST_PAGE.CreatingRoom);
@@ -165,7 +166,7 @@ const HostGame = () => {
   };
   // End
 
-  // Used to set round end time, will trigger new round
+  // Used to set round end time, if start of quiz will tell clients to start
   const updateRoundData = () => {
     console.log('updateRoundData(): ');
     const payload = {
@@ -178,6 +179,7 @@ const HostGame = () => {
         console.log(response);
         if (players.length > 0 && roundIndex == 0) {
           tellClientStartQuiz();
+          setCurrentPage(HOST_PAGE.Marking);
         }
       })
       .catch((error) => {
@@ -215,6 +217,8 @@ const HostGame = () => {
             setConnected={setConnected}
           />
         );
+      case HOST_PAGE.Marking:
+        return <MarkingPage />;
     }
   };
 
