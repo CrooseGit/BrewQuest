@@ -7,7 +7,8 @@ import ip from '../../info';
 import axios from 'axios';
 import { Leaderboard } from '..';
 
-// ClientGame.tsx
+// ClientGame.tsx this is the container that will render all the pages / components
+// shown to the clients during game play
 const ClientGame = () => {
   // Page Management + Game State Management
   enum GAME_PAGE {

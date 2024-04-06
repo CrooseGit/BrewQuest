@@ -19,6 +19,8 @@ interface props {
   endQuiz: () => void;
   roundIndex: number;
   startQuiz: () => void;
+  connected: boolean;
+  setConnected: (b: boolean) => void;
 }
 
 const HostLobby = ({
@@ -32,6 +34,8 @@ const HostLobby = ({
   endQuiz,
   roundIndex,
   startQuiz,
+  connected,
+  setConnected,
 }: props) => {
   // Used to remove a player from the lobby
   const kickPlayer = (player: string) => {
@@ -47,6 +51,7 @@ const HostLobby = ({
 
   // Defines how to deal with messages on the web socket.
   useEffect(() => {
+    console.log('Use effect client.on etc');
     client.onmessage = async (m: { data: unknown }) => {
       if (typeof m.data === 'string') {
         const dataFromServer = JSON.parse(m.data);
@@ -66,28 +71,34 @@ const HostLobby = ({
         }
       }
     };
-  }, []);
-  // End
 
-  // Used to trigger quiz start for clients
-  const tellClientStartQuiz = () => {
-    if (roundIndex >= 0) {
-      // Stops it from running on start up
-      console.log('tellClientStartQuiz():');
+    client.onopen = () => {
+      console.log('WebSocket Client Connected');
+      console.log('client', client);
       client.send(
         JSON.stringify({
-          type: 'HostStartGame',
+          type: 'HostJoinedLobby',
           data: { room_id: room },
         })
       );
-    }
-  };
+      setConnected(true);
+    };
+    client.onclose = () => {
+      console.log('endQuiz(): ');
+      endQuiz();
+    };
+    client.onerror = (error) => {
+      console.log('Connection Error', error);
+    };
+  }, []);
   // End
 
   // Round index is incremented to signify the start of a new round,
   // that will trigger this function and start the quiz for the clients
   useEffect(() => {
-    tellClientStartQuiz();
+    console.log('useEffect');
+
+    //tellClientStartQuiz();
     // TODO: take host to marking page
   }, [roundIndex]);
 
@@ -137,7 +148,9 @@ const HostLobby = ({
         <button
           onClick={() => {
             // Hand me down function that actually sets round end time then starts round.
+            console.log('client.readyState ', client.readyState);
             startQuiz();
+            console.log('client.readyState ', client.readyState);
           }}
           disabled={players.length == 0}
           className='button btn btn-primary btn-lg '

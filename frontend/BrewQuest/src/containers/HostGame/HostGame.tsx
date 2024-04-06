@@ -9,7 +9,8 @@ interface Player {
   playername: string;
   score: number;
 }
-
+// HostGame.tsx this is the container that will render
+// all the pages shown to the host during game play
 const HostGame = () => {
   // Page Management + Game State Management
   enum HOST_PAGE {
@@ -21,7 +22,7 @@ const HostGame = () => {
   const [gameOver, setGameOver] = useState(false);
   const [currentPage, setCurrentPage] = useState(HOST_PAGE.CreatingRoom);
   const [roundIds, setRoundIds] = useState([]);
-  const [roundIndex, setRoundIndex] = useState(-1);
+  const [roundIndex, setRoundIndex] = useState(0);
   const [connected, setConnected] = useState(false);
   const [players, setPlayers] = useState<Player[]>([]);
   const [errorMessage, setErrorMessage] = useState('Creating Room');
@@ -109,29 +110,6 @@ const HostGame = () => {
     createNewRoom();
   }, []);
 
-  // Sets actions to be completed on websocket creation, closure and error
-  useEffect(() => {
-    client.onopen = () => {
-      console.log('WebSocket Client Connected');
-      client.send(
-        JSON.stringify({
-          type: 'HostJoinedLobby',
-          data: { room_id: room },
-        })
-      );
-      setConnected(true);
-    };
-    client.onclose = () => {
-      // delete room
-      deleteRoom();
-      navigate('/host/QuizList');
-    };
-    client.onerror = (error) => {
-      console.log('Connection Error', error);
-    };
-  }, []);
-  // End
-
   // Deletes room when tab closed
   useEffect(
     () =>
@@ -165,20 +143,41 @@ const HostGame = () => {
   };
   // End
 
+  // Used to trigger quiz start for clients
+  const tellClientStartQuiz = async () => {
+    console.log('client.readyState ', client.readyState);
+    if (roundIndex >= 0) {
+      // Stops it from running on start up
+      console.log('tellClientStartQuiz():');
+      console.log('client ', client);
+      console.log('client ready state ', client.readyState);
+      if (!connected) {
+        console.log('Not connected');
+      } else {
+        client.send(
+          JSON.stringify({
+            type: 'HostStartGame',
+            data: { room_id: room },
+          })
+        );
+      }
+    }
+  };
+  // End
+
   // Used to set round end time, will trigger new round
   const updateRoundData = () => {
     console.log('updateRoundData(): ');
     const payload = {
       pin: quizTitle.replace(/ /g, '_') + '_' + quizId.toString(),
-      roundIndex: roundIndex + 1,
+      roundIndex: roundIndex,
     };
     axios
       .post(livequizhttp + 'updateRoundData/', payload)
       .then((response) => {
         console.log(response);
-        if (players.length > 0) {
-          setRoundIndex(roundIndex + 1);
-          // Used to trigger function to start round only once data is up to date.
+        if (players.length > 0 && roundIndex == 0) {
+          tellClientStartQuiz();
         }
       })
       .catch((error) => {
@@ -211,9 +210,9 @@ const HostGame = () => {
               navigate('/host/QuizList');
             }}
             roundIndex={roundIndex}
-            startQuiz={() => {
-              updateRoundData();
-            }}
+            startQuiz={updateRoundData}
+            connected={connected}
+            setConnected={setConnected}
           />
         );
     }
