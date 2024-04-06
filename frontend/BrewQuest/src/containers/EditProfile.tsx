@@ -98,6 +98,9 @@ const EditProfile = () => {
 
     return (
         <div>
+            <Link to='/host/QuizList'>
+                <BackButton className='text' />
+            </Link>
             <div>
                 <h1 className='text display-1'>Edit Profile</h1>
             </div>
