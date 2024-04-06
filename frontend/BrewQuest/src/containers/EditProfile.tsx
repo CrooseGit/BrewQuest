@@ -113,6 +113,9 @@ const EditProfile = () => {
 
     return (
         <div>
+            <Link to='/host/QuizList'>
+                <BackButton className='text' />
+            </Link>
             <div>
                 <Dialog show={showAccountDialog} 
                 title="Deleting Account" 

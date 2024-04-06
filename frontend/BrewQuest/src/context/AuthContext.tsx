@@ -39,6 +39,7 @@ export const AuthProvider : React.FC<props> = ({children}) => {
             ] = `Bearer ${localStorage.getItem('access_token')}`;
         } else {
             console.log("token expired")
+            axios.defaults.headers.common['Authorization'] = null;
         }
 
         if(loading){
@@ -64,7 +65,7 @@ export const AuthProvider : React.FC<props> = ({children}) => {
             updateToken()
         }
 
-        const REFRESH_INTERVAL = 1000 * 60 * 0.5 // 4 minutes
+        const REFRESH_INTERVAL = 1000 * 60 * 2 // 4 minutes
         // does an update token every 4 minutes
         let interval = setInterval(()=>{
             if(authTokens){
