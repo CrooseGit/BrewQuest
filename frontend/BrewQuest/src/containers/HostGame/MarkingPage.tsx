@@ -22,8 +22,10 @@ const MarkingPage = () => {
     console.log('Fetch questionsPerRound based on round');
     //initializes to check QS1 after first render and every time roundNum changes
     setQuestionNum(1);
-    if (document.getElementById('QS1'))
-      document.getElementById('QS1').checked = true;
+    const elementQS1 = document.getElementById('QS1') as HTMLInputElement | null;
+    if (elementQS1) {
+      elementQS1.checked = true;
+    }
   }, [roundNum]);
 
   //when questionNum is changed
@@ -126,7 +128,7 @@ const MarkingPage = () => {
   }
 
   // remove element from list
-  const handleDelete = (element) => {
+  const handleDelete = (element: any) => {
     // IMPORTANT: functional setState update approach to ensure latest submittedAnswers value is used
     setSubmittedAnswers((submittedAnswers) =>
       submittedAnswers.filter((answer) => answer !== element)
@@ -147,8 +149,11 @@ const MarkingPage = () => {
     ));
 
   const toggleRoundDpdn = () => {
-    document.getElementById('round-dpdn-menu').classList.toggle('show-menu');
-  };
+    const roundDpdnMenu = document.getElementById('round-dpdn-menu');
+    if (roundDpdnMenu) {
+      roundDpdnMenu.classList.toggle('show-menu');
+    };
+  }
 
   return (
     <div className='marking-page-div'>
