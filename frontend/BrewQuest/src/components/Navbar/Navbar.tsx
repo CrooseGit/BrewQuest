@@ -1,4 +1,3 @@
-import './Navbar.css';
 import { useState, useEffect } from 'react';
 const Navbar = () => {
   const [isAuth, setIsAuth] = useState(false);

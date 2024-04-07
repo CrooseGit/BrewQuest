@@ -1,5 +1,4 @@
 import beeru from '../assets/beeru.gif';
-import '../index.css';
 
 
 

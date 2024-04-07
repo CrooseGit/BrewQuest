@@ -1,4 +1,3 @@
-import './BackButton.css';
 import back_arrow_image from '../../assets/back_arrow.svg';
 import { MouseEventHandler } from 'react';
 

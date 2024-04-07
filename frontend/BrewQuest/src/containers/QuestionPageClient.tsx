@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../containers/QuestionPageClient.css';
 const QuestionPageClient = () => {
   const [question_index, setQuestion_index] = useState(0);
 

@@ -1,5 +1,4 @@
 import BackButton from '../components/BackButton/BackButton';
-import '../containers/Login.css';
 import { MouseEvent, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';

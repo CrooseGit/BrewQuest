@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import OptionButton from '../OptionButton/OptionButton';
-import './QuizList.css';
-import '../../containers/index';
 
 const QuizList = () => {
   // set up items list structure

@@ -1,5 +1,4 @@
 
-import './Leaderboard.css';
 //import {Button, ButtonToolbar} from 'react-bootstrap';
 
 import ColoredBox from '../components/LeaderboardParts/block';

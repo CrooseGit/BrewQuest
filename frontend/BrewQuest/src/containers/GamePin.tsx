@@ -1,6 +1,5 @@
 import BackButton from '../components/BackButton/BackButton';
 import {Link, useNavigate} from "react-router-dom";
-import '../index.css';
 
 import { useState, useEffect, } from 'react';
 import axios from 'axios';

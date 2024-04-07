@@ -1,7 +1,6 @@
 import Navbar from '../components/Navbar/Navbar.tsx';
 import QuizList from '../components/QuizList/QuizList.tsx';
 import HostButton from '../components/HostButton/HostButton.tsx';
-import './QuizListPage.css';
 
 const QuizListPage = () => {
   // This file provides the page where a host can see a list of all their quizzes
