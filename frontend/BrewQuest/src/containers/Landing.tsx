@@ -4,16 +4,12 @@ import '../containers/index.css';
 
 const Landing = () => {
   return (
-    <div className='btn-container container-size center-text'>
-      <Link to='/gamepin' style={{ textDecoration: 'none' }}>
-        <button className='btn btn-primary' id='join-btn'>
-          <h1 className='style-text display-1'>Join Game</h1>
-        </button>
+    <div className='landing-container'>
+      <Link to='/gamepin' className='btn btn-primary join-btn'>
+        Join Game
       </Link>
-      <Link to='/host/login' style={{ textDecoration: 'none' }}>
-        <button type='button' className='btn btn-primary' id='host-btn'>
-          <h2 className='text'>Host Game</h2>
-        </button>
+      <Link to='/host/login' className='btn btn-primary host-btn'>
+        Host Game
       </Link>
     </div>
   );
