@@ -10,6 +10,7 @@ interface props {
   livequizhttp: string;
   pin: string;
   timesUp: () => void;
+  playername: string;
 }
 
 const QuestionPageClient = ({
@@ -19,6 +20,7 @@ const QuestionPageClient = ({
   livequizhttp,
   pin,
   timesUp,
+  playername,
 }: props) => {
   // State management
   const [questionIndex, setQuestion_index] = useState(0);
@@ -83,6 +85,27 @@ const QuestionPageClient = ({
   };
   // End
 
+  // Sends an answer to be stored in the database
+  const submitAnswer = (answer: string, index: number) => {
+    console.log('submitAnswer(answer: ', answer, ', index: ', index, '): ');
+    const payload = {
+      pin: pin,
+      questionIndex: index,
+      roundIndex: roundIndex,
+      answer: answer,
+      playername: playername,
+    };
+    axios
+      .post(livequizhttp + 'submitAnswer/', payload)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  // End
+
   // Runs on startup, and when round Index changed
   useEffect(() => {
     setEndTime(new Date(Date.now() + 10000));
@@ -115,6 +138,7 @@ const QuestionPageClient = ({
     const updatedIsSubmitted = JSON.parse(JSON.stringify(isSubmitted));
     updatedIsSubmitted[questionIndex] = true;
     setSubmitted(updatedIsSubmitted);
+    submitAnswer(answers[questionIndex], questionIndex);
   };
   return (
     <div className='box'>

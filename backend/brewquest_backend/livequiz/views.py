@@ -19,6 +19,32 @@ from django.utils import timezone
 # ---------------------------------------
 
 # Player Views -------------------
+
+@api_view(['POST'])
+@permission_classes((AllowAny, ))
+def submitAnswer(request):
+    # Getting request body
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+
+    # Getting data from request
+    pin = body['pin']
+    playername = body['playername']
+    answer = body['answer']
+    question_index = body['questionIndex']
+    round_index = body['roundIndex']
+
+    # Get objects from tables    
+    room = Room.objects.get(pin=pin)
+    player = Player.objects.get(playername=playername, room_id=room)
+    r = Round.objects.get(quiz_id=room.quiz_id, index=round_index)
+    question = Question.objects.get(index=question_index, round_id=r)
+
+    HostToMark.objects.create(room=room, player=player, question=question, answer=answer)
+
+    return Response({'status': 'success'})
+
+
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
 def getLeaderboard(request):
@@ -207,6 +233,7 @@ def createRoom(request):
         host_id = Host.objects.get(user_id=request.user.id)
 
         # Delete rooms if rooms by same name exists
+        print(list(Room.objects.filter(pin=body["pin"])))
         Room.objects.filter(pin=body["pin"]).delete()
 
         Room.objects.create(pin=body["pin"], host_id=host_id, 

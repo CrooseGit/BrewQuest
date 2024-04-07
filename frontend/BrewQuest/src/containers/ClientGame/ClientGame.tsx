@@ -94,6 +94,7 @@ const ClientGame = () => {
               setCurrentPage(GAME_PAGE.LeaderBoard);
               setRoundIndex(roundIndex + 1);
             }}
+            playername={name}
           />
         );
       case GAME_PAGE.LeaderBoard:

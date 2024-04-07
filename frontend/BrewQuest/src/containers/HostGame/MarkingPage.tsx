@@ -22,7 +22,9 @@ const MarkingPage = () => {
     console.log('Fetch questionsPerRound based on round');
     //initializes to check QS1 after first render and every time roundNum changes
     setQuestionNum(1);
-    const elementQS1 = document.getElementById('QS1') as HTMLInputElement | null;
+    const elementQS1 = document.getElementById(
+      'QS1'
+    ) as HTMLInputElement | null;
     if (elementQS1) {
       elementQS1.checked = true;
     }
@@ -65,7 +67,7 @@ const MarkingPage = () => {
   ]);
 
   // render question radio elements
-  let questionButtons = [];
+  const questionButtons = [];
   for (let i = 1; i <= questionsPerRound; i++) {
     if (i === 1) {
       questionButtons.push(
@@ -113,7 +115,7 @@ const MarkingPage = () => {
   }
 
   // render round selection elements
-  let roundSelection = [];
+  const roundSelection = [];
   for (let i = 1; i <= roundsPerQuiz; i++) {
     roundSelection.push(
       <button
@@ -152,8 +154,8 @@ const MarkingPage = () => {
     const roundDpdnMenu = document.getElementById('round-dpdn-menu');
     if (roundDpdnMenu) {
       roundDpdnMenu.classList.toggle('show-menu');
-    };
-  }
+    }
+  };
 
   return (
     <div className='marking-page-div'>
