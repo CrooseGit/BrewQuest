@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import axios from 'axios';
-import ip from '../../info';
+import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import './QuestionPageClient.css';
 
 interface props {
@@ -11,6 +11,7 @@ interface props {
   pin: string;
   timesUp: () => void;
   playername: string;
+  client: W3CWebSocket;
 }
 
 const QuestionPageClient = ({
@@ -21,6 +22,7 @@ const QuestionPageClient = ({
   pin,
   timesUp,
   playername,
+  client,
 }: props) => {
   // State management
   const [questionIndex, setQuestion_index] = useState(0);
@@ -99,6 +101,12 @@ const QuestionPageClient = ({
       .post(livequizhttp + 'submitAnswer/', payload)
       .then((response) => {
         console.log(response);
+        client.send(
+          JSON.stringify({
+            type: 'ClientSubmittedAnswer',
+            data: { room_id: pin, playername: playername },
+          })
+        );
       })
       .catch((error) => {
         console.log(error);
