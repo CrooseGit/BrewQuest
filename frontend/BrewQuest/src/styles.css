@@ -1,16 +1,25 @@
-/*COMMON*/
+/* General */
 body {
   background-color: #212922;
 }
 
+/* bootstrap template */
+.btn {
+  border-color: #6a8d73;
+  background-color: #6a8d73;
+  border-radius: 22px;
+}
+
+/* General ends */
+
+
+
+/* QuizListPage */
+/* QuizList */
+
 .option-dropdown{
   position: relative;
 }
-
-/* .option-dropdown > .option-button:focus + .shown-options { when option-button is focused, select shown-options if it is sibling and option dropdown is direct parent */
-  /* opacity: 1;
-  pointer-events: auto;
-} */
 
 .shown-options{
   position: absolute;
@@ -112,21 +121,7 @@ body {
   font-family: "Quicksand";
 }
 
-.center-text {
-  text-align: center;
-}
-
-.container-size{
-  width: 100vw;
-  height: 100vh;
-}
-
-.btn {
-  border-color: #6a8d73;
-  background-color: #6a8d73;
-  border-radius: 22px;
-}
-
+/* HostButton */
 .host-quiz{
   display: block;
   margin: 100px auto auto auto;
@@ -135,6 +130,21 @@ body {
   font-family: "Quicksand";
   font-size: 30px;
 }
+
+/* QuizListPage css ends */
+
+/* probably not necessary anymore */
+/* 
+.center-text {
+  text-align: center;
+}
+
+.container-size{
+  width: 100vw;
+  height: 100vh;
+} */
+
+/* Landing */
 
 #join-btn {
   width: 80%;
@@ -148,6 +158,8 @@ body {
   height: 10%;
   margin-bottom: 7%;
 }
+
+/* Landing ends */
 
 .scrollMenu {
   margin-top: 3rem;
