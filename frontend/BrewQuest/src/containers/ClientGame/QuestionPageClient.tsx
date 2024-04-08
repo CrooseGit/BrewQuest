@@ -114,6 +114,14 @@ const QuestionPageClient = ({
   };
   // End
 
+  const submitAll = () => {
+    answers.forEach((answer, index) => {
+      if (!isSubmitted[index]) {
+        submitAnswer(answer, index);
+      }
+    });
+  };
+
   // Runs on startup, and when round Index changed
   useEffect(() => {
     setEndTime(new Date(Date.now() + 10000));
@@ -163,7 +171,10 @@ const QuestionPageClient = ({
           <button
             type='button'
             className='btn p-2 submitAllButton'
-            onClick={() => alert('Takes user to waiting screen')}
+            onClick={() => {
+              submitAll();
+              timesUp();
+            }}
           >
             <h5 className='text'>Submit All</h5>
           </button>
