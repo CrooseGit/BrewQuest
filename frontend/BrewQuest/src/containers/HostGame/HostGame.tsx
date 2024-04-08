@@ -6,6 +6,7 @@ import axios from 'axios';
 import ip from '../../info';
 import MarkingPage from './MarkingPage';
 
+
 interface Player {
   playername: string;
   score: number;
@@ -218,7 +219,14 @@ const HostGame = () => {
           />
         );
       case HOST_PAGE.Marking:
-        return <MarkingPage />;
+        return <MarkingPage
+        deleteRoom={deleteRoom}
+        quizId={quizId}
+        room={room}
+        quizTitle={quizTitle}
+        client={client}
+        livequizhttp={livequizhttp}
+         />;
     }
   };
 

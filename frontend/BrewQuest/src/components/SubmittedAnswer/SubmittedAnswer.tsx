@@ -1,25 +1,47 @@
+
+
+/*
+interface props{
+    submittedAnswer: { id: number, player_id: number, question_index: number, round_index: number, contents: string },
+    handleDelete: (element:any) => void,
+    roundNum: number,
+    questionNum: number
+}*/
+//{submittedAnswer, handleDelete, roundNum, questionNum}:props
 import { useState } from "react";
 import { useEffect } from "react";
 
-const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum}) =>{
 
-    let answerElement, backgroundColor;
+interface props{
+    submittedAnswer: { id: number, player_id: number, question_index: number, round_index: number, contents: string },
+    handleDelete: (element:any) => void,
+    roundNum: number,
+    questionNum: number
+}
+
+const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum}:props) =>{
+
+    let answerElement: HTMLElement | null
+    let backgroundColor = "";
     let startX=0, offsetX=0, isDragging=false, animationID=0;
     const tolerance=35;
 
     // html element animation
     const animation = () =>{
-        if (isDragging){
-            answerElement.style.transform=`translateX(${offsetX}px)`;
-            // recursive function, request only when dragging
-            requestAnimationFrame(animation);
-        } else {
-            // reset to 0 when animation frame is requested one last time
-            answerElement.style.transform=`translateX(0px)`;
+        if (answerElement){
+            if (isDragging){
+                answerElement.style.transform=`translateX(${offsetX}px)`;
+                // recursive function, request only when dragging
+                requestAnimationFrame(animation);
+            } else {
+                // reset to 0 when animation frame is requested one last time
+                answerElement.style.transform=`translateX(0px)`;
+            }
         }
+        
     }
 
-    const getPositionX = (e) => {
+    const getPositionX = (e:any) => {
         if (e.type.includes("mouse")){
             return e.pageX;
         } else {
@@ -27,7 +49,7 @@ const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum})
         }
     }
 
-    const handleTouchStart = (e)=>{
+    const handleTouchStart = (e:any)=>{
         // prevent default browser scroll and refresh behavior
         e.preventDefault();
 
@@ -39,18 +61,23 @@ const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum})
         animationID=requestAnimationFrame(animation);
     }
 
-    const handleTouchMove = (e)=>{
+    const handleTouchMove = (e:any)=>{
         //update endX for final offset
-        if (isDragging){
-            offsetX=getPositionX(e)-startX;
-            if (offsetX > 0 && offsetX > tolerance){
-                answerElement.style.backgroundColor = "#49ab2e";
-            } else if (offsetX < 0 && -offsetX > tolerance){
-                answerElement.style.backgroundColor = "#bb1818";
-            } else {
-                answerElement.style.backgroundColor = backgroundColor;
+        if (answerElement){
+            if (isDragging){
+                offsetX=getPositionX(e)-startX;
+                if (offsetX > 0 && offsetX > tolerance){
+                    answerElement.style.backgroundColor = "#49ab2e";
+                } else if (offsetX < 0 && -offsetX > tolerance){
+                    answerElement.style.backgroundColor = "#bb1818";
+                } else {
+                    if (answerElement.style.backgroundColor){
+                        answerElement.style.backgroundColor = backgroundColor;
+                    }
+                }
             }
         }
+        
         
     }
 
@@ -80,7 +107,7 @@ const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum})
     useEffect(()=>{
 
         answerElement=document.getElementById(`sd-${roundNum}-${questionNum}-${submittedAnswer.id}`);
-        backgroundColor=answerElement?.style.backgroundColor;
+        backgroundColor = (answerElement?.style.backgroundColor || '') as string;
 
         answerElement?.addEventListener("touchstart",handleTouchStart);
         answerElement?.addEventListener("touchmove",handleTouchMove);
@@ -90,11 +117,26 @@ const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum})
         answerElement?.addEventListener("mouseup",handleTouchEnd);
         answerElement?.addEventListener("mouseleave",handleTouchEnd);
     },[]);
-
+    const returnedComponent = () => {
+        //console.log(Number(roundNum))
+        //console.log(submittedAnswer.round_index)
+        //console.log(submittedAnswer)
+        const comp = Number(roundNum) === Number(submittedAnswer.round_index) && Number(questionNum) === Number(submittedAnswer.question_index)
+        if (comp) {
+            return (
+              <div className="submitted-answer" id={`sd-${roundNum}-${questionNum}-${submittedAnswer.id}`}>{submittedAnswer.contents}</div>
+            );
+          } else {
+            return null;
+          }
+    }
     return (
-        // unique id in entire dom to be fetched by js for event listening
-        <div className="submitted-answer" id={`sd-${roundNum}-${questionNum}-${submittedAnswer.id}`}>{submittedAnswer.contents}</div>
+        <>
+        {returnedComponent()}
+        </>
+        
     );
+    
 }
 
 export default SubmittedAnswer

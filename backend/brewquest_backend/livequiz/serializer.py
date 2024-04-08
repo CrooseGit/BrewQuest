@@ -22,3 +22,24 @@ class RoundSerializer(serializers.ModelSerializer):
     class Meta:
         model = Round
         fields = ['id', 'index', 'title', 'topic', 'time']
+
+# related serializers
+class RoundHostToMarkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Round
+        fields = ['id','index','title']
+class QuestionHostToMarkSerializer(serializers.ModelSerializer):
+
+    round_id = RoundHostToMarkSerializer(read_only=True)
+    
+    class Meta:
+        model = Question
+        fields = ['index','prompt', 'answer', 'round_id']
+
+class HostToMarkSerializer(serializers.ModelSerializer):
+    question = QuestionHostToMarkSerializer(read_only=True)
+    class Meta:
+        model = HostToMark
+        fields = ['id', 'player_id', 'question','answer']
+   
+# END

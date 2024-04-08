@@ -67,6 +67,7 @@ const HostLobby = ({
             case 'PlayerLeftLobby':
               updatePlayers();
               break;
+
           }
         }
       }
