@@ -59,29 +59,37 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
           * round_id: Object { id: number, round_index: number, title: string }}}
 
           */
-         // ps dont ask me y round_id is not just called round this is what the field is in the database
+          // ps dont ask me y round_id is not just called round this is what the field is in the database
 
-         setSubmittedAnswers([]);
-   
-         // submittedAnswers type
-         // { id: number, player_id: number, question_index: number, round_index: number, contents: string }[]
-         
-         response.data.data.forEach((
-          element:{id:number, player_id:number, answer:string, 
-          question:{index:number, prompt:string, answer:string,
-          round_id:{id:number, index:number, title:string}}}
+          setSubmittedAnswers([]);
+
+          // submittedAnswers type
+          // { id: number, player_id: number, question_index: number, round_index: number, contents: string }[]
+
+          response.data.data.forEach((
+            element: {
+              id: number, player_id: number, answer: string,
+              question: {
+                index: number, prompt: string, answer: string,
+                round_id: { id: number, index: number, title: string }
+              }
+            }
           ) => {
-            console.log({button_id: 'QS'+"_" + element.question.index+"_"+element.question.round_id.index,
-            id: element.id, player_id:element.player_id, question_index:element.question.index, 
-              round_index:element.question.round_id.index , contents:element.answer});
-          setSubmittedAnswers(prev => [...prev, 
-            {button_id: 'QS'+"_" + element.question.index+"_"+element.question.round_id.index,
-            id: element.id, player_id:element.player_id, question_index:element.question.index, 
-              round_index:element.question.round_id.index , contents:element.answer}]);
-          
-         });
+            console.log({
+              button_id: 'QS' + "_" + element.question.index + "_" + element.question.round_id.index,
+              id: element.id, player_id: element.player_id, question_index: element.question.index,
+              round_index: element.question.round_id.index, contents: element.answer
+            });
+            setSubmittedAnswers(prev => [...prev,
+            {
+              button_id: 'QS' + "_" + element.question.index + "_" + element.question.round_id.index,
+              id: element.id, player_id: element.player_id, question_index: element.question.index,
+              round_index: element.question.round_id.index, contents: element.answer
+            }]);
 
-         console.log(response.data.data);
+          });
+
+          console.log(response.data.data);
         }
         else {
           console.log(response.data.message);
@@ -93,8 +101,8 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
       }).catch((error) => {
         console.log(error);
       })
-      console.log(submittedAnswers);
-    
+    console.log(submittedAnswers);
+
   }
 
 
@@ -172,7 +180,7 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
       })
     /* for testing only */
 
-    await getQuestionsToMark(); 
+    await getQuestionsToMark();
   };
 
 
@@ -200,13 +208,13 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
 
 
   const getNumberOfQuestions = () => {
-      let n = 0;
-      questionsPerRound.forEach(element => {
-        if (element.round_index === roundNum) {
-          n = element.question_count
-        }
-      });
-      return n;
+    let n = 0;
+    questionsPerRound.forEach(element => {
+      if (element.round_index === roundNum) {
+        n = element.question_count
+      }
+    });
+    return n;
   }
 
   // render round selection elements
@@ -233,19 +241,22 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
   };
 
   // render submitted answer elements
-  const submittedAnswerElements =
-    submittedAnswers &&
-    submittedAnswers.map((submittedAnswer) => (
-      //submittedAnswer.question_index === questionNum && submittedAnswer.round_index === roundNum
+  const submittedAnswerElements = () => {
+
+    return (submittedAnswers &&
+      submittedAnswers.map((submittedAnswer) => (
+        //submittedAnswer.question_index === questionNum && submittedAnswer.round_index === roundNum
         <SubmittedAnswer
-        roundNum={roundNum}
-        questionNum={questionNum}
-        submittedAnswer={submittedAnswer}
-        handleDelete={handleDelete}
-        key={submittedAnswer.id}
-      ></SubmittedAnswer>
-    )
-);
+          roundNum={roundNum}
+          questionNum={questionNum}
+          submittedAnswer={submittedAnswer}
+          handleDelete={handleDelete}
+          key={submittedAnswer.id}
+        ></SubmittedAnswer>)
+      )
+    );
+  }
+
 
   const toggleRoundDpdn = () => {
     const roundDpdnMenu = document.getElementById('round-dpdn-menu');
@@ -287,7 +298,7 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
             <div className="arrow-guide right-arrow">&#8594;</div> */}
       <div className='submitted-answers-list'>
         {/* answers to be fetched from database */}
-        {submittedAnswerElements}
+        {submittedAnswerElements()}
       </div>
     </div>
   );
