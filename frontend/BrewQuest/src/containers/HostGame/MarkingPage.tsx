@@ -17,15 +17,24 @@ interface props {
   client: W3CWebSocket;
   livequizhttp: string;
 }
-const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp }: props) => {
+const MarkingPage = ({
+  room,
+  quizId,
+  quizTitle,
+  deleteRoom,
+  client,
+  livequizhttp,
+}: props) => {
   // Message for backend: look at console to know what to do
   // Initialize roundsPerQuiz, questionsPerRound, questionTitle, submittedAnswers from database
   // current
 
-  const [questionTitles, setQuestionTitles] = useState<{question_title:string, question_index:number, round_index:number}[]>(
-    []
-  );
-  const [modelAnswers, setModelAnswers] = useState<{ans:string,round_index:number, question_index:number}[]>([]);
+  const [questionTitles, setQuestionTitles] = useState<
+    { question_title: string; question_index: number; round_index: number }[]
+  >([]);
+  const [modelAnswers, setModelAnswers] = useState<
+    { ans: string; round_index: number; question_index: number }[]
+  >([]);
   const [questionTitle, setQuestionTitle] = useState('');
   const [modelAnswer, setModelAnswer] = useState('');
   // default to 1
@@ -34,31 +43,39 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
 
   // for rendering radio elements (FETCH FROM DATABASE)
   const [roundsPerQuiz, setRoundsPerQuiz] = useState(0);
-  const [questionsPerRound, setQuestionsPerRound] =
-    useState<{ round_index: number, question_count: number }[]>([{ round_index: 0, question_count: 0 }]);
-
+  const [questionsPerRound, setQuestionsPerRound] = useState<
+    { round_index: number; question_count: number }[]
+  >([{ round_index: 0, question_count: 0 }]);
 
   //const [questionButtons, setQuestionButtons] = useState<JSX.Element[]>([<></>]);
 
-  const [submittedAnswers, setSubmittedAnswers] =
-    useState<{ button_id: string, id: number, player_id: number,
-      question_index: number, round_index: number, contents: string}[]>([]);
-  const [submissionElements, setSubmissionElements] = useState<JSX.Element[]>([]);
+  const [submittedAnswers, setSubmittedAnswers] = useState<
+    {
+      button_id: string;
+      id: number;
+      player_id: number;
+      question_index: number;
+      round_index: number;
+      contents: string;
+    }[]
+  >([]);
+  const [submissionElements, setSubmissionElements] = useState<JSX.Element[]>(
+    []
+  );
   // answers object
   // IMPORTANTL: id for each submitted answer to a question, used for HTML element and key
   // player to identify player, which player submitted the answer (might be in different order than id)
   // should fetch each time questionNum or roundNum variable changes, using useEffect
 
-
   // 'QS'+(L/I/null)+'_'+<question index>+'_'+<round index>
 
   const getQuestionsToMark = async () => {
-    const payload = { pin: room }
+    const payload = { pin: room };
 
-    axios.post(livequizhttp + "getQuestionsToMark/", payload)
+    axios
+      .post(livequizhttp + 'getQuestionsToMark/', payload)
       .then((response) => {
-        if (response.data.status == "success") {
-
+        if (response.data.status == 'success') {
           /* structure of response.data.data records: 
 
           * Object { id: number, player_id: number, answer: string, 
@@ -73,53 +90,70 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
           // submittedAnswers type
           // { id: number, player_id: number, question_index: number, round_index: number, contents: string }[]
 
-          response.data.data.forEach((
-            element: {
-              id: number, player_id: number, answer: string,
+          response.data.data.forEach(
+            (element: {
+              id: number;
+              player_id: number;
+              answer: string;
               question: {
-                index: number, prompt: string, answer: string,
-                round_id: { id: number, index: number, title: string }
-              }
+                index: number;
+                prompt: string;
+                answer: string;
+                round_id: { id: number; index: number; title: string };
+              };
             }) => {
-            
-            setSubmittedAnswers(prev => [...prev,
-            {
-              button_id: 'QS' + "_" + element.question.index + "_" + element.question.round_id.index,
-              id: element.id, player_id: element.player_id, question_index: element.question.index,
-              round_index: element.question.round_id.index, contents: element.answer
-            }]);
-            setModelAnswers(prev => [...prev,{
-              ans: element.answer, round_index: element.question.round_id.index, question_index: element.question.index
-            }])
+              setSubmittedAnswers((prev) => [
+                ...prev,
+                {
+                  button_id:
+                    'QS' +
+                    '_' +
+                    element.question.index +
+                    '_' +
+                    element.question.round_id.index,
+                  id: element.id,
+                  player_id: element.player_id,
+                  question_index: element.question.index,
+                  round_index: element.question.round_id.index,
+                  contents: element.answer,
+                },
+              ]);
+              setModelAnswers((prev) => [
+                ...prev,
+                {
+                  ans: element.answer,
+                  round_index: element.question.round_id.index,
+                  question_index: element.question.index,
+                },
+              ]);
 
-            setQuestionTitles(prev => [...prev, {
-              question_title: element.question.prompt, question_index: element.question.index, round_index: element.question.round_id.index
-            }])
-
-          });
+              setQuestionTitles((prev) => [
+                ...prev,
+                {
+                  question_title: element.question.prompt,
+                  question_index: element.question.index,
+                  round_index: element.question.round_id.index,
+                },
+              ]);
+            }
+          );
 
           console.log(response.data.data);
-        }
-        else {
+        } else {
           console.log(response.data.message);
         }
 
-
         //setSubmittedAnswers(response.data);
-
-      }).catch((error) => {
-        console.log(error);
       })
+      .catch((error) => {
+        console.log(error);
+      });
     console.log(submittedAnswers);
-
-  }
-
+  };
 
   useEffect(() => {
-
     fetchQuestionsToMark();
-  }, [])
-
+  }, []);
 
   const fetchQuestionsToMark = async () => {
     client.onmessage = async (m: { data: unknown }) => {
@@ -133,70 +167,48 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
         if (dataFromServer) {
           console.log(dataFromServer.action);
           switch (dataFromServer.action) {
-            case "questionsToMark":
+            case 'ClientSubmittedAnswer':
               fetchQuestionsToMark();
               break;
-
           }
         }
       }
     };
-    const payload = { pin: room }
+    const payload = { pin: room };
 
-    axios.post(livequizhttp + "getRoundCount/", payload)
+    axios.post(livequizhttp + 'getRoundCount/', payload).then((response) => {
+      if (response.data.status == 'success') {
+        setRoundsPerQuiz(response.data.rounds);
+      } else {
+        console.log(response.data.message);
+      }
+    });
+
+    axios
+      .post(livequizhttp + 'getQuestionCountPerRound', payload)
       .then((response) => {
-        if (response.data.status == "success") {
-
-          setRoundsPerQuiz(response.data.rounds);
-        }
-        else {
-          console.log(response.data.message);
-        }
-
-      })
-
-    axios.post(livequizhttp + "getQuestionCountPerRound", payload)
-      .then((response) => {
-        if (response.data.status == "success") {
+        if (response.data.status == 'success') {
           // not sure why it wasnt working before i did this
           // Reuben dont touch this or ill chop ur balls off
-          setQuestionsPerRound(prevQuestions => [...prevQuestions, ...response.data.data]);
+          setQuestionsPerRound((prevQuestions) => [
+            ...prevQuestions,
+            ...response.data.data,
+          ]);
           setQuestionsPerRound(response.data.data);
           //END
-
-        }
-        else {
+        } else {
           console.log(response.data.message);
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
       });
-///////////////////////////////////////////////////////////////////
-    /* for testing only */
 
-    await axios.post(livequizhttp + "createQuestionsToMark/", payload)
-      .then((response) => {
-        if (response.data.status == "success") {
-          console.log(response.data);
-        }
-        else {
-          console.log(response.data.message);
-        }
-
-      }).catch((error) => {
-
-        console.log(error);
-      })
-    /* for testing only */
-////////////////////////////////////////////////////////////////////
     await getQuestionsToMark();
   };
 
-
-
   // when roundNum is changed
   useEffect(() => {
-
     //initializes to check QS0 after first render and every time roundNum changes
     setQuestionNum(0);
     const elementQS1 = document.getElementById(
@@ -205,7 +217,6 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
     if (elementQS1) {
       elementQS1.checked = true;
     }
-
   }, [roundNum]);
 
   //when questionNum is changed
@@ -215,16 +226,15 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
     );
   }, [questionNum]);
 
-
   const getNumberOfQuestions = () => {
     let n = 0;
-    questionsPerRound.forEach(element => {
+    questionsPerRound.forEach((element) => {
       if (element.round_index === roundNum) {
-        n = element.question_count
+        n = element.question_count;
       }
     });
     return n;
-  }
+  };
 
   // render round selection elements
   const roundSelection = [];
@@ -249,40 +259,49 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
       prevSubmittedAnswers.filter((answer) => answer.id !== element.id)
     );
   };
-useEffect(() => {
-  const components: JSX.Element[] = [];
-  submittedAnswers.forEach((submittedAnswer) => {
-    if (submittedAnswer.question_index === questionNum && submittedAnswer.round_index === roundNum) {
-      components.push(<SubmittedAnswer
-        roundNum={roundNum}
-        questionNum={questionNum}
-        submittedAnswer={submittedAnswer}
-        handleDelete={handleDelete}
-        key={submittedAnswer.id}
-        client = {client}
-        livequizhttp = {livequizhttp}
-        room = {room}
-      ></SubmittedAnswer>)
-    }
-  })
-  setSubmissionElements(components)
-  console.log("round", roundNum, "question", questionNum)
-  questionTitles.forEach((question) => {
-    
-    if (Number(question.question_index) === Number(questionNum) && Number(question.round_index) === Number(roundNum)) {
-      console.log(question.question_index, question.round_index)
-      console.log(question)
-      setQuestionTitle(question.question_title)
-    }
-  })
-  modelAnswers.forEach((modelAnswer) => {
-    if (Number(modelAnswer.question_index) === Number(questionNum) && Number(modelAnswer.round_index) === Number(roundNum)) {
-      setModelAnswer(modelAnswer.ans)
-    }
-  })
-}, [submittedAnswers, roundNum, questionNum])
+  useEffect(() => {
+    const components: JSX.Element[] = [];
+    submittedAnswers.forEach((submittedAnswer) => {
+      if (
+        submittedAnswer.question_index === questionNum &&
+        submittedAnswer.round_index === roundNum
+      ) {
+        components.push(
+          <SubmittedAnswer
+            roundNum={roundNum}
+            questionNum={questionNum}
+            submittedAnswer={submittedAnswer}
+            handleDelete={handleDelete}
+            key={submittedAnswer.id}
+            client={client}
+            livequizhttp={livequizhttp}
+            room={room}
+          ></SubmittedAnswer>
+        );
+      }
+    });
+    setSubmissionElements(components);
+    console.log('round', roundNum, 'question', questionNum);
+    questionTitles.forEach((question) => {
+      if (
+        Number(question.question_index) === Number(questionNum) &&
+        Number(question.round_index) === Number(roundNum)
+      ) {
+        console.log(question.question_index, question.round_index);
+        console.log(question);
+        setQuestionTitle(question.question_title);
+      }
+    });
+    modelAnswers.forEach((modelAnswer) => {
+      if (
+        Number(modelAnswer.question_index) === Number(questionNum) &&
+        Number(modelAnswer.round_index) === Number(roundNum)
+      ) {
+        setModelAnswer(modelAnswer.ans);
+      }
+    });
+  }, [submittedAnswers, roundNum, questionNum]);
   // render submitted answer elements
-  
 
   const toggleRoundDpdn = () => {
     const roundDpdnMenu = document.getElementById('round-dpdn-menu');
@@ -293,7 +312,7 @@ useEffect(() => {
 
   return (
     <div className='marking-page-div'>
-      <Link to="/">
+      <Link to='/'>
         <BackButton onClick={deleteRoom} />
       </Link>
       <h1 className='branding-heading'>BrewQuest</h1>
@@ -317,8 +336,18 @@ useEffect(() => {
           />
         </div>
       </div>
-      <h2 className='marked-question'><u><b>Question:</b></u> {questionTitle}</h2>
-      <h2 className='marked-question'><u><b>model Answer:</b></u> {modelAnswer}</h2>
+      <h2 className='marked-question'>
+        <u>
+          <b>Question:</b>
+        </u>{' '}
+        {questionTitle}
+      </h2>
+      <h2 className='marked-question'>
+        <u>
+          <b>model Answer:</b>
+        </u>{' '}
+        {modelAnswer}
+      </h2>
       {/* arrows to indicate swipe */}
       {/* <div className="arrow-guide left-arrow">&#8592;</div>
             <div className="arrow-guide right-arrow">&#8594;</div> */}
