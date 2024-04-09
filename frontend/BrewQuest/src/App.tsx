@@ -25,21 +25,9 @@ function App() {
           <Route path='/quizEdit' element={<QuizEdit />} />
           <Route path='/register' element={<Register />} />
           <Route path='/host/*' element={<Host />} />
-          <Route path='/channel' element={<Channel />} />
           <Route path='/gamepin' element={<GamePin />} />
           <Route path='/game' element={<ClientGame />} />
           <Route path='/editprofile' element={<EditProfile />} />
-          <Route
-            path='/gamepin'
-            element={
-              <GamePin
-                room={room}
-                name={name}
-                setRoom={setRoom}
-                setName={setName}
-              />
-            }
-          />
         </Routes>
       </AuthProvider>
     </>
