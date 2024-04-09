@@ -446,7 +446,33 @@ def markQuestionRight(request):
     query.delete()
     return JsonResponse({'status': 'success', 'message': 'Question marked right'})
     
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))   
+def getModelAnswersANDQuestionsTitles(request):
+    # Get request body
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    pin = body['pin']
+    room = Room.objects.filter(pin=pin)
+    # if there is no room that exists then return error
+    if not room:
+        return JsonResponse({'status': 'failed', 'message': 'Room does not exist'})
+    room = room[0]
+    if not room.host_id.user_id == request.user.id:
+        return JsonResponse({'status': 'failed', 'message': 'You are not the host of this room'})
     
+    quiz = Quiz.objects.filter(id=room.quiz_id)
+    if not quiz.exists():
+        return JsonResponse({'status': 'failed', 'message': 'Quiz does not exist'})
+    quiz = quiz[0]
+
+    rounds = Round.objects.filter(quiz_id=quiz.id)
+    for r in rounds:
+        print(r.index)
+        questions = Question.objects.filter(round_id=r.id)
+        for question in questions:
+            pass
+    return JsonResponse({'status': 'success', 'message': 'Questions created'})
 
 
     

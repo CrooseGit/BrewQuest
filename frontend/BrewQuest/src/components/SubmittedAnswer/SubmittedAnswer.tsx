@@ -151,9 +151,7 @@ const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum, 
         answerElement?.addEventListener("mouseleave",handleTouchEnd);
     },[]);
     const returnedComponent = () => {
-        //console.log(Number(roundNum))
-        //console.log(submittedAnswer.round_index)
-        //console.log(submittedAnswer)
+        
         const comp = Number(roundNum) === Number(submittedAnswer.round_index) && Number(questionNum) === Number(submittedAnswer.question_index)
         if (comp) {
             return (

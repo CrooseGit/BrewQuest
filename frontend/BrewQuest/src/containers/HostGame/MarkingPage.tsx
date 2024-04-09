@@ -22,16 +22,18 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
   // Initialize roundsPerQuiz, questionsPerRound, questionTitle, submittedAnswers from database
   // current
 
-  const [questionTitle, setQuestionTitle] = useState(
-    'The selected question to be swiped on (left or right)'
+  const [questionTitles, setQuestionTitles] = useState<{question_title:string, question_index:number, round_index:number}[]>(
+    []
   );
-  const [modelAnswer, setModelAnswer] = useState('Model Answer: 0');
+  const [modelAnswers, setModelAnswers] = useState<{ans:string,round_index:number, question_index:number}[]>([]);
+  const [questionTitle, setQuestionTitle] = useState('');
+  const [modelAnswer, setModelAnswer] = useState('');
   // default to 1
-  const [roundNum, setRoundNum] = useState(1);
+  const [roundNum, setRoundNum] = useState(0);
   const [questionNum, setQuestionNum] = useState(0);
 
   // for rendering radio elements (FETCH FROM DATABASE)
-  const [roundsPerQuiz, setRoundsPerQuiz] = useState(3);
+  const [roundsPerQuiz, setRoundsPerQuiz] = useState(0);
   const [questionsPerRound, setQuestionsPerRound] =
     useState<{ round_index: number, question_count: number }[]>([{ round_index: 0, question_count: 0 }]);
 
@@ -39,7 +41,8 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
   //const [questionButtons, setQuestionButtons] = useState<JSX.Element[]>([<></>]);
 
   const [submittedAnswers, setSubmittedAnswers] =
-    useState<{ button_id: string, id: number, player_id: number, question_index: number, round_index: number, contents: string }[]>([]);
+    useState<{ button_id: string, id: number, player_id: number,
+      question_index: number, round_index: number, contents: string}[]>([]);
   const [submissionElements, setSubmissionElements] = useState<JSX.Element[]>([]);
   // answers object
   // IMPORTANTL: id for each submitted answer to a question, used for HTML element and key
@@ -77,19 +80,21 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
                 index: number, prompt: string, answer: string,
                 round_id: { id: number, index: number, title: string }
               }
-            }
-          ) => {
-            console.log({
-              button_id: 'QS' + "_" + element.question.index + "_" + element.question.round_id.index,
-              id: element.id, player_id: element.player_id, question_index: element.question.index,
-              round_index: element.question.round_id.index, contents: element.answer
-            });
+            }) => {
+            
             setSubmittedAnswers(prev => [...prev,
             {
               button_id: 'QS' + "_" + element.question.index + "_" + element.question.round_id.index,
               id: element.id, player_id: element.player_id, question_index: element.question.index,
               round_index: element.question.round_id.index, contents: element.answer
             }]);
+            setModelAnswers(prev => [...prev,{
+              ans: element.answer, round_index: element.question.round_id.index, question_index: element.question.index
+            }])
+
+            setQuestionTitles(prev => [...prev, {
+              question_title: element.question.prompt, question_index: element.question.index, round_index: element.question.round_id.index
+            }])
 
           });
 
@@ -166,7 +171,7 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
       }).catch((error) => {
         console.log(error);
       });
-
+///////////////////////////////////////////////////////////////////
     /* for testing only */
 
     await axios.post(livequizhttp + "createQuestionsToMark/", payload)
@@ -183,7 +188,7 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
         console.log(error);
       })
     /* for testing only */
-
+////////////////////////////////////////////////////////////////////
     await getQuestionsToMark();
   };
 
@@ -261,6 +266,20 @@ useEffect(() => {
     }
   })
   setSubmissionElements(components)
+  console.log("round", roundNum, "question", questionNum)
+  questionTitles.forEach((question) => {
+    
+    if (Number(question.question_index) === Number(questionNum) && Number(question.round_index) === Number(roundNum)) {
+      console.log(question.question_index, question.round_index)
+      console.log(question)
+      setQuestionTitle(question.question_title)
+    }
+  })
+  modelAnswers.forEach((modelAnswer) => {
+    if (Number(modelAnswer.question_index) === Number(questionNum) && Number(modelAnswer.round_index) === Number(roundNum)) {
+      setModelAnswer(modelAnswer.ans)
+    }
+  })
 }, [submittedAnswers, roundNum, questionNum])
   // render submitted answer elements
   
@@ -299,7 +318,7 @@ useEffect(() => {
         </div>
       </div>
       <h2 className='marked-question'><u><b>Question:</b></u> {questionTitle}</h2>
-      <h2 className='marked-question'><u><b>modelAnswer:</b></u> {modelAnswer}</h2>
+      <h2 className='marked-question'><u><b>model Answer:</b></u> {modelAnswer}</h2>
       {/* arrows to indicate swipe */}
       {/* <div className="arrow-guide left-arrow">&#8592;</div>
             <div className="arrow-guide right-arrow">&#8594;</div> */}
