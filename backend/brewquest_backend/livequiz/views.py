@@ -53,7 +53,7 @@ def getLeaderboard(request):
     
     
     pin = body['pin']
-    room = Room.objects.get(pin=pin)
+    room = Room.objects.filter(pin=pin)[0]
     
     players = Player.objects.filter(room_id=room).order_by('-score').values()
     p_serializer = PlayerBaseSerializer(players,many=True)
@@ -141,6 +141,8 @@ def getLobbyPlayerStates(request):
     #if player_ids:
     serializer = PlayerBaseSerializer(player_ids,many=True) # playernames, scores
     data = {'status': 'success','playerScores': serializer.data}
+    
+    
     # if there are no players in the lobby   
     # else:
     #     data={'status': 'failed', 'message': 'Room does not exist or no players in lobby'}
@@ -186,11 +188,11 @@ Permissions:
 @api_view(['POST'])
 @permission_classes((AllowAny, ))
 def getQuizInfo(request):
-    body_unicode = request.body.decode('utf-8')
+    body_unicode = request.body.decode('utf-8') # {"pin": String, "playername": String}
     body = json.loads(body_unicode)
 
     pin = body['pin']
-    playername = body['playername']
+
     room_id = Room.objects.filter(pin=pin)
 
     if not room_id.exists():
@@ -198,7 +200,6 @@ def getQuizInfo(request):
     
     quiz = Room.objects.filter(pin=pin)[0].quiz_id
     
-    print("QUIZ_ID "+str(quiz.id))
     round_ids = Round.objects.filter(quiz_id=quiz)
     r_serializer = RoundIDSerializer(round_ids, many=True)
     r_array = list(map(lambda x : x['id'],r_serializer.data))
@@ -234,6 +235,8 @@ def createRoom(request):
 
         # Delete rooms if rooms by same name exists
         print(list(Room.objects.filter(pin=body["pin"])))
+        for room in list(Room.objects.filter(pin=body["pin"])):
+            room.delete()
         Room.objects.filter(pin=body["pin"]).delete()
 
         Room.objects.create(pin=body["pin"], host_id=host_id, 
@@ -279,3 +282,198 @@ def updateRoundData(request):
     return JsonResponse({'status': 'success'})
 
 
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def getQuestionsToMark(request):
+    # Get request body
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    pin = body['pin']
+    room = Room.objects.filter(pin=pin)
+    # if there is no room that exists then return error
+    if not room:
+        return JsonResponse({'status': 'failed', 'message': 'Room does not exist'})
+    room = room[0]
+    if not room.host_id.user_id == request.user.id:
+        return JsonResponse({'status': 'failed', 'message': 'You are not the host of this room'})
+
+    QuestionAnswers = HostToMarkSerializer(HostToMark.objects.filter(room=room), many=True)
+
+    if not QuestionAnswers.data:
+        return JsonResponse({'status': 'failed', 'message': 'No questions to mark'})
+    
+    data = {'status': 'success', 'data': QuestionAnswers.data}
+    return JsonResponse(data, safe=False)
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def getRoundCount(request):
+    # Get request body
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    pin = body['pin']
+    room = Room.objects.filter(pin=pin)
+    # if there is no room that exists then return error
+    if not room:
+        return JsonResponse({'status': 'failed', 'message': 'Room does not exist'})
+    room = room[0]
+
+    # if there is a room that exists then return the number of rounds
+    rounds = Round.objects.filter(quiz_id=room.quiz_id).count()
+    
+    return JsonResponse({'status': 'success', 'rounds': rounds})
+
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def getQuestionCountPerRound(request):
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    pin = body['pin']
+    room = Room.objects.filter(pin=pin)
+    # if there is no room that exists then return error
+    if not room:
+        return JsonResponse({'status': 'failed', 'message': 'Room does not exist'})
+    room = room[0]
+
+    questionsPerRound = []
+    rounds = Round.objects.filter(quiz_id=room.quiz_id)
+    for round in rounds:
+        questions = Question.objects.filter(round_id=round.id)
+        questionsPerRound.append(
+            {"round_index":int(round.index), "question_count":int(len(questions))}
+            )
+        
+    return JsonResponse({'status': 'success', 'data': questionsPerRound})
+
+# for testing
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))
+def createQuestionsToMark(request):
+    # Get request body
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    pin = body['pin']
+    room = Room.objects.filter(pin=pin)
+    # if there is no room that exists then return error
+    if not room:
+        return JsonResponse({'status': 'failed', 'message': 'Room does not exist'})
+    room = room[0]
+    if not room.host_id.user_id == request.user.id:
+        return JsonResponse({'status': 'failed', 'message': 'You are not the host of this room'})
+    import random
+    possibleAnswers = ["11111111","22222222","33333333","44444444","55555555","66666666","77777777","88888888","99999999"]
+    rounds = Round.objects.filter(quiz_id=room.quiz_id)
+    
+    for r in rounds:
+        print(r.index)
+        questions = Question.objects.filter(round_id=r)
+        for question in questions:
+
+            players = Player.objects.filter(room_id=room)
+            random_players = random.choice(players)
+            HostToMark.objects.create(room=room, 
+                                      player=Player.objects.filter(room_id=room)[0], 
+                                      question=question, 
+                                      answer=random.choice(possibleAnswers))
+            HostToMark.objects.create(room=room, 
+                                      player=Player.objects.filter(room_id=room)[0], 
+                                      question=question, 
+                                      answer=random.choice(possibleAnswers))
+            HostToMark.objects.create(room=room, 
+                                      player=Player.objects.filter(room_id=room)[0], 
+                                      question=question, 
+                                      answer=random.choice(possibleAnswers))
+        
+    return JsonResponse({'status': 'success', 'message': 'Questions created'})
+#END
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))      
+def markQuestionWrong(request):
+    # Get request body
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    pin = body['pin']
+    q_id =body['questionToMark_id']
+    room = Room.objects.filter(pin=pin)
+    # question to mark
+    query = HostToMark.objects.filter(id=q_id)
+    # if there is no room that exists then return error
+    if not room:
+        return JsonResponse({'status': 'failed', 'message': 'Room does not exist'})
+    room = room[0]
+    if not query.exists():
+        return JsonResponse({'status': 'failed', 'message': 'Question does not exist'})
+    if not room.host_id.user_id == request.user.id:
+        return JsonResponse({'status': 'failed', 'message': 'You are not the host of this room'})
+    query[0].delete()
+    return JsonResponse({'status': 'success', 'message': 'Question marked wrong'})
+
+
+    
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))      
+def markQuestionRight(request):
+
+    # Get request body
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    pin = body['pin']
+    room = Room.objects.filter(pin=pin)
+    # question to mark
+    query = HostToMark.objects.filter(id=body['questionToMark_id'])
+    player_id = body['player']
+
+    # if there is no room that exists then return error
+    if not room:
+        return JsonResponse({'status': 'failed', 'message': 'Room does not exist'})
+    room = room[0]
+
+    if not query.exists():
+        return JsonResponse({'status': 'failed', 'message': 'Question does not exist'})
+    query = query[0]
+
+    if not room.host_id.user_id == request.user.id:
+        return JsonResponse({'status': 'failed', 'message': 'You are not the host of this room'})
+    
+    player = Player.objects.filter(id=player_id)
+    if not player.exists():
+        return JsonResponse({'status': 'failed', 'message': 'Player does not exist'})
+    
+    player = player[0]
+    player.score = player.score + 1
+    player.save()
+    query.delete()
+    return JsonResponse({'status': 'success', 'message': 'Question marked right'})
+    
+@api_view(['POST'])
+@permission_classes((IsAuthenticated, ))   
+def getModelAnswersANDQuestionsTitles(request):
+    # Get request body
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    pin = body['pin']
+    room = Room.objects.filter(pin=pin)
+    # if there is no room that exists then return error
+    if not room:
+        return JsonResponse({'status': 'failed', 'message': 'Room does not exist'})
+    room = room[0]
+    if not room.host_id.user_id == request.user.id:
+        return JsonResponse({'status': 'failed', 'message': 'You are not the host of this room'})
+    
+    quiz = Quiz.objects.filter(id=room.quiz_id)
+    if not quiz.exists():
+        return JsonResponse({'status': 'failed', 'message': 'Quiz does not exist'})
+    quiz = quiz[0]
+
+    rounds = Round.objects.filter(quiz_id=quiz.id)
+    for r in rounds:
+        print(r.index)
+        questions = Question.objects.filter(round_id=r.id)
+        for question in questions:
+            pass
+    return JsonResponse({'status': 'success', 'message': 'Questions created'})
+
+
+    
+    

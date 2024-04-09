@@ -12,4 +12,10 @@ urlpatterns = [
     path('clientGetRound/', views.clientGetRound, name='clientGetRound'),
     path('getLeaderboard/', views.getLeaderboard, name='getLeaderboard'),
     path('submitAnswer/', views.submitAnswer, name='submitAnswer'),
+    path('getQuestionsToMark/', views.getQuestionsToMark, name='getQuestionsToMark'),
+    path('createQuestionsToMark/', views.createQuestionsToMark, name='createQuestionsToMark'),
+    path('getRoundCount/', views.getRoundCount, name='getRoundCount'),
+    path('getQuestionCountPerRound', views.getQuestionCountPerRound, name='getQuestionCountPerRound'),
+    path('markQuestionWrong/', views.markQuestionWrong, name='markQuestionWrong'),
+    path('markQuestionRight/', views.markQuestionRight, name='markQuestionRight'),
 ]
