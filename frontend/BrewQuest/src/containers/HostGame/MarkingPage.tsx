@@ -315,7 +315,7 @@ const MarkingPage = ({
       <Link to='/'>
         <BackButton onClick={deleteRoom} />
       </Link>
-      <h1 className='branding-heading'>BrewQuest</h1>
+      <h1 className='branding-heading text'>BrewQuest</h1>
       <div className='round-questions'>
         {/* to fetch from database */}
         <div className='round-dpdn'>
