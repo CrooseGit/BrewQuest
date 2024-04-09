@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react'
 import axios from 'axios';
+import ip from '../info';
 
 const AuthContext = createContext<any>(null);
 
@@ -20,7 +21,7 @@ export const AuthProvider : React.FC<props> = ({children}) => {
             'Authorization'
         ] = `Bearer ${localStorage.getItem('access_token')}`;
         const response = await axios.post(
-        'http://localhost:8000/token/refresh/',
+        'http://' + ip + ':8000/token/refresh/',
         { refresh: localStorage.getItem('refresh_token') },
         {
             headers: {

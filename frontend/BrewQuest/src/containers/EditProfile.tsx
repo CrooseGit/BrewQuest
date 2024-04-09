@@ -5,7 +5,7 @@ import { MouseEvent, useContext, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
-
+import ip from '../info';
 
 const EditProfile = () => {
     const [email, setEmail] = useState('');
@@ -47,7 +47,7 @@ const EditProfile = () => {
             if (!(email == '')){
                 // make an update call to the API URL for email
                 await axios
-                .put('http://localhost:8000/' + `api/change_email/${id}`, {
+                .put('http://' + ip + ':8000/' + `api/change_email/${id}`, {
                     email: email
                 }).then(async (response) => {
                     alert("Email Successfully Changed")
@@ -58,7 +58,7 @@ const EditProfile = () => {
             if (!(username == '')){
                 // make an update call to the API URL for username
                 await axios
-                .put('http://localhost:8000/' + `api/change_username/${id}`, {
+                .put('http://' + ip + ':8000/' + `api/change_username/${id}`, {
                     username: username
                 }).then(async (response) => {
                     alert("Username Successfully Changed")
@@ -73,7 +73,7 @@ const EditProfile = () => {
                 // update password
                 let passwordmatches = false;
                 await axios
-                .post('http://localhost:8000/' + `api/check_password/${id}`, {
+                .post('http://' + ip + ':8000/' + `api/check_password/${id}`, {
                     currentPassword: currentPassword
                 }).then(async (response) => {
                     if(response.data["Response"] === "Password matches"){
@@ -85,7 +85,7 @@ const EditProfile = () => {
                 if (passwordmatches){
                     if (newPassword === confirmNewPassword){
                         await axios
-                        .put('http://localhost:8000/' + `api/change_password/${id}`, {
+                        .put('http://' + ip + ':8000/' + `api/change_password/${id}`, {
                             password: newPassword
                         }).then(async (response) => {
                             alert("Password Successfully Changed")
