@@ -91,8 +91,12 @@ const ClientGame = () => {
             livequizhttp={livequizhttp}
             pin={room}
             timesUp={() => {
+              if (roundIndex + 1 == roundIds.length) {
+                setGameOver(true);
+              } else {
+                setRoundIndex(roundIndex + 1);
+              }
               setCurrentPage(GAME_PAGE.LeaderBoard);
-              setRoundIndex(roundIndex + 1);
             }}
             playername={name}
             client={client}

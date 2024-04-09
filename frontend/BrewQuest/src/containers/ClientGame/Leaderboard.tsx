@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
+import { useNavigate } from 'react-router-dom';
 import '../index.css';
 import axios from 'axios';
 interface props {
@@ -23,6 +24,8 @@ function Leaderboard({
   nextRound,
 }: props) {
   const [players, setPlayers] = useState<Player[]>([]);
+
+  const navigate = useNavigate();
 
   // For if the player disconnects, or leaves
   const removePlayer = async () => {
@@ -103,6 +106,11 @@ function Leaderboard({
               nextRound();
               break;
             }
+            case 'MarkingFinished': {
+              console.log('MarkingFinished');
+
+              break;
+            }
           }
         }
       }
@@ -166,7 +174,14 @@ function Leaderboard({
               </div>
             </div>
             <div className='p-2 flex-grow-1 player-bubble-name'>
-              <h4>{player.playername}</h4>
+              <div className='d-flex justify-content-between'>
+                <div className='p-2'>
+                  <h4>{player.playername}</h4>
+                </div>
+                <div className='p-2'>
+                  <h4>{player.score}</h4>
+                </div>
+              </div>
             </div>
           </div>
         ))}
@@ -176,8 +191,10 @@ function Leaderboard({
           <button
             type='button'
             className='btn btn-block btn-lg'
-            disabled={gameOver}
-            onClick={nextRound}
+            disabled={!gameOver}
+            onClick={() => {
+              navigate('/');
+            }}
           >
             {gameOver ? <>Return To Menu</> : <>Waiting for host</>}
           </button>
