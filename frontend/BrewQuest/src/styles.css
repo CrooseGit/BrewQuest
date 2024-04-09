@@ -23,7 +23,7 @@ body {
 
 .shown-options{
   position: absolute;
-  top: 35px;
+  top: 5px;
   left: -140px;
   height: fit-content;
   width: fit-content;
@@ -68,7 +68,8 @@ body {
 
 .option-icon {
   width: 20px;
-  height: auto;  
+  height: auto;
+  margin-top: 0; 
 }
 
 .option-button{
@@ -181,7 +182,10 @@ img {
   width: auto;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 150px;
+}
+
+.beer-img {
+  margin-top: 150px; /*PAIN*/
 }
 
 /*COMPONENTS*/
@@ -189,6 +193,7 @@ img {
 .back_icon {
     width: 1.5em;
     height: auto;
+    margin-top: 0;
   }
   
 /*Navbar.tsx*/

@@ -40,16 +40,18 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
 
   return (
     <div>
+      <button
+        tabIndex={0}
+        className='option-button'
+        onClick={toggleOptionDropdown}
+      >
+        {' '}
+        {/* tab index for dropdown menu to appear in safari, temporary fix */}
+        <img src={option_image} className='option-icon' />
+      </button>
+
       <div className='option-dropdown'>
-        <button
-          tabIndex={0}
-          className='option-button'
-          onClick={toggleOptionDropdown}
-        >
-          {' '}
-          {/* tab index for dropdown menu to appear in safari, temporary fix */}
-          <img src={option_image} className='option-icon' />
-        </button>
+    
         {optionDropdownVisible && (
           <div className='shown-options'>
             <button

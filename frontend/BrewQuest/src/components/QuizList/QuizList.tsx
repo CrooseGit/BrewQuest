@@ -76,10 +76,12 @@ const QuizList = () => {
 
   return (
     <div className='boxContainer'>
+      
       <div className='btn-group-vertical quiz-button-group' role='group'>
         <label className='btn quiz-list-head'>Quizzes</label>
         {quizElements}
       </div>
+
       <button
         type='button'
         onClick={createQuiz}
