@@ -14,18 +14,18 @@ body {
 
 /* MarkingPage.tsx and QuestionButtonsHostMarking.tsx */
 
-.question-selection-input{
+.question-selection-input {
   display: none; /* hide radio input button*/
 }
 
-.marking-page-div{
+.marking-page-div {
   /* make unscrollable */
   width: 100vw;
   height: 100vh;
   /* overflow: hidden; */
 }
 
-.arrow-guide{
+.arrow-guide {
   position: relative;
   top: 67px;
   font-weight: normal;
@@ -36,20 +36,20 @@ body {
   z-index: 1; /* above other elements*/
 }
 
-.left-arrow{
+.left-arrow {
   border-radius: 15px 1px 1px 15px;
   margin-left: 0;
   background-color: #bb1818;
 }
 
-.right-arrow{
+.right-arrow {
   float: right;
   border-radius: 1px 15px 15px 1px;
   margin-right: 0;
   background-color: #49ab2e;
 }
 
-.submitted-answers-list{
+.submitted-answers-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -59,7 +59,7 @@ body {
   max-width: 400px;
 }
 
-.submitted-answer{
+.submitted-answer {
   background-color: #6a8d73;
   display: block;
   width: 100%;
@@ -71,19 +71,19 @@ body {
   box-shadow: 0 12px 17px 0 rgba(0, 0, 0, 0.4);
 }
 
-.branding-heading{
+.branding-heading {
   font-size: 28px;
   text-align: center;
   margin-top: 20px;
   margin-bottom: 30px;
 }
 
-.round-dpdn{
+.round-dpdn {
   position: relative;
   display: inline-block;
 }
 
-.round-dpdn-menu button{
+.round-dpdn-menu button {
   text-align: left;
   border: none;
   margin-bottom: 5px;
@@ -91,10 +91,10 @@ body {
   border-radius: 5px;
   background-color: #6a8d73;
   color: white;
-  font-family: "Quicksand";
+  font-family: 'Quicksand';
 }
 
-.round-dpdn-menu{
+.round-dpdn-menu {
   position: absolute;
   display: none; /* default to hide */
   width: max-content;
@@ -103,27 +103,28 @@ body {
   overflow: auto;
 }
 
-.show-menu{ /* show dropdown menu */
+.show-menu {
+  /* show dropdown menu */
   display: block;
 }
 
-.round-dpdn-btn{
+.round-dpdn-btn {
   font-size: 18px;
   margin-bottom: 15px;
   border: none;
   border-radius: 5px;
   background-color: #6a8d73;
   color: white;
-  font-family: "Quicksand";
+  font-family: 'Quicksand';
 }
 
-.round-questions{
+.round-questions {
   width: 94%;
   margin: 0px auto;
   margin-bottom: 20px;
 }
 
-.marked-question{
+.marked-question {
   font-weight: normal;
   font-size: 25px;
   margin: 0px auto;
@@ -132,10 +133,10 @@ body {
   text-align: center;
 }
 
-.question-selection-label{
+.question-selection-label {
   background-color: #212922;
   color: white;
-  font-family: "Quicksand";
+  font-family: 'Quicksand';
   border-radius: 25px;
   text-align: center;
   width: 50px;
@@ -148,11 +149,11 @@ body {
   transition-duration: 0.2s;
 }
 
-.question-selection-input:checked + .question-selection-label{
+.question-selection-input:checked + .question-selection-label {
   background-color: #6a8d73;
 }
 
-.question-selection-container{
+.question-selection-container {
   background-color: rgb(80, 37, 15);
   padding: 10px 8px;
   padding-bottom: 10px;
@@ -661,3 +662,37 @@ body {
   margin-top: 30px;
 }
 /*  End  */
+
+/* leaderboard css starts */
+.button-box-container {
+  height: 3rem;
+}
+.button-box-container div {
+  margin-top: 2rem;
+}
+.player-bubble-container {
+  margin-top: 2rem;
+  height: 70%;
+  overflow: auto;
+  border-radius: 1rem;
+}
+
+.player-bubble {
+  background-color: #6a8d73;
+  border-radius: 3rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+  box-shadow: #0808082b 0.5rem 0.5rem;
+}
+
+.player-bubble-name {
+  margin-left: 2rem;
+}
+.player-bubble-index {
+  background-color: #4b4b4b;
+  border-radius: 3rem 0 0 3rem;
+  height: 4rem;
+  box-shadow: #0808082b 0.2rem 0;
+}
+
+/* End */

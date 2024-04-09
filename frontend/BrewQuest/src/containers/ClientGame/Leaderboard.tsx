@@ -159,7 +159,7 @@ function Leaderboard({
   return (
     <>
       <div className='text-center'>
-        <h1 className='display-1'>Leaderboard</h1>
+        <h1 className='display-1 text'>Leaderboard</h1>
       </div>
 
       <div className='container player-bubble-container'>

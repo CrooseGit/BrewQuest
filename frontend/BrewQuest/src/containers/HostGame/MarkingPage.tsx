@@ -336,13 +336,13 @@ const MarkingPage = ({
           />
         </div>
       </div>
-      <h2 className='marked-question'>
+      <h2 className='marked-question text'>
         <u>
           <b>Question:</b>
         </u>{' '}
         {questionTitle}
       </h2>
-      <h2 className='marked-question'>
+      <h2 className='marked-question text'>
         <u>
           <b>model Answer:</b>
         </u>{' '}
