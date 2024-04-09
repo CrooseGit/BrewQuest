@@ -12,16 +12,14 @@ body {
 
 /* General ends */
 
-
-
 /* QuizListPage */
 /* QuizList */
 
-.option-dropdown{
+.option-dropdown {
   position: relative;
 }
 
-.shown-options{
+.shown-options {
   position: absolute;
   top: 5px;
   left: -140px;
@@ -40,15 +38,15 @@ body {
   z-index: 99999999999;
 }
 
-.first-button{
+.first-button {
   border-radius: 3px 3px 0 0;
 }
 
-.last-button{
+.last-button {
   border-radius: 0 0 3px 3px;
 }
 
-.shown-option-button{
+.shown-option-button {
   background-color: #6a8d73;
   color: white;
   width: 160px;
@@ -58,27 +56,27 @@ body {
   border: none;
 }
 
-.shown-option-button:hover{
+.shown-option-button:hover {
   opacity: 75%;
 }
 
-.shown-option-button:active{
+.shown-option-button:active {
   opacity: 50%;
 }
 
 .option-icon {
   width: 20px;
   height: auto;
-  margin-top: 0; 
+  margin-top: 0;
 }
 
-.option-button{
+.option-button {
   margin-bottom: 4px;
   background: none;
   border: none;
 }
 
-.quiz-list-head{
+.quiz-list-head {
   list-style-type: none;
   text-align: left;
   color: white;
@@ -86,24 +84,25 @@ body {
   margin-bottom: 4px;
 }
 
-.quiz-list-head:hover, .quiz-list-head:active{
+.quiz-list-head:hover,
+.quiz-list-head:active {
   color: white !important;
 }
 
-.quiz-item-selection:hover{
+.quiz-item-selection:hover {
   color: rgb(148, 155, 137) !important;
   border-color: rgb(148, 155, 137) !important;
   background-color: #212922 !important;
   position: static; /* to ignore z-index rules for option menu */
 }
 
-.quiz-item-input:checked + .quiz-item-selection{
+.quiz-item-input:checked + .quiz-item-selection {
   background-color: rgb(148, 155, 137);
   color: white;
   border-color: rgb(148, 155, 137);
 }
 
-.quiz-item-selection{
+.quiz-item-selection {
   list-style-type: none;
   text-align: left;
   color: white;
@@ -112,23 +111,23 @@ body {
   margin-bottom: 4px;
 }
 
-.quiz-button-group{
+.quiz-button-group {
   display: block;
   margin: auto;
   margin-top: 20px;
   width: 100%;
   min-width: 300px;
   max-width: 500px;
-  font-family: "Quicksand";
+  font-family: 'Quicksand';
 }
 
 /* HostButton */
-.host-quiz{
+.host-quiz {
   display: block;
   margin: 100px auto auto auto;
   width: 50%;
   max-width: 400px;
-  font-family: "Quicksand";
+  font-family: 'Quicksand';
   font-size: 30px;
 }
 
@@ -147,7 +146,7 @@ body {
 
 /* Landing */
 
-.landing-container{
+.landing-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -159,7 +158,7 @@ body {
 
 .join-btn {
   font-size: 50px;
-  font-family: "Quicksand";
+  font-family: 'Quicksand';
   height: 60%;
   width: 80%;
   display: flex;
@@ -170,7 +169,7 @@ body {
 
 .host-btn {
   font-size: 30px;
-  font-family: "Quicksand";
+  font-family: 'Quicksand';
   height: 10%;
   width: 80%;
   display: flex;
@@ -192,8 +191,8 @@ body {
   background-color: #a3d1c2;
   border-radius: 25px;
 }
-.scrollMenu::-webkit-scrollbar{
-    display: none;
+.scrollMenu::-webkit-scrollbar {
+  display: none;
 }
 
 img {
@@ -211,65 +210,64 @@ img {
 /*COMPONENTS*/
 /*BackButton.tsx*/
 .back_icon {
-    width: 1.5em;
-    height: auto;
-    margin-top: 0;
-  }
-  
+  width: 1.5em;
+  height: auto;
+  margin-top: 0;
+}
+
 /*Navbar.tsx*/
 .text {
-    color: white;
-  }
-  
-  .icon {
-    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(302deg)
-      brightness(109%) contrast(101%);
-  }
-  
+  color: white;
+}
+
+.icon {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(302deg)
+    brightness(109%) contrast(101%);
+}
+
 /*OptionButton.tsx*/
-  .option_icon {
-    width: 2.5em;
-    height: auto;  
-  }
-  
+.option_icon {
+  width: 2.5em;
+  height: auto;
+}
+
 /*QuizList.tsx*/
-  .boxContainer {
-    text-align: center;
-  }
-  .newQuizButton {
-    width: 3.5rem;
-    height: 3.5rem;
-    text-align: center;
-    line-height: 0;
-    color: white;
-    border-radius: 50%;
-  }
-  .newQuizButton:hover {
-    background-color: white !important;
-    color: #6a8d73;
-  }
-  
+.boxContainer {
+  text-align: center;
+}
+.newQuizButton {
+  width: 3.5rem;
+  height: 3.5rem;
+  text-align: center;
+  line-height: 0;
+  color: white;
+  border-radius: 50%;
+}
+.newQuizButton:hover {
+  background-color: white !important;
+  color: #6a8d73;
+}
 
 /*CONTAINERS*/
 
 /*Login.tsx Logout.tsx Register.tsx*/
-  body {
-    margin: 0.2em;
-    background-color: #212922;
-  }
-  h1 {
-    text-align: center;
-  }
-  
-  .text {
-    color: white;
-    font-family: 'Quicksand';
-  }
-  
-  #login-btn {
-    background-color: #6a8d73;
-  }
-  
+body {
+  margin: 0.2em;
+  background-color: #212922;
+}
+h1 {
+  text-align: center;
+}
+
+.text {
+  color: white;
+  font-family: 'Quicksand';
+}
+
+#login-btn {
+  background-color: #6a8d73;
+}
+
 /*QuestionPageClient.tsx*/
 html,
 body {
@@ -499,3 +497,14 @@ body {
 .deleteButton {
   background-color: red !important;
 }
+
+/* Edit Profile.tsx */
+
+.dlt_btn {
+  border-color: lightcoral;
+  background-color: red;
+  color: white;
+  border-radius: 10px;
+  margin-top: 30px;
+}
+/*  End  */
