@@ -196,7 +196,11 @@ function Leaderboard({
               navigate('/');
             }}
           >
-            {gameOver ? <>Return To Menu</> : <>Waiting for host</>}
+            {gameOver ? (
+              <h4 className='text'>Return To Menu</h4>
+            ) : (
+              <h4 className='text'>Waiting for host</h4>
+            )}
           </button>
         </div>
       </div>
