@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import BackButton from '../../components/BackButton/BackButton';
-import '../index.css';
 
 interface Player {
   playername: string;
@@ -67,7 +66,6 @@ const HostLobby = ({
             case 'PlayerLeftLobby':
               updatePlayers();
               break;
-
           }
         }
       }

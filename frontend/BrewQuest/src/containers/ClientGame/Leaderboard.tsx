@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import { useNavigate } from 'react-router-dom';
-import '../index.css';
+
 import axios from 'axios';
 interface props {
   gameOver: boolean;

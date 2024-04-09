@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
-import './QuestionPageClient.css';
 
 interface props {
   quizId: number;
