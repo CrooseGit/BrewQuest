@@ -14,18 +14,6 @@ from rest_framework import generics
 from django.contrib.auth.models import User
 # Create your views here.
 
-# This is a temporary function, just a place holder.
-
-
-@api_view(['GET'])
-def questions(request):
-    quiz = Quiz.objects.last()
-    round_ = Round.objects.get(quiz_id=quiz)
-    time = round_.time
-    questions = Question.objects.filter(round_id=round_)
-    serializer = ClientQuestionSerializer(questions, many=True)
-    data = {'questions': serializer.data, 'time': time, 'round': round_.index}
-    return JsonResponse(data, safe=False)
 
 
 @api_view(['POST'])
@@ -149,9 +137,9 @@ def createQuestion(request):
     round_id = body['round_id']
     r = Round.objects.get(id=round_id)
     print(r.title + " New question added")
-    
+    index = Question.objects.filter(round_id=r).count()
     new_question = Question(prompt="",
-                            answer="", last_changed=timezone.now(), round_id=r, time=30, index=0)
+                            answer="", last_changed=timezone.now(), round_id=r, time=30, index=index)
     new_question.save()
     return Response({'Status': 'Success'})
 

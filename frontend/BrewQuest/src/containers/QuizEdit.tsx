@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import ip from '../info';
 import '../containers/QuizEdit.css';
 
 const QuizEdit = () => {
@@ -39,7 +40,7 @@ const QuizEdit = () => {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .post('http://localhost:8000/api/quizInfo/', { quiz_id: quizId })
+      .post('http://' + ip + ':8000/api/quizInfo/', { quiz_id: quizId })
       .then((response) => {
         const data = response.data;
         setQuizName(data.name);
@@ -69,7 +70,7 @@ const QuizEdit = () => {
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     console.log('roundIds[selectedRoundIndex]' + roundIds[selectedRoundIndex]);
     axios
-      .post('http://localhost:8000/api/getRoundsQuestions/', {
+      .post('http://' + ip + ':8000/api/getRoundsQuestions/', {
         number: selectedRoundIndex,
         r: roundIds,
         round_id: roundIds[selectedRoundIndex],
@@ -102,7 +103,7 @@ const QuizEdit = () => {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .post('http://localhost:8000/api/updateRoundName/', {
+      .post('http://' + ip + ':8000/api/updateRoundName/', {
         round_id: roundIds[selectedRoundIndex],
         name: rounds[selectedRoundIndex],
       })
@@ -124,7 +125,7 @@ const QuizEdit = () => {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .post('http://localhost:8000/api/updateQuizName/', {
+      .post('http://' + ip + ':8000/api/updateQuizName/', {
         quiz_id: quizId,
         name: quizName,
       })
@@ -142,7 +143,7 @@ const QuizEdit = () => {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .post('http://localhost:8000/api/updateQuestion/', {
+      .post('http://' + ip + ':8000/api/updateQuestion/', {
         question_id: questionIds[questionIndex],
         prompt: prompts[questionIndex],
         answer: answers[questionIndex],
@@ -193,7 +194,7 @@ const QuizEdit = () => {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .post('http://localhost:8000/api/createQuestion/', {
+      .post('http://' + ip + ':8000/api/createQuestion/', {
         round_id: roundIds[selectedRoundIndex],
       })
       .then(getRound)
@@ -208,7 +209,7 @@ const QuizEdit = () => {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .post('http://localhost:8000/api/deleteQuestion/', {
+      .post('http://' + ip + ':8000/api/deleteQuestion/', {
         question_id: questionIds[questionIndex],
       })
       .then(getRound)
@@ -227,7 +228,7 @@ const QuizEdit = () => {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .post('http://localhost:8000/api/createRound/', {
+      .post('http://' + ip + ':8000/api/createRound/', {
         quiz_id: quizId,
       })
       .then((response) => {
@@ -249,7 +250,7 @@ const QuizEdit = () => {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .post('http://localhost:8000/api/deleteRound/', {
+      .post('http://' + ip + ':8000/api/deleteRound/', {
         round_id: roundIds[selectedRoundIndex],
       })
       .then(() => {

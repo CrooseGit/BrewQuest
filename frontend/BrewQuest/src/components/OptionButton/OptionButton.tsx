@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import option_image from '../../assets/three_dots.svg';
 import axios from 'axios';
+import ip from '../../info';
 import { Link } from 'react-router-dom';
 
 interface OptionButtonProps {
@@ -20,7 +21,7 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .post('http://localhost:8000/api/deleteQuiz/', { id: quizId })
+      .post('http://' + ip + ':8000/api/deleteQuiz/', { id: quizId })
       .then(reloadFunction)
       .catch((error) => {
         console.log(error);
@@ -31,7 +32,7 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .post('http://localhost:8000/api/duplicateQuiz/', { id: quizId })
+      .post('http://' + ip + ':8000/api/duplicateQuiz/', { id: quizId })
       .then(reloadFunction)
       .catch((error) => {
         console.log(error);

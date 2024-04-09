@@ -1,6 +1,49 @@
 body {
   background-color: #212922;
 }
+/* leaderboard css starts */
+.button-box-container {
+  height: 3rem;
+}
+.button-box-container div {
+  margin-top: 2rem;
+}
+.player-bubble-container {
+  margin-top: 2rem;
+  height: 70%;
+  overflow: auto;
+  border-radius: 1rem;
+}
+
+.player-bubble {
+  background-color: #6a8d73;
+  border-radius: 3rem;
+  height: 4rem;
+  margin-bottom: 1rem;
+  box-shadow: #0808082b 0.5rem 0.5rem;
+}
+
+.player-bubble-name {
+  margin-left: 2rem;
+}
+.player-bubble-index {
+  background-color: #4b4b4b;
+  border-radius: 3rem 0 0 3rem;
+  height: 4rem;
+  box-shadow: #0808082b 0.2rem 0;
+}
+
+.button {
+  background-color: #6a8d73;
+}
+.button:disabled {
+  background-color: #4b4b4b;
+}
+.player-div {
+}
+.player-div :hover {
+  text-decoration: line-through;
+}
 
 .option-dropdown {
   position: relative;

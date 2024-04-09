@@ -1,10 +1,15 @@
 import axios from 'axios';
+import ip from '../../info';
 import { useState, useEffect } from 'react';
 import OptionButton from '../OptionButton/OptionButton';
 import './QuizList.css';
 import '../../containers/index';
 
-const QuizList = () => {
+const QuizList = ({
+  onQuizSelected,
+}: {
+  onQuizSelected: (quiz: { title: string; id: number }) => void;
+}) => {
   // set up items list structure
   // sample quiz array
 
@@ -18,13 +23,12 @@ const QuizList = () => {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .get('http://localhost:8000/api/quizzes/', {
+      .get('http://' + ip + ':8000/api/quizzes/', {
         headers: {
           'Content-Type': 'application/json',
         },
       })
       .then((response) => {
-        console.log(response.data.quizzes);
         setQuizzes(response.data.quizzes);
       })
       .catch((error) => {
@@ -37,7 +41,7 @@ const QuizList = () => {
       'Authorization'
     ] = `Bearer ${localStorage.getItem('access_token')}`;
     axios
-      .post('http://localhost:8000/api/createQuiz/')
+      .post('http://' + ip + ':8000/api/createQuiz/')
       .then(loadQuizzes)
       .catch((error) => {
         console.log(error);
@@ -47,29 +51,32 @@ const QuizList = () => {
     loadQuizzes();
   }, []);
 
-  useEffect(() => {
-    console.log(selectedQuiz);
-  });
-
   const quizElements =
     quizzes &&
     quizzes.map((quizItem) => [
       <input
-        key={'quiz_' + quizItem.id}
+        key={'quiz_' + quizItem.id + '_input'}
         type='radio'
         className='btn-check quiz-item-input'
         name='quizList'
         id={quizItem.id.toString()}
         // called when item is selected and selected item has changed
-        onChange={() => setSelectedQuiz(quizItem)}
+        onChange={() => {
+          setSelectedQuiz(quizItem);
+          onQuizSelected(quizItem);
+        }}
       ></input>,
 
       <label
+        key={'quiz_' + quizItem.id + '_label'}
         className='btn quiz-item-selection'
         htmlFor={quizItem.id.toString()}
       >
-        <div className='quiz-item-title'>{quizItem.title}</div>
+        <div key={'quiz_' + quizItem.id + '_title'} className='quiz-item-title'>
+          {quizItem.title}
+        </div>
         <OptionButton
+          key={'quiz_' + quizItem.id + '_optionButton'}
           quizId={quizItem.id}
           reloadFunction={loadQuizzes}
         ></OptionButton>

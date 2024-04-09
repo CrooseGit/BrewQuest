@@ -2,6 +2,7 @@ import BackButton from '../components/BackButton/BackButton';
 import '../containers/Login.css';
 import { MouseEvent, useContext, useState } from 'react';
 import axios from 'axios';
+import ip from '../info';
 import { Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 
@@ -17,7 +18,7 @@ const Login = () => {
       password: password,
     };
     try {
-      const { data } = await axios.post('http://localhost:8000/token/', user, {
+      const { data } = await axios.post('http://' + ip + ':8000/token/', user, {
         headers: {
           'Content-Type': 'application/json',
         },

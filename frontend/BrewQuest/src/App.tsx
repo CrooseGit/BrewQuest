@@ -8,44 +8,40 @@ import {
   Leaderboard,
   Host,
   Channel,
+  ClientGame,
   EditProfile,
 } from './containers/index';
+import MarkingPage from './containers/HostGame/MarkingPage';
+import SubmittedAnswer from './components/SubmittedAnswer/SubmittedAnswer';
 import { useState } from 'react';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
-  const [room, setRoom] = useState('');
-  const [name, setName] = useState('');
   return (
     <>
-    <AuthProvider>
-    <Routes>
-        <Route path='/' element={<Landing></Landing>} />
-
-        <Route path='/quizEdit' element={<QuizEdit />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/leaderboard' element={<Leaderboard />} />
-        <Route
-          path='/host/*'
-          element={
-            <Host room={room} name={name} setRoom={setRoom} setName={setName} />
-          }
-        />
-        <Route path='/channel' element={<Channel />} />
-        <Route path='/editprofile' element={<EditProfile />} />
-        <Route
-          path='/gamepin'
-          element={
-            <GamePin
-              room={room}
-              name={name}
-              setRoom={setRoom}
-              setName={setName}
-            />
-          }
-        />
-      </Routes>
-    </AuthProvider>
+      <AuthProvider>
+        <Routes>
+          <Route path='/' element={<Landing></Landing>} />
+          <Route path='/quizEdit' element={<QuizEdit />} />
+          <Route path='/register' element={<Register />} />
+          <Route path='/host/*' element={<Host />} />
+          <Route path='/channel' element={<Channel />} />
+          <Route path='/gamepin' element={<GamePin />} />
+          <Route path='/game' element={<ClientGame />} />
+          <Route path='/editprofile' element={<EditProfile />} />
+          <Route
+            path='/gamepin'
+            element={
+              <GamePin
+                room={room}
+                name={name}
+                setRoom={setRoom}
+                setName={setName}
+              />
+            }
+          />
+        </Routes>
+      </AuthProvider>
     </>
   );
 }

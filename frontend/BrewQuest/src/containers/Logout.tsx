@@ -1,5 +1,6 @@
 import './Login.css';
 import axios from 'axios';
+import ip from '../info';
 import { useEffect } from 'react';
 
 const Logout = () => {
@@ -10,7 +11,7 @@ const Logout = () => {
           'Authorization'
         ] = `Bearer ${localStorage.getItem('access_token')}`;
         await axios.post(
-          'http://localhost:8000/api/logout/',
+          'http://' + ip + ':8000/api/logout/',
           {
             refresh_token: localStorage.getItem('refresh_token'),
           },

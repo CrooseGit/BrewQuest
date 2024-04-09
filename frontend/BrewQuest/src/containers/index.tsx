@@ -4,13 +4,13 @@ export { default as Landing } from './Landing';
 export { default as Login } from './Login';
 export { default as Register } from './Register';
 export { default as QuizEdit } from './QuizEdit';
-export { default as QPC } from './QuestionPageClient';
+export { default as QPC } from './ClientGame/QuestionPageClient';
 export { default as QuizListPage } from './QuizListPage';
-export { default as Leaderboard } from './Leaderboard';
+export { default as Leaderboard } from './ClientGame/Leaderboard';
 export { default as Logout } from './Logout';
 export { default as Host } from './Host';
 export { default as EditProfile } from './EditProfile';
 export { default as Channel } from './channels';
-export { default as GameLobby } from './GameLobby';
-
-
+export { default as GameLobby } from './ClientGame/GameLobby';
+export { default as InGame } from './InGame';
+export { default as ClientGame } from './ClientGame/ClientGame';
