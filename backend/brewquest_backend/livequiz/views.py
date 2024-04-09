@@ -394,9 +394,10 @@ def markQuestionWrong(request):
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     pin = body['pin']
+    q_id =body['questionToMark_id']
     room = Room.objects.filter(pin=pin)
     # question to mark
-    query = HostToMark.objects.filter(id=body['questionToMark_id'])
+    query = HostToMark.objects.filter(id=q_id)
     # if there is no room that exists then return error
     if not room:
         return JsonResponse({'status': 'failed', 'message': 'Room does not exist'})
@@ -421,7 +422,7 @@ def markQuestionRight(request):
     room = Room.objects.filter(pin=pin)
     # question to mark
     query = HostToMark.objects.filter(id=body['questionToMark_id'])
-    player_id = body['player_id']
+    player_id = body['player']
 
     # if there is no room that exists then return error
     if not room:

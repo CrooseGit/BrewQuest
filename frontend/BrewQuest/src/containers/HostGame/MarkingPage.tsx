@@ -6,6 +6,9 @@ import { Link } from 'react-router-dom';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import axios from 'axios';
 import QuestionButtonsHostMarking from './QuestionButtonsHostMarking/QuestionButtonsHostMarking';
+
+import { JSX } from 'react/jsx-runtime';
+
 interface props {
   room: string;
   quizId: number;
@@ -37,6 +40,7 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
 
   const [submittedAnswers, setSubmittedAnswers] =
     useState<{ button_id: string, id: number, player_id: number, question_index: number, round_index: number, contents: string }[]>([]);
+  const [submissionElements, setSubmissionElements] = useState<JSX.Element[]>([]);
   // answers object
   // IMPORTANTL: id for each submitted answer to a question, used for HTML element and key
   // player to identify player, which player submitted the answer (might be in different order than id)
@@ -225,6 +229,7 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
         key={i}
         onClick={() => {
           setRoundNum(i);
+          getQuestionsToMark();
         }}
       >
         Round {i}
@@ -236,27 +241,29 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
   const handleDelete = (element: any) => {
     // IMPORTANT: functional setState update approach to ensure latest submittedAnswers value is used
     setSubmittedAnswers((prevSubmittedAnswers) =>
-      prevSubmittedAnswers.filter((answer) => answer !== element)
+      prevSubmittedAnswers.filter((answer) => answer.id !== element.id)
     );
   };
-
+useEffect(() => {
+  const components: JSX.Element[] = [];
+  submittedAnswers.forEach((submittedAnswer) => {
+    if (submittedAnswer.question_index === questionNum && submittedAnswer.round_index === roundNum) {
+      components.push(<SubmittedAnswer
+        roundNum={roundNum}
+        questionNum={questionNum}
+        submittedAnswer={submittedAnswer}
+        handleDelete={handleDelete}
+        key={submittedAnswer.id}
+        client = {client}
+        livequizhttp = {livequizhttp}
+        room = {room}
+      ></SubmittedAnswer>)
+    }
+  })
+  setSubmissionElements(components)
+}, [submittedAnswers, roundNum, questionNum])
   // render submitted answer elements
-  const submittedAnswerElements = () => {
-
-    return (submittedAnswers &&
-      submittedAnswers.map((submittedAnswer) => (
-        //submittedAnswer.question_index === questionNum && submittedAnswer.round_index === roundNum
-        <SubmittedAnswer
-          roundNum={roundNum}
-          questionNum={questionNum}
-          submittedAnswer={submittedAnswer}
-          handleDelete={handleDelete}
-          key={submittedAnswer.id}
-        ></SubmittedAnswer>)
-      )
-    );
-  }
-
+  
 
   const toggleRoundDpdn = () => {
     const roundDpdnMenu = document.getElementById('round-dpdn-menu');
@@ -298,7 +305,7 @@ const MarkingPage = ({ room, quizId, quizTitle, deleteRoom, client, livequizhttp
             <div className="arrow-guide right-arrow">&#8594;</div> */}
       <div className='submitted-answers-list'>
         {/* answers to be fetched from database */}
-        {submittedAnswerElements()}
+        {submissionElements.map((element) => element)}
       </div>
     </div>
   );

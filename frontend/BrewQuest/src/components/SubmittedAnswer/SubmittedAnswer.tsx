@@ -8,18 +8,49 @@ interface props{
     questionNum: number
 }*/
 //{submittedAnswer, handleDelete, roundNum, questionNum}:props
+import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
-
+import { w3cwebsocket as W3CWebSocket } from 'websocket';
 
 interface props{
     submittedAnswer: { id: number, player_id: number, question_index: number, round_index: number, contents: string },
     handleDelete: (element:any) => void,
     roundNum: number,
     questionNum: number
+    client: W3CWebSocket;
+    livequizhttp: string;
+    room: string;
 }
 
-const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum}:props) =>{
+const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum, client, livequizhttp, room}:props) =>{
+
+    const markWrong = ()=>{
+        const payload = {
+            pin : room,
+            questionToMark_id: submittedAnswer.id
+        }
+        axios.post(livequizhttp+"markQuestionWrong/",payload).then((response)=>{
+            console.log(response.data);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
+
+    const markRight = ()=>{
+        const payload = {
+            pin : room,
+            questionToMark_id: submittedAnswer.id,
+            player: submittedAnswer.player_id
+        }
+        axios.post(livequizhttp+"markQuestionRight/",payload).then((response)=>{
+            console.log(response.data);
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+    }
 
     let answerElement: HTMLElement | null
     let backgroundColor = "";
@@ -86,9 +117,11 @@ const SubmittedAnswer = ({submittedAnswer, handleDelete, roundNum, questionNum}:
 
         //detect swipe direction
         if (offsetX > 0 && offsetX > tolerance){
-            console.log("Swiped right");
+            console.log("swipe right, right answer");
+            markRight();
         } else if (offsetX < 0 && -offsetX > tolerance){
-            console.log("Swiped left");
+            console.log("swipe left, wrong answer");
+            markWrong();
         }
 
         // remove element from list
