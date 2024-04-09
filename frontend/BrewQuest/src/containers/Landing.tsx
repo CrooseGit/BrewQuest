@@ -1,6 +1,5 @@
 //this is the landing page
 import { Link } from 'react-router-dom';
-import '../containers/index.css';
 
 const Landing = () => {
   return (
@@ -12,6 +11,8 @@ const Landing = () => {
         Host Game
       </Link>
     </div>
+
+    
   );
 };
 

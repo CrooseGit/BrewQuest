@@ -1,4 +1,3 @@
-import './Login.css';
 import axios from 'axios';
 import ip from '../info';
 import { useEffect } from 'react';

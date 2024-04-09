@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import ip from '../info';
-import '../containers/QuizEdit.css';
 
 const QuizEdit = () => {
   const location = useLocation();

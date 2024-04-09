@@ -1,5 +1,4 @@
 import beeru from '../assets/beeru.gif';
-import '../index.css';
 
 
 
@@ -13,7 +12,7 @@ const LoadingScreen = () => {
     return (
         <div>
             <h1 className='text'>Marking your answers...</h1>
-            <img src={beeru} />
+            <img className='beer-img' src={beeru} />
         </div>
     );
             }

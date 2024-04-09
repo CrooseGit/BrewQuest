@@ -1,0 +1,501 @@
+/* General */
+body {
+  background-color: #212922;
+}
+
+/* bootstrap template */
+.btn {
+  border-color: #6a8d73;
+  background-color: #6a8d73;
+  border-radius: 22px;
+}
+
+/* General ends */
+
+
+
+/* QuizListPage */
+/* QuizList */
+
+.option-dropdown{
+  position: relative;
+}
+
+.shown-options{
+  position: absolute;
+  top: 5px;
+  left: -140px;
+  height: fit-content;
+  width: fit-content;
+  display: flex;
+  background-color: #212922;
+  flex-direction: column;
+  gap: 3px;
+  border-color: #212922;
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 5px;
+  /* opacity: 0; */
+  /* pointer-events: none; */
+  z-index: 99999999999;
+}
+
+.first-button{
+  border-radius: 3px 3px 0 0;
+}
+
+.last-button{
+  border-radius: 0 0 3px 3px;
+}
+
+.shown-option-button{
+  background-color: #6a8d73;
+  color: white;
+  width: 160px;
+  padding: 5px;
+  font-size: 14px;
+  text-align: left;
+  border: none;
+}
+
+.shown-option-button:hover{
+  opacity: 75%;
+}
+
+.shown-option-button:active{
+  opacity: 50%;
+}
+
+.option-icon {
+  width: 20px;
+  height: auto;
+  margin-top: 0; 
+}
+
+.option-button{
+  margin-bottom: 4px;
+  background: none;
+  border: none;
+}
+
+.quiz-list-head{
+  list-style-type: none;
+  text-align: left;
+  color: white;
+  font-size: 40px;
+  margin-bottom: 4px;
+}
+
+.quiz-list-head:hover, .quiz-list-head:active{
+  color: white !important;
+}
+
+.quiz-item-selection:hover{
+  color: rgb(148, 155, 137) !important;
+  border-color: rgb(148, 155, 137) !important;
+  background-color: #212922 !important;
+  position: static; /* to ignore z-index rules for option menu */
+}
+
+.quiz-item-input:checked + .quiz-item-selection{
+  background-color: rgb(148, 155, 137);
+  color: white;
+  border-color: rgb(148, 155, 137);
+}
+
+.quiz-item-selection{
+  list-style-type: none;
+  text-align: left;
+  color: white;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  margin-bottom: 4px;
+}
+
+.quiz-button-group{
+  display: block;
+  margin: auto;
+  margin-top: 20px;
+  width: 100%;
+  min-width: 300px;
+  max-width: 500px;
+  font-family: "Quicksand";
+}
+
+/* HostButton */
+.host-quiz{
+  display: block;
+  margin: 100px auto auto auto;
+  width: 50%;
+  max-width: 400px;
+  font-family: "Quicksand";
+  font-size: 30px;
+}
+
+/* QuizListPage css ends */
+
+/* probably not necessary anymore */
+/* 
+.center-text {
+  text-align: center;
+}
+
+.container-size{
+  width: 100vw;
+  height: 100vh;
+} */
+
+/* Landing */
+
+.landing-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  gap: 8%;
+}
+
+.join-btn {
+  font-size: 50px;
+  font-family: "Quicksand";
+  height: 60%;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 720px;
+}
+
+.host-btn {
+  font-size: 30px;
+  font-family: "Quicksand";
+  height: 10%;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 45px;
+  max-width: 720px;
+}
+
+/* Landing ends */
+
+.scrollMenu {
+  margin-top: 3rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  max-height: 200px;
+  max-width: 80%;
+  margin-left: 10%;
+  background-color: #a3d1c2;
+  border-radius: 25px;
+}
+.scrollMenu::-webkit-scrollbar{
+    display: none;
+}
+
+img {
+  display: block;
+  height: 300px;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.beer-img {
+  margin-top: 150px; /*PAIN*/
+}
+
+/*COMPONENTS*/
+/*BackButton.tsx*/
+.back_icon {
+    width: 1.5em;
+    height: auto;
+    margin-top: 0;
+  }
+  
+/*Navbar.tsx*/
+.text {
+    color: white;
+  }
+  
+  .icon {
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(302deg)
+      brightness(109%) contrast(101%);
+  }
+  
+/*OptionButton.tsx*/
+  .option_icon {
+    width: 2.5em;
+    height: auto;  
+  }
+  
+/*QuizList.tsx*/
+  .boxContainer {
+    text-align: center;
+  }
+  .newQuizButton {
+    width: 3.5rem;
+    height: 3.5rem;
+    text-align: center;
+    line-height: 0;
+    color: white;
+    border-radius: 50%;
+  }
+  .newQuizButton:hover {
+    background-color: white !important;
+    color: #6a8d73;
+  }
+  
+
+/*CONTAINERS*/
+
+/*Login.tsx Logout.tsx Register.tsx*/
+  body {
+    margin: 0.2em;
+    background-color: #212922;
+  }
+  h1 {
+    text-align: center;
+  }
+  
+  .text {
+    color: white;
+    font-family: 'Quicksand';
+  }
+  
+  #login-btn {
+    background-color: #6a8d73;
+  }
+  
+/*QuestionPageClient.tsx*/
+html,
+body {
+  padding: 0.4em;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+.scrollMenu {
+  margin-top: 3rem;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.text {
+  color: white;
+  font-family: 'Quicksand';
+}
+
+.questionButton {
+  background-color: white;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 2.5rem;
+}
+
+.questionButton h4 {
+  color: #6a8d73;
+  font-family: 'Quicksand';
+}
+
+#selectedButton {
+  background-color: #6a8d73;
+}
+#selectedButton h4 {
+  color: white;
+}
+
+.submitAllButton {
+  border-radius: 2rem;
+}
+.submitAllButton h5 {
+  margin: 0;
+}
+
+.questionText {
+  font-size: 2.5rem;
+  margin-top: 3rem;
+}
+
+#textInput {
+  font-size: 2rem;
+  border-radius: 1rem;
+}
+
+.navigationButtons {
+  flex: 0 1 40px;
+  margin: 0.5rem;
+}
+.box {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+.questionDiv {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.topBar {
+  flex: 0 1 auto;
+}
+.scrollMenu {
+  flex: 0 1 auto;
+}
+.submitButton {
+  border-radius: 2rem;
+}
+.submitButton h2 {
+  margin: 0.75rem;
+}
+
+.navigationButtons button {
+  background-color: white;
+  color: #6a8d73;
+  font-family: 'Quicksand';
+}
+.navigationButtons button h3 {
+  font-weight: bold;
+}
+.navigationButtons button :hover {
+  color: white;
+}
+
+/*QuizEdit.tsx*/
+html,
+body {
+  padding: 0.4em;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+.scrollMenuEdit {
+  overflow: auto;
+  white-space: nowrap;
+  flex: 0 1 auto;
+}
+
+.questionButtonBar {
+  margin-top: 3rem;
+  margin-left: 3rem;
+  margin-right: 3rem;
+}
+
+.text {
+  color: white;
+  font-family: 'Quicksand';
+}
+
+.textBlack {
+  color: black;
+  font-family: 'Quicksand';
+}
+
+.questionButton {
+  background-color: white;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 2.5rem;
+  border: 0rem;
+}
+#newQuestionButton {
+  background-color: #939d89;
+  color: white;
+}
+
+.roundSelect {
+  width: 20rem;
+}
+
+.questionButton h4 {
+  color: #6a8d73;
+  font-family: 'Quicksand';
+}
+
+#selectedButton {
+  background-color: #6a8d73;
+}
+#selectedButton h4 {
+  color: white;
+}
+
+.submitAllButton {
+  border-radius: 2rem;
+  width: 4rem;
+  height: 3rem;
+}
+.submitAllButton h5 {
+  margin: 0;
+}
+
+.delBtn {
+  color: white;
+  background-color: #e61610;
+  border: 0rem;
+}
+
+#delRoundBtn {
+  color: white;
+  background-color: #e61610;
+  border: 0rem;
+}
+
+#newRoundBtn {
+  color: white;
+  background-color: #939d89;
+  border: 0rem;
+}
+
+.questionEditText {
+  font-size: 2.5rem;
+}
+
+#textInput {
+  font-size: 2rem;
+  border-radius: 1rem;
+}
+
+.navigationButtons {
+  flex: 0 1 40px;
+  margin: 0.5rem;
+}
+.box {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+.questionDiv {
+  margin: 3rem;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.topBar {
+  flex: 0 1 auto;
+}
+
+.navigationButtons button {
+  background-color: white;
+  color: #6a8d73;
+  font-family: 'Quicksand';
+}
+.navigationButtons button h3 {
+  font-weight: bold;
+}
+
+.deleteButton {
+  background-color: red !important;
+}

@@ -1,5 +1,4 @@
 import BackButton from '../components/BackButton/BackButton';
-import '../containers/Login.css';
 import { MouseEvent, useContext, useState } from 'react';
 import axios from 'axios';
 import ip from '../info';
@@ -9,7 +8,7 @@ import AuthContext from '../context/AuthContext';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const {setInitialToken} = useContext(AuthContext);
+  const { setInitialToken } = useContext(AuthContext);
 
   const handleSubmit = async (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
@@ -33,7 +32,7 @@ const Login = () => {
       ] = `Bearer ${data['access']}`;
       window.location.href = '/host/QuizList';
     } catch (error) {
-      console.log(error)
+      console.log(error);
       window.alert('Invalid Credentials');
     }
   };

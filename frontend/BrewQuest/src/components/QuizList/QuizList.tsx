@@ -2,8 +2,6 @@ import axios from 'axios';
 import ip from '../../info';
 import { useState, useEffect } from 'react';
 import OptionButton from '../OptionButton/OptionButton';
-import './QuizList.css';
-import '../../containers/index';
 
 const QuizList = ({
   onQuizSelected,
@@ -89,6 +87,7 @@ const QuizList = ({
         <label className='btn quiz-list-head'>Quizzes</label>
         {quizElements}
       </div>
+
       <button
         type='button'
         onClick={createQuiz}

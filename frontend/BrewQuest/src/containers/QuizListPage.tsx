@@ -1,8 +1,6 @@
 import Navbar from '../components/Navbar/Navbar.tsx';
 import QuizList from '../components/QuizList/QuizList.tsx';
 import HostButton from '../components/HostButton/HostButton.tsx';
-
-import './QuizListPage.css';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 

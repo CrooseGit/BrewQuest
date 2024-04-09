@@ -1,4 +1,3 @@
-import './Navbar.css';
 import { useState, useEffect } from 'react';
 const Navbar = () => {
   const [isAuth, setIsAuth] = useState(false);
@@ -8,7 +7,6 @@ const Navbar = () => {
     }
   }, [isAuth]);
 
-  
   return (
     <div>
       <nav className='navbar navbar-expand-lg bg-body-primary'>
