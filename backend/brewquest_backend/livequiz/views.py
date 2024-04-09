@@ -38,7 +38,7 @@ def submitAnswer(request):
     room = Room.objects.get(pin=pin)
     player = Player.objects.get(playername=playername, room_id=room)
     r = Round.objects.get(quiz_id=room.quiz_id, index=round_index)
-    question = Question.objects.get(index=question_index, round_id=r)
+    question = Question.objects.get(round_id=r, index = question_index)
 
     HostToMark.objects.create(room=room, player=player, question=question, answer=answer)
 

@@ -135,9 +135,9 @@ def createQuestion(request):
     round_id = body['round_id']
     r = Round.objects.get(id=round_id)
     print(r.title + " New question added")
-    
+    index = Question.objects.filter(round_id=r).count()
     new_question = Question(prompt="",
-                            answer="", last_changed=timezone.now(), round_id=r, time=30, index=0)
+                            answer="", last_changed=timezone.now(), round_id=r, time=30, index=index)
     new_question.save()
     return Response({'Status': 'Success'})
 
