@@ -68,7 +68,18 @@ const MarkingPage = ({
   // should fetch each time questionNum or roundNum variable changes, using useEffect
 
   // 'QS'+(L/I/null)+'_'+<question index>+'_'+<round index>
-
+  const getQuestionTitleANDModelAnswer = () => {
+    axios.post('getModelAnswersANDQuestionsTitles/', { quiz_id: quizId, round_index: roundNum, question_index: questionNum })
+    .then(
+      (response) => {
+        if (response.data.status == 'success') {
+          setQuestionTitle(response.data.data.question_title);
+          setModelAnswer(response.data.data.model_answer);
+        }
+      }
+    )
+    .catch((error)=>{console.log(error)})
+  }
   const getQuestionsToMark = async () => {
     const payload = { pin: room };
 
@@ -153,6 +164,7 @@ const MarkingPage = ({
 
   useEffect(() => {
     fetchQuestionsToMark();
+    getQuestionTitleANDModelAnswer();
   }, []);
 
   const fetchQuestionsToMark = async () => {
@@ -281,25 +293,8 @@ const MarkingPage = ({
       }
     });
     setSubmissionElements(components);
-    console.log('round', roundNum, 'question', questionNum);
-    questionTitles.forEach((question) => {
-      if (
-        Number(question.question_index) === Number(questionNum) &&
-        Number(question.round_index) === Number(roundNum)
-      ) {
-        console.log(question.question_index, question.round_index);
-        console.log(question);
-        setQuestionTitle(question.question_title);
-      }
-    });
-    modelAnswers.forEach((modelAnswer) => {
-      if (
-        Number(modelAnswer.question_index) === Number(questionNum) &&
-        Number(modelAnswer.round_index) === Number(roundNum)
-      ) {
-        setModelAnswer(modelAnswer.ans);
-      }
-    });
+    getQuestionTitleANDModelAnswer();
+    
   }, [submittedAnswers, roundNum, questionNum]);
   // render submitted answer elements
 

@@ -43,12 +43,8 @@ class HostToMarkSerializer(serializers.ModelSerializer):
         fields = ['id', 'player_id', 'question','answer']
    
 # END
-class RoundIndexSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Round
-        fields = ['index']
 class ModelAnswersANDQuestionsTitlesSerializer(serializers.ModelSerializer):
-    round_id = RoundIndexSerializer(read_only=True)
+    
     class Meta:
         model = Question
-        fields = ['index', 'prompt', 'answer', 'round_id']
+        fields = ['prompt', 'answer']

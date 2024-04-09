@@ -18,4 +18,5 @@ urlpatterns = [
     path('getQuestionCountPerRound', views.getQuestionCountPerRound, name='getQuestionCountPerRound'),
     path('markQuestionWrong/', views.markQuestionWrong, name='markQuestionWrong'),
     path('markQuestionRight/', views.markQuestionRight, name='markQuestionRight'),
+    path('getModelAnswersANDQuestionsTitles/', views.getModelAnswersANDQuestionsTitles, name='getModelAnswersANDQuestionsTitles'),
 ]

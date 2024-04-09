@@ -454,6 +454,8 @@ def getModelAnswersANDQuestionsTitles(request):
     body = json.loads(body_unicode)
     pin = body['pin']
     room = Room.objects.filter(pin=pin)
+    round_index = body['round_index']
+    question_index = body['question_index']
     # if there is no room that exists then return error
     if not room:
         return JsonResponse({'status': 'failed', 'message': 'Room does not exist'})
@@ -466,13 +468,17 @@ def getModelAnswersANDQuestionsTitles(request):
         return JsonResponse({'status': 'failed', 'message': 'Quiz does not exist'})
     quiz = quiz[0]
 
-    rounds = Round.objects.filter(quiz_id=quiz.id)
-    for r in rounds:
-        print(r.index)
-        questions = Question.objects.filter(round_id=r.id)
-        for question in questions:
-            pass
-    return JsonResponse({'status': 'success', 'message': 'Questions created'})
+    rounds = Round.objects.filter(quiz_id=room.quiz_id, index=round_index)
+    if not rounds.exists():
+        return JsonResponse({'status': 'failed', 'message': 'Rounds does not exist'})
+    rounds = rounds[0]
+
+    questions = Question.objects.filter(round_id=rounds, index=question_index)
+    if not questions.exists():
+        return JsonResponse({'status': 'failed', 'message': 'Questions does not exist'})
+    questions = questions[0]
+
+    return JsonResponse({'status': 'success', 'data': ModelAnswersANDQuestionsTitlesSerializer(questions).data})
 
 
     
