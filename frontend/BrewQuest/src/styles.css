@@ -147,17 +147,37 @@ body {
 
 /* Landing */
 
-#join-btn {
-  width: 80%;
-  height: 70%;
-  margin-top: 7%;
-  margin-bottom: 6%;
+.landing-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  gap: 8%;
 }
 
-#host-btn {
+.join-btn {
+  font-size: 50px;
+  font-family: "Quicksand";
+  height: 60%;
   width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 720px;
+}
+
+.host-btn {
+  font-size: 30px;
+  font-family: "Quicksand";
   height: 10%;
-  margin-bottom: 7%;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 45px;
+  max-width: 720px;
 }
 
 /* Landing ends */
