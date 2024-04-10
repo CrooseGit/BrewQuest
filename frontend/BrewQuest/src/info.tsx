@@ -1,5 +1,5 @@
 // replace this with ip used to host
-const ip = '10.205.74.138';
+const ip = 'localhost';
 export default ip;
 
 // npm run dev -- --host
