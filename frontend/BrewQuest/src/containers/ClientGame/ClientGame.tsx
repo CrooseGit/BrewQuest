@@ -100,6 +100,7 @@ const ClientGame = () => {
             }}
             playername={name}
             client={client}
+            setCurrentPage = {setCurrentPage}
           />
         );
       case GAME_PAGE.LeaderBoard:

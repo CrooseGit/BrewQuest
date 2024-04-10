@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import axios from 'axios';
 import QuestionButtonsHostMarking from './QuestionButtonsHostMarking/QuestionButtonsHostMarking';
+import NextRoundButton from '../../components/NextRoundButton/NextRoundButton';
 
 import { JSX } from 'react/jsx-runtime';
 
@@ -69,12 +70,14 @@ const MarkingPage = ({
 
   // 'QS'+(L/I/null)+'_'+<question index>+'_'+<round index>
   const getQuestionTitleANDModelAnswer = () => {
-    axios.post('getModelAnswersANDQuestionsTitles/', { quiz_id: quizId, round_index: roundNum, question_index: questionNum })
+    axios.post(livequizhttp+'getModelAnswers/',
+     { pin: room, round_index: roundNum, question_index: questionNum })
     .then(
       (response) => {
+        console.log(response)
         if (response.data.status == 'success') {
-          setQuestionTitle(response.data.data.question_title);
-          setModelAnswer(response.data.data.model_answer);
+          setQuestionTitle(response.data.data.prompt);
+          setModelAnswer(response.data.data.answer);
         }
       }
     )
@@ -305,11 +308,31 @@ const MarkingPage = ({
     }
   };
 
+  async function nextRound(event:any): void {
+    /*
+    await axios.post(livequizhttp + 'incrementRound/', { pin: room })
+    .then((response) => {
+      console.log(response.data);
+    }).catch((error) => {
+      console.log(error);
+    })
+    */
+    //client.send("HostStartsNextRound")
+    await client.send(JSON.stringify({
+      type: 'HostStartsNextRound',
+      data: { room_id: room },
+    }));
+  }
+
   return (
     <div className='marking-page-div'>
+      
+      <div className='w-100'>
       <Link to='/'>
         <BackButton onClick={deleteRoom} />
       </Link>
+        <NextRoundButton onClick={nextRound}/>
+      </div>
       <h1 className='branding-heading text'>BrewQuest</h1>
       <div className='round-questions'>
         {/* to fetch from database */}

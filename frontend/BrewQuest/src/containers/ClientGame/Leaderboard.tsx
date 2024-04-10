@@ -3,6 +3,8 @@ import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
+
+
 interface props {
   gameOver: boolean;
   livequizhttp: string;
@@ -10,6 +12,7 @@ interface props {
   client: W3CWebSocket;
   name: string;
   nextRound: () => void;
+
 }
 interface Player {
   playername: string;
@@ -22,6 +25,7 @@ function Leaderboard({
   client,
   name,
   nextRound,
+
 }: props) {
   const [players, setPlayers] = useState<Player[]>([]);
 
@@ -87,6 +91,8 @@ function Leaderboard({
      *
      * @param {any} m - The message received from the client. (not sure of specific type)
      */
+
+
 
     client.onmessage = async (m: { data: unknown }) => {
       if (typeof m.data === 'string') {

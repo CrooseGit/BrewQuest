@@ -2,6 +2,11 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 
+enum GAME_PAGE {
+  Lobby,
+  Quiz,
+  LeaderBoard,
+}
 interface props {
   quizId: number;
   roundIndex: number;
@@ -11,6 +16,7 @@ interface props {
   timesUp: () => void;
   playername: string;
   client: W3CWebSocket;
+  setCurrentPage:  (value: React.SetStateAction<GAME_PAGE>) => void;
 }
 
 const QuestionPageClient = ({
@@ -22,6 +28,7 @@ const QuestionPageClient = ({
   timesUp,
   playername,
   client,
+  setCurrentPage,
 }: props) => {
   // State management
   const [questionIndex, setQuestion_index] = useState(0);

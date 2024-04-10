@@ -91,24 +91,30 @@ class RoomConsumer(AsyncWebsocketConsumer):
                 self.room_group_name,
                 {'type':"HostStartGame",
             'room_id':msg["data"]["room_id"]
-            }
-            )
+            })
+
         elif msg["type"]=="HostKicksPlayer":
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {'type':"HostKicksPlayer",
             'room_id':msg["data"]["room_id"],
             'playername':msg["data"]["playername"]
-            }
-            )
+            })
+
         elif msg["type"]=="ClientSubmittedAnswer":
             await self.channel_layer.group_send(
                 self.room_group_name,
                 {'type':"ClientSubmittedAnswer",
             'room_id':msg["data"]["room_id"],
             'playername':msg["data"]["playername"]
-            }
-            )
+            })
+
+        elif msg["type"]=="HostStartsNextRound":
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {'type':"HostStartsNextRound",
+            'room_id':msg["data"]["room_id"],
+            })
 
 # -------------------------
 # functions called inside recieve(self, text_data)
@@ -189,6 +195,15 @@ class RoomConsumer(AsyncWebsocketConsumer):
             'action': action,
             'room': room_id,
             'playername' : playername,
+        }))
+
+    async def HostStartsNextRound(self, event):
+        action = event['type']
+        room_id = event['room_id']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'action': action,
+            'room': room_id
         }))
 
 

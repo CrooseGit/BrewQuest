@@ -448,7 +448,7 @@ def markQuestionRight(request):
     
 @api_view(['POST'])
 @permission_classes((IsAuthenticated, ))   
-def getModelAnswersANDQuestionsTitles(request):
+def getModelAnswers(request):
     # Get request body
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
@@ -462,18 +462,20 @@ def getModelAnswersANDQuestionsTitles(request):
     room = room[0]
     if not room.host_id.user_id == request.user.id:
         return JsonResponse({'status': 'failed', 'message': 'You are not the host of this room'})
+
     
-    quiz = Quiz.objects.filter(id=room.quiz_id)
+    quiz = Quiz.objects.filter(id=room.quiz_id.id)
     if not quiz.exists():
         return JsonResponse({'status': 'failed', 'message': 'Quiz does not exist'})
-    quiz = quiz[0]
 
-    rounds = Round.objects.filter(quiz_id=room.quiz_id, index=round_index)
+    rounds = Round.objects.filter(quiz_id=quiz[0].id, index=int(round_index))
     if not rounds.exists():
         return JsonResponse({'status': 'failed', 'message': 'Rounds does not exist'})
     rounds = rounds[0]
 
+
     questions = Question.objects.filter(round_id=rounds, index=question_index)
+    
     if not questions.exists():
         return JsonResponse({'status': 'failed', 'message': 'Questions does not exist'})
     questions = questions[0]
@@ -481,5 +483,3 @@ def getModelAnswersANDQuestionsTitles(request):
     return JsonResponse({'status': 'success', 'data': ModelAnswersANDQuestionsTitlesSerializer(questions).data})
 
 
-    
-    
