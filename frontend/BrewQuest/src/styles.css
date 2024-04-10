@@ -471,8 +471,15 @@ body {
 }
 
 .questionText {
-  font-size: 2.5rem;
-  margin-top: 3rem;
+  font-size: 4rem;
+  margin-top: 5vh;
+  overflow-x: auto;
+}
+
+@media screen and (max-width: 1000px) {
+  .questionText {
+    font-size: 7.5vw;
+  }
 }
 
 #textInput {
@@ -585,8 +592,8 @@ body {
 
 .submitAllButton {
   border-radius: 2rem;
-  width: 4rem;
-  height: 3rem;
+  width: 6rem;
+  height: 3.5rem;
 }
 .submitAllButton h5 {
   margin: 0;
