@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 
@@ -20,7 +20,6 @@ interface props {
 }
 
 const QuestionPageClient = ({
-  quizId,
   roundIndex,
   roundIds,
   livequizhttp,
@@ -28,7 +27,6 @@ const QuestionPageClient = ({
   timesUp,
   playername,
   client,
-  setCurrentPage,
 }: props) => {
   // State management
   const [questionIndex, setQuestion_index] = useState(0);

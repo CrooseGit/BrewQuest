@@ -249,7 +249,8 @@ def deleteQuiz(request):
 def changeName(request,pk):
     user = User.objects.get(id=pk)
     serializer = UserSerializers(instance=user, data=request.data, partial=True)
-    
+    if (User.objects.filter(username=request.data['username']).exists()):
+        return Response({'Response': 'Username already exists'})
     if serializer.is_valid():
         serializer.save()
     else:
@@ -289,6 +290,13 @@ def changePassword(request,pk):
     else:
         return Response({'response': 'something went wrong'})
         
+    return Response({'Status': 'Success'})
+
+@api_view(['PUT'])
+@permission_classes((IsAuthenticated,))
+def deleteUser(request,pk):
+    user = User.objects.get(id=pk)
+    user.delete()
     return Response({'Status': 'Success'})
 
 

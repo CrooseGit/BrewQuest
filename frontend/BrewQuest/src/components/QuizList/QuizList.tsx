@@ -14,7 +14,6 @@ const QuizList = ({
   const [quizzes, setQuizzes] = useState([{ title: 'Loading', id: -1 }]);
 
   //set selected item structure
-  const [selectedQuiz, setSelectedQuiz] = useState({});
 
   const loadQuizzes = () => {
     axios.defaults.headers.common[
@@ -60,7 +59,6 @@ const QuizList = ({
         id={quizItem.id.toString()}
         // called when item is selected and selected item has changed
         onChange={() => {
-          setSelectedQuiz(quizItem);
           onQuizSelected(quizItem);
         }}
       ></input>,

@@ -20,9 +20,7 @@ const HostGame = () => {
     LeaderBoard,
     Marking,
   }
-  const [gameOver, setGameOver] = useState(false);
   const [currentPage, setCurrentPage] = useState(HOST_PAGE.CreatingRoom);
-  const [roundIds, setRoundIds] = useState([]);
   const [roundIndex, setRoundIndex] = useState(0);
   const [connected, setConnected] = useState(false);
   const [players, setPlayers] = useState<Player[]>([]);

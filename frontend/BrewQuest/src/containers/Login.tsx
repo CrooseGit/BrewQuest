@@ -34,6 +34,7 @@ const Login = () => {
     } catch (error) {
       console.log(error);
       window.alert('Invalid Credentials');
+      axios.defaults.headers.common['Authorization'] = null;
     }
   };
 

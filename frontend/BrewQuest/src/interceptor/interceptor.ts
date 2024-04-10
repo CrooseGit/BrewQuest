@@ -6,7 +6,6 @@ axios.interceptors.response.use(
   (resp) => resp,
   // if there was an error outside 2xx, then perform the following
   async (error) => {
-    const { config } = error;
     if (error.response.status === 401 && !refresh) {
       refresh = true;
       axios.defaults.headers.common[
@@ -27,7 +26,7 @@ axios.interceptors.response.use(
        ${response.data['access']}`;
         localStorage.setItem('access_token', response.data.access);
         localStorage.setItem('refresh_token', response.data.refresh);
-        // if successfully, updated the tokens then returns 
+        // if successfully, updated the tokens then returns
         // return axios(error.config);
       }
     }
