@@ -59,8 +59,16 @@ const EditProfile = () => {
             username: username,
           })
           .then(async (response) => {
-            alert('Username Successfully Changed');
-            console.log(localStorage.getItem('access_token')!);
+            // alert('Username Successfully Changed');
+            // console.log(localStorage.getItem('access_token')!);
+            if (response["data"]["Response"] === "Username already exists"){
+              alert("Username already exists")
+            }
+            else{
+              alert('Username Successfully Changed');
+              console.log(localStorage.getItem('access_token')!);
+            }
+
           })
           .catch(async (err) => {
             console.log(err);
@@ -100,9 +108,9 @@ const EditProfile = () => {
           alert('Current password was not correct');
         }
       }
-      localStorage.clear();
-      axios.defaults.headers.common['Authorization'] = null;
-      window.location.href = '/host/login';
+      // localStorage.clear();
+      // axios.defaults.headers.common['Authorization'] = null;
+      // window.location.href = '/host/login';
 
       // update message saying credentials changed
     } catch (error) {

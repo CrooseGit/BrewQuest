@@ -249,7 +249,8 @@ def deleteQuiz(request):
 def changeName(request,pk):
     user = User.objects.get(id=pk)
     serializer = UserSerializers(instance=user, data=request.data, partial=True)
-    
+    if (User.objects.filter(username=request.data['username']).exists()):
+        return Response({'Response': 'Username already exists'})
     if serializer.is_valid():
         serializer.save()
     else:
