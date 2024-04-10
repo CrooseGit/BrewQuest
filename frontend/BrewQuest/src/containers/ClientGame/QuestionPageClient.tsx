@@ -16,7 +16,7 @@ interface props {
   timesUp: () => void;
   playername: string;
   client: W3CWebSocket;
-  setCurrentPage:  (value: React.SetStateAction<GAME_PAGE>) => void;
+  setCurrentPage: (value: React.SetStateAction<GAME_PAGE>) => void;
 }
 
 const QuestionPageClient = ({
@@ -95,6 +95,7 @@ const QuestionPageClient = ({
 
   // Sends an answer to be stored in the database
   const submitAnswer = (answer: string, index: number) => {
+    if (answer.replace(' ', '') == '') return;
     console.log('submitAnswer(answer: ', answer, ', index: ', index, '): ');
     const payload = {
       pin: pin,

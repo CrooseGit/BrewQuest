@@ -1,10 +1,10 @@
 # app/consumers.py
 import json
-from asgiref.sync import async_to_sync,sync_to_async
-#from channels.generic.websocket import WebsocketConsumer
+from asgiref.sync import async_to_sync, sync_to_async
+# from channels.generic.websocket import WebsocketConsumer
 
 from channels.generic.websocket import AsyncWebsocketConsumer
-#from .views import *
+# from .views import *
 from .models import *
 from .serializer import *
 
@@ -16,6 +16,7 @@ receive(self, text_data): Processes messages received from the WebSocket and for
 PlayerLeftLobby(self, event): Sends a message to the WebSocket when a player leaves the lobby.
 PlayerJoinedLobby(self, event): Sends a message to the WebSocket when a player joins the lobby.
 """
+
 
 class RoomConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -63,58 +64,64 @@ class RoomConsumer(AsyncWebsocketConsumer):
         # Obtain data and conver to python dictionay
         msg = json.loads(text_data)
 
-        ### check for type of request one by one
+        # check for type of request one by one
 
-        if msg["type"]=="PlayerJoinedLobby": # when player enters lobby
+        if msg["type"] == "PlayerJoinedLobby":  # when player enters lobby
             await self.channel_layer.group_send(
                 self.room_group_name,
-                {'type':"PlayerJoinedLobby",
-            'room_id':msg["data"]["room_id"],
-            })
+                {'type': "PlayerJoinedLobby",
+                 'room_id': msg["data"]["room_id"],
+                 })
 
-        elif msg["type"]=="PlayerLeftLobby": # when player leaves lobby
+        elif msg["type"] == "PlayerLeftLobby":  # when player leaves lobby
             await self.channel_layer.group_send(
                 self.room_group_name,
-                {'type':"PlayerLeftLobby",
-            'room_id':msg["data"]["room_id"],
-            })
+                {'type': "PlayerLeftLobby",
+                 'room_id': msg["data"]["room_id"],
+                 })
 
-        elif msg["type"]=="LobbyClosedByHost":
+        elif msg["type"] == "LobbyClosedByHost":
             await self.channel_layer.group_send(
                 self.room_group_name,
-                {'type':"LobbyClosedByHost",
-            'room_id':msg["data"]["room_id"],
-            })
-        
-        elif msg["type"]=="HostStartGame":
-            await self.channel_layer.group_send(
-                self.room_group_name,
-                {'type':"HostStartGame",
-            'room_id':msg["data"]["room_id"]
-            })
+                {'type': "LobbyClosedByHost",
+                 'room_id': msg["data"]["room_id"],
+                 })
 
-        elif msg["type"]=="HostKicksPlayer":
+        elif msg["type"] == "HostStartGame":
             await self.channel_layer.group_send(
                 self.room_group_name,
-                {'type':"HostKicksPlayer",
-            'room_id':msg["data"]["room_id"],
-            'playername':msg["data"]["playername"]
-            })
+                {'type': "HostStartGame",
+                 'room_id': msg["data"]["room_id"]
+                 })
 
-        elif msg["type"]=="ClientSubmittedAnswer":
+        elif msg["type"] == "HostKicksPlayer":
             await self.channel_layer.group_send(
                 self.room_group_name,
-                {'type':"ClientSubmittedAnswer",
-            'room_id':msg["data"]["room_id"],
-            'playername':msg["data"]["playername"]
-            })
+                {'type': "HostKicksPlayer",
+                 'room_id': msg["data"]["room_id"],
+                 'playername': msg["data"]["playername"]
+                 })
 
-        elif msg["type"]=="HostStartsNextRound":
+        elif msg["type"] == "ClientSubmittedAnswer":
             await self.channel_layer.group_send(
                 self.room_group_name,
-                {'type':"HostStartsNextRound",
-            'room_id':msg["data"]["room_id"],
-            })
+                {'type': "ClientSubmittedAnswer",
+                 'room_id': msg["data"]["room_id"],
+                 'playername': msg["data"]["playername"]
+                 })
+
+        elif msg["type"] == "HostStartsNextRound":
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {'type': "HostStartsNextRound",
+                 'room_id': msg["data"]["room_id"],
+                 })
+        elif msg["type"] == "HostMarksAnswer":
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {'type': "HostMarksAnswer",
+                 'room_id': msg["data"]["room_id"],
+                 })
 
 # -------------------------
 # functions called inside recieve(self, text_data)
@@ -183,7 +190,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'action': action,
             'room': room_id,
-            'playername' : playername,
+            'playername': playername,
         }))
 
     async def ClientSubmittedAnswer(self, event):
@@ -194,7 +201,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'action': action,
             'room': room_id,
-            'playername' : playername,
+            'playername': playername,
         }))
 
     async def HostStartsNextRound(self, event):
@@ -206,26 +213,32 @@ class RoomConsumer(AsyncWebsocketConsumer):
             'room': room_id
         }))
 
+    async def HostMarksAnswer(self, event):
+        action = event['type']
+        room_id = event['room_id']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'action': action,
+            'room': room_id,
+        }))
 
 
-### ChatConsumer is just a test Consumer for Channels.tsx, do not remove just yet please
-### nice to have for reference when creating our main consumer
-### below is roughly copied from the official docs tutorial essentially so it works for sure
-### helps give a feel of what is going on and the general structure to follow
+# ChatConsumer is just a test Consumer for Channels.tsx, do not remove just yet please
+# nice to have for reference when creating our main consumer
+# below is roughly copied from the official docs tutorial essentially so it works for sure
+# helps give a feel of what is going on and the general structure to follow
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
 
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
         # Join room group
-        
+
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
         )
         await self.accept()
-
-        
 
     async def disconnect(self, close_code):
         # Leave room group
@@ -261,6 +274,3 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'sender': sender,
             'room': room
         }))
-
-
-        

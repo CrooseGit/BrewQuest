@@ -2,13 +2,28 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import SubmittedAnswer from '../../components/SubmittedAnswer/SubmittedAnswer';
 import BackButton from '../../components/BackButton/BackButton';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import axios from 'axios';
 import QuestionButtonsHostMarking from './QuestionButtonsHostMarking/QuestionButtonsHostMarking';
 import NextRoundButton from '../../components/NextRoundButton/NextRoundButton';
 
 import { JSX } from 'react/jsx-runtime';
+
+interface Question {
+  question_title: string;
+  question_index: number;
+  round_index: number;
+}
+interface ModelAnswer {
+  ans: string;
+  round_index: number;
+  question_index: number;
+}
+interface RoundMeta {
+  round_index: number;
+  question_count: number;
+}
 
 interface props {
   room: string;
@@ -17,6 +32,8 @@ interface props {
   deleteRoom: () => void;
   client: W3CWebSocket;
   livequizhttp: string;
+  startNextRound: () => void;
+  roundIndex: number;
 }
 const MarkingPage = ({
   room,
@@ -25,17 +42,15 @@ const MarkingPage = ({
   deleteRoom,
   client,
   livequizhttp,
+  startNextRound,
+  roundIndex,
 }: props) => {
   // Message for backend: look at console to know what to do
   // Initialize roundsPerQuiz, questionsPerRound, questionTitle, submittedAnswers from database
   // current
 
-  const [questionTitles, setQuestionTitles] = useState<
-    { question_title: string; question_index: number; round_index: number }[]
-  >([]);
-  const [modelAnswers, setModelAnswers] = useState<
-    { ans: string; round_index: number; question_index: number }[]
-  >([]);
+  const [questionTitles, setQuestionTitles] = useState<Question[]>([]);
+  const [modelAnswers, setModelAnswers] = useState<ModelAnswer[]>([]);
   const [questionTitle, setQuestionTitle] = useState('');
   const [modelAnswer, setModelAnswer] = useState('');
   // default to 1
@@ -44,9 +59,11 @@ const MarkingPage = ({
 
   // for rendering radio elements (FETCH FROM DATABASE)
   const [roundsPerQuiz, setRoundsPerQuiz] = useState(0);
-  const [questionsPerRound, setQuestionsPerRound] = useState<
-    { round_index: number; question_count: number }[]
-  >([{ round_index: 0, question_count: 0 }]);
+  const [questionsPerRound, setQuestionsPerRound] = useState<RoundMeta[]>([
+    { round_index: 0, question_count: 0 },
+  ]);
+
+  const navigate = useNavigate();
 
   //const [questionButtons, setQuestionButtons] = useState<JSX.Element[]>([<></>]);
 
@@ -64,25 +81,30 @@ const MarkingPage = ({
     []
   );
   // answers object
-  // IMPORTANTL: id for each submitted answer to a question, used for HTML element and key
+  // IMPORTANT: id for each submitted answer to a question, used for HTML element and key
   // player to identify player, which player submitted the answer (might be in different order than id)
   // should fetch each time questionNum or roundNum variable changes, using useEffect
 
   // 'QS'+(L/I/null)+'_'+<question index>+'_'+<round index>
   const getQuestionTitleANDModelAnswer = () => {
-    axios.post(livequizhttp+'getModelAnswers/',
-     { pin: room, round_index: roundNum, question_index: questionNum })
-    .then(
-      (response) => {
-        console.log(response)
+    axios
+      .post(livequizhttp + 'getModelAnswers/', {
+        pin: room,
+        round_index: roundNum,
+        question_index: questionNum,
+      })
+      .then((response) => {
+        console.log(response);
         if (response.data.status == 'success') {
           setQuestionTitle(response.data.data.prompt);
           setModelAnswer(response.data.data.answer);
         }
-      }
-    )
-    .catch((error)=>{console.log(error)})
-  }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const getQuestionsToMark = async () => {
     const payload = { pin: room };
 
@@ -266,7 +288,7 @@ const MarkingPage = ({
       </button>
     );
   }
-  // TODO: MAKEEEE THISSS FUCCCKKIIINGGGG WOOORRRRKKKK
+
   // remove element from list
   const handleDelete = (element: any) => {
     // IMPORTANT: functional setState update approach to ensure latest submittedAnswers value is used
@@ -297,7 +319,6 @@ const MarkingPage = ({
     });
     setSubmissionElements(components);
     getQuestionTitleANDModelAnswer();
-    
   }, [submittedAnswers, roundNum, questionNum]);
   // render submitted answer elements
 
@@ -308,30 +329,24 @@ const MarkingPage = ({
     }
   };
 
-  async function nextRound(event:any): void {
-    /*
-    await axios.post(livequizhttp + 'incrementRound/', { pin: room })
-    .then((response) => {
-      console.log(response.data);
-    }).catch((error) => {
-      console.log(error);
-    })
-    */
-    //client.send("HostStartsNextRound")
-    await client.send(JSON.stringify({
-      type: 'HostStartsNextRound',
-      data: { room_id: room },
-    }));
-  }
-
   return (
     <div className='marking-page-div'>
-      
       <div className='w-100'>
-      <Link to='/'>
-        <BackButton onClick={deleteRoom} />
-      </Link>
-        <NextRoundButton onClick={nextRound}/>
+        <Link to='/host/QuizList'>
+          <BackButton onClick={deleteRoom} />
+        </Link>
+        <NextRoundButton
+          onClick={
+            roundIndex == questionsPerRound.length
+              ? () => {
+                  deleteRoom();
+                  navigate('/host/QuizList');
+                }
+              : startNextRound
+          }
+          className='btn'
+          gameOver={roundIndex == questionsPerRound.length}
+        />
       </div>
       <h1 className='branding-heading text'>BrewQuest</h1>
       <div className='round-questions'>
@@ -362,7 +377,7 @@ const MarkingPage = ({
       </h2>
       <h2 className='marked-question text'>
         <u>
-          <b>model Answer:</b>
+          <b>Model Answer:</b>
         </u>{' '}
         {modelAnswer}
       </h2>

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 
-
 interface props {
   gameOver: boolean;
   livequizhttp: string;
@@ -12,7 +11,6 @@ interface props {
   client: W3CWebSocket;
   name: string;
   nextRound: () => void;
-
 }
 interface Player {
   playername: string;
@@ -25,7 +23,6 @@ function Leaderboard({
   client,
   name,
   nextRound,
-
 }: props) {
   const [players, setPlayers] = useState<Player[]>([]);
 
@@ -92,8 +89,6 @@ function Leaderboard({
      * @param {any} m - The message received from the client. (not sure of specific type)
      */
 
-
-
     client.onmessage = async (m: { data: unknown }) => {
       if (typeof m.data === 'string') {
         const dataFromServer = JSON.parse(m.data);
@@ -101,8 +96,8 @@ function Leaderboard({
 
         if (dataFromServer) {
           switch (dataFromServer.action) {
-            case 'ScoresUpdated': {
-              console.log('ScoresUpdated');
+            case 'HostMarksAnswer': {
+              console.log('HostMarksAnswer');
               getLeaderboard();
               // Triggered while host is marking questions and scores change
               break;

@@ -6,7 +6,6 @@ import axios from 'axios';
 import ip from '../../info';
 import MarkingPage from './MarkingPage';
 
-
 interface Player {
   playername: string;
   score: number;
@@ -72,6 +71,9 @@ const HostGame = () => {
         }
       })
       .catch((error) => {
+        setErrorMessage(
+          'Room creation failed, please refresh your browser to try again.'
+        );
         console.error('Error: ' + error);
       });
   };
@@ -167,6 +169,16 @@ const HostGame = () => {
   };
   // End
 
+  // Tell client next round
+  const tellClientNextRound = async () => {
+    client.send(
+      JSON.stringify({
+        type: 'HostStartsNextRound',
+        data: { room_id: room },
+      })
+    );
+  };
+
   // Used to set round end time, if start of quiz will tell clients to start
   const updateRoundData = () => {
     console.log('updateRoundData(): ');
@@ -181,6 +193,10 @@ const HostGame = () => {
         if (players.length > 0 && roundIndex == 0) {
           tellClientStartQuiz();
           setCurrentPage(HOST_PAGE.Marking);
+          setRoundIndex(roundIndex + 1);
+        } else if (roundIndex > 0) {
+          tellClientNextRound();
+          setRoundIndex(roundIndex + 1);
         }
       })
       .catch((error) => {
@@ -212,21 +228,24 @@ const HostGame = () => {
               deleteRoom();
               navigate('/host/QuizList');
             }}
-            roundIndex={roundIndex}
             startQuiz={updateRoundData}
             connected={connected}
             setConnected={setConnected}
           />
         );
       case HOST_PAGE.Marking:
-        return <MarkingPage
-        deleteRoom={deleteRoom}
-        quizId={quizId}
-        room={room}
-        quizTitle={quizTitle}
-        client={client}
-        livequizhttp={livequizhttp}
-         />;
+        return (
+          <MarkingPage
+            deleteRoom={deleteRoom}
+            quizId={quizId}
+            room={room}
+            quizTitle={quizTitle}
+            client={client}
+            livequizhttp={livequizhttp}
+            startNextRound={updateRoundData}
+            roundIndex={roundIndex}
+          />
+        );
     }
   };
 

@@ -16,7 +16,6 @@ interface props {
   players: Player[];
   updatePlayers: () => void;
   endQuiz: () => void;
-  roundIndex: number;
   startQuiz: () => void;
   connected: boolean;
   setConnected: (b: boolean) => void;
@@ -31,7 +30,6 @@ const HostLobby = ({
   players,
   updatePlayers,
   endQuiz,
-  roundIndex,
   startQuiz,
   connected,
   setConnected,
