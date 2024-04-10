@@ -18,33 +18,32 @@ const EditProfile = () => {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [showAccountDialog, setShowAccountDialog] = useState(false);
 
-    const confirm = async (e: MouseEvent<HTMLElement>) => {
-        e.preventDefault()
-        try {
-            // grab user_id from decoding the cookies
-            const token = localStorage.getItem('access_token')!;
-            const decoded : any = jwtDecode(token);
-            const id = decoded.user_id;
-            await axios
-                .put('http://' + ip + ':8000/' + `api/delete_user/${id}`)
-                .then(async (response) => {
-                    alert("Successfully deleted account")
-                }).catch(async (err) => {
-                    console.log(err);
-                })
-            localStorage.clear();
-            axios.defaults.headers.common['Authorization'] = null;
-            window.location.href = '/host/login';
+  const confirm = async (e: MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    try {
+      // grab user_id from decoding the cookies
+      const token = localStorage.getItem('access_token')!;
+      const decoded: Decoded = jwtDecode(token);
+      const id = decoded.user_id;
+      await axios
+        .put('http://' + ip + ':8000/' + `api/delete_user/${id}`)
+        .then(async () => {
+          alert('Successfully deleted account');
+        })
+        .catch(async (err) => {
+          console.log(err);
+        });
+      localStorage.clear();
+      axios.defaults.headers.common['Authorization'] = null;
+      window.location.href = '/host/login';
 
-
-          // update message saying credentials changed
-        } catch (error) {
-          console.log(error)
-          window.alert('Failed to delete account');
-        }
-        setShowAccountDialog(false);
-
-    };
+      // update message saying credentials changed
+    } catch (error) {
+      console.log(error);
+      window.alert('Failed to delete account');
+    }
+    setShowAccountDialog(false);
+  };
 
   const cancel = () => {
     setShowAccountDialog(false);
@@ -61,8 +60,8 @@ const EditProfile = () => {
       let detailsChanged = false;
       let usernameIsInUse = false;
       // updating each individually incase there is a blank field
-      if ((username == '') && (email == '') && (newPassword == '')){
-        alert("Please fill in the appropiate fields");
+      if (username == '' && email == '' && newPassword == '') {
+        alert('Please fill in the appropiate fields');
       }
 
       if (!(username == '')) {
@@ -74,16 +73,14 @@ const EditProfile = () => {
           .then(async (response) => {
             // alert('Username Successfully Changed');
             // console.log(localStorage.getItem('access_token')!);
-            if (response["data"]["Response"] === "Username already exists"){
-              alert("Username already exists");
+            if (response['data']['Response'] === 'Username already exists') {
+              alert('Username already exists');
               usernameIsInUse = true;
-            }
-            else{
+            } else {
               alert('Username Successfully Changed');
               console.log(localStorage.getItem('access_token')!);
               detailsChanged = true;
             }
-
           })
           .catch(async (err) => {
             console.log(err);
@@ -95,7 +92,7 @@ const EditProfile = () => {
           .put('http://' + ip + ':8000/' + `api/change_email/${id}`, {
             email: email,
           })
-          .then(async (response) => {
+          .then(async () => {
             alert('Email Successfully Changed');
             detailsChanged = true;
           })
@@ -133,15 +130,14 @@ const EditProfile = () => {
               .catch(async (err) => {
                 console.log(err);
               });
-          }
-          else{
-            alert("Confirm password does not match new password");
+          } else {
+            alert('Confirm password does not match new password');
           }
         } else {
           alert('Current password was not correct');
         }
       }
-      if (detailsChanged){
+      if (detailsChanged) {
         localStorage.clear();
         axios.defaults.headers.common['Authorization'] = null;
         window.location.href = '/host/login';

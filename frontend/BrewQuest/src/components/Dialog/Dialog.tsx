@@ -1,10 +1,10 @@
 import './Dialog.css';
-
+import { MouseEvent } from 'react';
 interface Props {
   show: boolean;
   title: string;
   description: string;
-  confirm: () => void;
+  confirm: (e: MouseEvent<HTMLElement>) => void;
   cancel: () => void;
 }
 
