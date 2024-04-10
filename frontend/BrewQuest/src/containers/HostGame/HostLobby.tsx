@@ -133,14 +133,14 @@ const HostLobby = ({
         <div className='container player-grid'>
           {makeGrid(players.map((n: Player) => n.playername))}
         </div>
-        <div className="d-flex justify-content-center">   
+        <div className='d-grid gap-2 col-4 mx-auto fixed-bottom'>  
         <button
           onClick={() => {
             // Hand me down function that actually sets round end time then starts round.
             startQuiz();
           }}
           disabled={players.length == 0}
-          className=' btn btn-primary btn-lg center-block '
+          className=' btn btn-primary btn-lg mb-5 '
           type='button'
         >
           Start
