@@ -38,20 +38,9 @@ const EditProfile = () => {
       const token = localStorage.getItem('access_token')!;
       const decoded: any = jwtDecode(token);
       const id = decoded.user_id;
+      let detailsChanged = false;
+      let usernameIsInUse = false;
       // updating each individually incase there is a blank field
-      if (!(email == '')) {
-        // make an update call to the API URL for email
-        await axios
-          .put('http://' + ip + ':8000/' + `api/change_email/${id}`, {
-            email: email,
-          })
-          .then(async (response) => {
-            alert('Email Successfully Changed');
-          })
-          .catch(async (err) => {
-            console.log(err);
-          });
-      }
       if (!(username == '')) {
         // make an update call to the API URL for username
         await axios
@@ -63,10 +52,12 @@ const EditProfile = () => {
             // console.log(localStorage.getItem('access_token')!);
             if (response["data"]["Response"] === "Username already exists"){
               alert("Username already exists")
+              usernameIsInUse = true;
             }
             else{
               alert('Username Successfully Changed');
               console.log(localStorage.getItem('access_token')!);
+              detailsChanged = true;
             }
 
           })
@@ -74,7 +65,21 @@ const EditProfile = () => {
             console.log(err);
           });
       }
-      if (!(newPassword == '')) {
+      if (!(email == '') && !usernameIsInUse) {
+        // make an update call to the API URL for email
+        await axios
+          .put('http://' + ip + ':8000/' + `api/change_email/${id}`, {
+            email: email,
+          })
+          .then(async (response) => {
+            alert('Email Successfully Changed');
+            detailsChanged = true;
+          })
+          .catch(async (err) => {
+            console.log(err);
+          });
+      }
+      if (!(newPassword == '') && !usernameIsInUse) {
         // check if matches old password
         // check if newPassword and confirmNewPassword matches
         // update password
@@ -99,6 +104,7 @@ const EditProfile = () => {
               })
               .then(async (response) => {
                 alert('Password Successfully Changed');
+                detailsChanged = true;
               })
               .catch(async (err) => {
                 console.log(err);
@@ -108,10 +114,11 @@ const EditProfile = () => {
           alert('Current password was not correct');
         }
       }
-      // localStorage.clear();
-      // axios.defaults.headers.common['Authorization'] = null;
-      // window.location.href = '/host/login';
-
+      if (detailsChanged){
+        localStorage.clear();
+        axios.defaults.headers.common['Authorization'] = null;
+        window.location.href = '/host/login';
+      }
       // update message saying credentials changed
     } catch (error) {
       console.log(error);
