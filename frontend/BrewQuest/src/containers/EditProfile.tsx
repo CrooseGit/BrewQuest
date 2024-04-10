@@ -14,11 +14,33 @@ const EditProfile = () => {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [showAccountDialog, setShowAccountDialog] = useState(false);
 
-  const confirm = () => {
-    console.log('confirm');
+    const confirm = async (e: MouseEvent<HTMLElement>) => {
+        e.preventDefault()
+        try {
+            // grab user_id from decoding the cookies
+            const token = localStorage.getItem('access_token')!;
+            const decoded : any = jwtDecode(token);
+            const id = decoded.user_id;
+            await axios
+                .put('http://localhost:8000/' + `api/delete_user/${id}`)
+                .then(async (response) => {
+                    alert("Successfully deleted account")
+                }).catch(async (err) => {
+                    console.log(err);
+                })
+            localStorage.clear();
+            axios.defaults.headers.common['Authorization'] = null;
+            window.location.href = '/host/login';
 
-    setShowAccountDialog(false);
-  };
+
+          // update message saying credentials changed
+        } catch (error) {
+          console.log(error)
+          window.alert('Failed to delete account');
+        }
+        setShowAccountDialog(false);
+
+    };
 
   const cancel = () => {
     setShowAccountDialog(false);
