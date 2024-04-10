@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import "./GameLobby.css"
 
 // This is the client Lobby
 
@@ -246,6 +247,12 @@ const GameLobby = ({
         // If connected, render the lobby, otherwise render a message
         connected ? (
           <div className='container-fluid'>
+           
+              <div className="particle"></div>
+              <div className="particle"></div>
+              <div className="particle"></div>
+              <div className="particle"></div>
+          
             <Link to='/'><BackButton
               onClick={() => {
                 removePlayer();

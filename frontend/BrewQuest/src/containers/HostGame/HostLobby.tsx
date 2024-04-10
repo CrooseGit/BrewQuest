@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import BackButton from '../../components/BackButton/BackButton';
 import { Link } from 'react-router-dom';
+import './HostLobby.css';
 
 interface Player {
   playername: string;
@@ -120,6 +121,12 @@ const HostLobby = ({
   return (
     <>
       <div className='container-fluid'>
+        
+          <div className="particle"></div>
+          <div className="particle"></div>
+          <div className="particle"></div>
+          <div className="particle"></div>
+     
         <Link to='../QuizList'><BackButton
           onClick={() => {
             endQuiz();
@@ -133,18 +140,18 @@ const HostLobby = ({
         <div className='container player-grid'>
           {makeGrid(players.map((n: Player) => n.playername))}
         </div>
-        <div className='d-grid gap-2 col-4 mx-auto fixed-bottom'>  
-        <button
-          onClick={() => {
-            // Hand me down function that actually sets round end time then starts round.
-            startQuiz();
-          }}
-          disabled={players.length == 0}
-          className=' btn btn-primary btn-lg mb-5 '
-          type='button'
-        >
-          Start
-        </button>
+        <div className='d-grid gap-2 col-4 mx-auto fixed-bottom'>
+          <button
+            onClick={() => {
+              // Hand me down function that actually sets round end time then starts round.
+              startQuiz();
+            }}
+            disabled={players.length == 0}
+            className=' btn btn-primary btn-lg mb-5 '
+            type='button'
+          >
+            Start
+          </button>
         </div>
       </div>
     </>
