@@ -11,7 +11,7 @@ const Navbar = () => {
     <div>
       <nav className='navbar navbar-expand-lg bg-body-primary'>
         <div className='container-fluid'>
-          <a className='navbar-brand text' href='/QuizList'>
+          <a className='navbar-brand text' href='/host/QuizList'>
             BrewQuest
           </a>
           <button
