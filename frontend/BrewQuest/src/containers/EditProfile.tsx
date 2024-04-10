@@ -22,7 +22,7 @@ const EditProfile = () => {
             const decoded : any = jwtDecode(token);
             const id = decoded.user_id;
             await axios
-                .put('http://localhost:8000/' + `api/delete_user/${id}`)
+                .put('http://' + ip + ':8000/' + `api/delete_user/${id}`)
                 .then(async (response) => {
                     alert("Successfully deleted account")
                 }).catch(async (err) => {
@@ -63,6 +63,10 @@ const EditProfile = () => {
       let detailsChanged = false;
       let usernameIsInUse = false;
       // updating each individually incase there is a blank field
+      if ((username == '') && (email == '') && (newPassword == '')){
+        alert("Please fill in the appropiate fields");
+      }
+
       if (!(username == '')) {
         // make an update call to the API URL for username
         await axios
@@ -73,7 +77,7 @@ const EditProfile = () => {
             // alert('Username Successfully Changed');
             // console.log(localStorage.getItem('access_token')!);
             if (response["data"]["Response"] === "Username already exists"){
-              alert("Username already exists")
+              alert("Username already exists");
               usernameIsInUse = true;
             }
             else{
@@ -131,6 +135,9 @@ const EditProfile = () => {
               .catch(async (err) => {
                 console.log(err);
               });
+          }
+          else{
+            alert("Confirm password does not match new password");
           }
         } else {
           alert('Current password was not correct');
