@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import BackButton from '../../components/BackButton/BackButton';
 
@@ -22,16 +21,12 @@ interface props {
 }
 
 const HostLobby = ({
-  quizId,
   room,
-  quizTitle,
-  livequizhttp,
   client,
   players,
   updatePlayers,
   endQuiz,
   startQuiz,
-  connected,
   setConnected,
 }: props) => {
   // Used to remove a player from the lobby

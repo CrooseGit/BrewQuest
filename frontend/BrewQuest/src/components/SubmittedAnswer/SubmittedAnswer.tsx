@@ -7,19 +7,20 @@ interface props{
 }*/
 //{submittedAnswer, handleDelete, roundNum, questionNum}:props
 import axios from 'axios';
-import { useState } from 'react';
 import { useEffect } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 
+interface SubmittedAnswer {
+  id: number;
+  player_id: number;
+  question_index: number;
+  round_index: number;
+  contents: string;
+}
+
 interface props {
-  submittedAnswer: {
-    id: number;
-    player_id: number;
-    question_index: number;
-    round_index: number;
-    contents: string;
-  };
-  handleDelete: (element: any) => void;
+  submittedAnswer: SubmittedAnswer;
+  handleDelete: (element: SubmittedAnswer) => void;
   roundNum: number;
   questionNum: number;
   client: W3CWebSocket;

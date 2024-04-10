@@ -337,7 +337,7 @@ const QuizEdit = () => {
           </form>
         </div>
         <div>
-          <Link to='/host/quizlist'>
+          <Link to='/host/QuizList'>
             <button
               type='button'
               className='btn p-2 submitAllButton'

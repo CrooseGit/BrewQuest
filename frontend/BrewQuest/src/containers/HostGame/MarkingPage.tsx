@@ -10,16 +10,6 @@ import NextRoundButton from '../../components/NextRoundButton/NextRoundButton';
 
 import { JSX } from 'react/jsx-runtime';
 
-interface Question {
-  question_title: string;
-  question_index: number;
-  round_index: number;
-}
-interface ModelAnswer {
-  ans: string;
-  round_index: number;
-  question_index: number;
-}
 interface RoundMeta {
   round_index: number;
   question_count: number;
@@ -37,8 +27,6 @@ interface props {
 }
 const MarkingPage = ({
   room,
-  quizId,
-  quizTitle,
   deleteRoom,
   client,
   livequizhttp,
@@ -49,8 +37,6 @@ const MarkingPage = ({
   // Initialize roundsPerQuiz, questionsPerRound, questionTitle, submittedAnswers from database
   // current
 
-  const [questionTitles, setQuestionTitles] = useState<Question[]>([]);
-  const [modelAnswers, setModelAnswers] = useState<ModelAnswer[]>([]);
   const [questionTitle, setQuestionTitle] = useState('');
   const [modelAnswer, setModelAnswer] = useState('');
   // default to 1
@@ -152,23 +138,6 @@ const MarkingPage = ({
                   question_index: element.question.index,
                   round_index: element.question.round_id.index,
                   contents: element.answer,
-                },
-              ]);
-              setModelAnswers((prev) => [
-                ...prev,
-                {
-                  ans: element.answer,
-                  round_index: element.question.round_id.index,
-                  question_index: element.question.index,
-                },
-              ]);
-
-              setQuestionTitles((prev) => [
-                ...prev,
-                {
-                  question_title: element.question.prompt,
-                  question_index: element.question.index,
-                  round_index: element.question.round_id.index,
                 },
               ]);
             }
@@ -290,7 +259,7 @@ const MarkingPage = ({
   }
 
   // remove element from list
-  const handleDelete = (element: any) => {
+  const handleDelete = (element: { id: number }) => {
     // IMPORTANT: functional setState update approach to ensure latest submittedAnswers value is used
     setSubmittedAnswers((prevSubmittedAnswers) =>
       prevSubmittedAnswers.filter((answer) => answer.id !== element.id)
