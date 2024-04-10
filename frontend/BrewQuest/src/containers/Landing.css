@@ -1,3 +1,5 @@
+
+
 .line-body{
     background: linear-gradient(to right, #1e5799 0%,#2ce0bf 19%,#76dd2c 40%,#dba62b 60%,#e02cbf 83%,#1e5799 100%); 
    background-size: 10000px 100%;
@@ -12,11 +14,18 @@
      background-position-x: 10000px ;
    }
  }
+/*
+
+Author
+
+    Envato Tuts+
+    December 21, 2017
 
 
+*/
 .particle {
     position: absolute;
-    border-radius: 50%;
+    border-radius: 100%;
 }
 @keyframes particle-animation-1 {
     100% {
