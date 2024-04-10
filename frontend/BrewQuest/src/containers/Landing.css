@@ -1,9 +1,10 @@
 
 
 .line-body{
-    background: linear-gradient(to right, #1e5799 0%,#2ce0bf 19%,#76dd2c 40%,#dba62b 60%,#e02cbf 83%,#1e5799 100%); 
-   background-size: 10000px 100%;
-   animation: bg 15s linear infinite ;
+    background: linear-gradient(to right, #1b508c 0%,#35efcd 19%,#77e429 40%,
+    #edb532 60%,#d724b7 83%,#2063af 100%); 
+   background-size: 9000px 100%;
+   animation: bg 10s linear infinite ;
  }
  @keyframes bg{
    0%{
