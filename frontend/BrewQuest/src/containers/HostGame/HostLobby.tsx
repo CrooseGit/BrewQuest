@@ -120,26 +120,27 @@ const HostLobby = ({
     <>
       <div className='container-fluid'>
         <h1 className='text-light'>Connected to Lobby : {room}</h1>
-
-        <BackButton
-          onClick={() => {
-            endQuiz();
-          }}
-          className='btn'
-        ></BackButton>
-
-        <button
-          onClick={() => {
-            // Hand me down function that actually sets round end time then starts round.
-            startQuiz();
-          }}
-          disabled={players.length == 0}
-          className='button btn btn-primary btn-lg '
-          type='button'
-        >
-          Start
-        </button>
-        <div className='container'>
+        <div className='d-flex justify-content-between p-5'>
+          <BackButton
+            onClick={() => {
+              endQuiz();
+            }}
+            className='btn'
+          ></BackButton>
+          <button
+            onClick={() => {
+              // Hand me down function that actually sets round end time then starts round.
+              startQuiz();
+            }}
+            disabled={players.length == 0}
+            className='button btn btn-primary btn-lg host-btn'
+            type='button'
+          >
+            Start
+          </button>
+          <div></div>
+        </div>
+        <div className='container p-5'>
           {makeGrid(players.map((n: Player) => n.playername))}
         </div>
       </div>
