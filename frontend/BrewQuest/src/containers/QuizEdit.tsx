@@ -233,7 +233,7 @@ const QuizEdit = () => {
       .then((response) => {
         console.log(response);
         getQuiz(roundIds.length);
-        //setSelectedRoundIndex(roundIds.length);
+        setQuestionIndex(0);
       })
       .catch((error) => {
         console.log(error);
