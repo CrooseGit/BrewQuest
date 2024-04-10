@@ -1,10 +1,14 @@
 import BackButton from '../components/BackButton/BackButton';
 import Dialog from '../components/Dialog/Dialog';
-import { MouseEvent, useContext, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import { JwtPayload, jwtDecode } from 'jwt-decode';
 import ip from '../info';
+
+interface Decoded extends JwtPayload {
+  user_id: number;
+}
 
 const EditProfile = () => {
   const [email, setEmail] = useState('');
@@ -26,17 +30,11 @@ const EditProfile = () => {
 
   const handleSubmit = async (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    const user = {
-      email: email,
-      username: username,
-      currentPassword: currentPassword,
-      newPassword: newPassword,
-      confirmNewPassword: confirmNewPassword,
-    };
+
     try {
       // grab user_id from decoding the cookies
       const token = localStorage.getItem('access_token')!;
-      const decoded: any = jwtDecode(token);
+      const decoded: Decoded = jwtDecode(token);
       const id = decoded.user_id;
       // updating each individually incase there is a blank field
       if (!(email == '')) {
@@ -45,7 +43,7 @@ const EditProfile = () => {
           .put('http://' + ip + ':8000/' + `api/change_email/${id}`, {
             email: email,
           })
-          .then(async (response) => {
+          .then(async () => {
             alert('Email Successfully Changed');
           })
           .catch(async (err) => {
@@ -58,7 +56,7 @@ const EditProfile = () => {
           .put('http://' + ip + ':8000/' + `api/change_username/${id}`, {
             username: username,
           })
-          .then(async (response) => {
+          .then(async () => {
             alert('Username Successfully Changed');
             console.log(localStorage.getItem('access_token')!);
           })
@@ -89,7 +87,7 @@ const EditProfile = () => {
               .put('http://' + ip + ':8000/' + `api/change_password/${id}`, {
                 password: newPassword,
               })
-              .then(async (response) => {
+              .then(async () => {
                 alert('Password Successfully Changed');
               })
               .catch(async (err) => {

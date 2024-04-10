@@ -5,15 +5,10 @@ import {
   Register,
   GamePin,
   QuizEdit,
-  Leaderboard,
   Host,
-  Channel,
   ClientGame,
   EditProfile,
 } from './containers/index';
-import MarkingPage from './containers/HostGame/MarkingPage';
-import SubmittedAnswer from './components/SubmittedAnswer/SubmittedAnswer';
-import { useState } from 'react';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
