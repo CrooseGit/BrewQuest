@@ -3,6 +3,7 @@ import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 // This is the client Lobby
 
@@ -245,16 +246,18 @@ const GameLobby = ({
         // If connected, render the lobby, otherwise render a message
         connected ? (
           <div className='container-fluid'>
-            <h1 className='text-light'>Connected to Lobby : {room}</h1>
-
-            <BackButton
+            <Link to='/'><BackButton
               onClick={() => {
-                navigate('/');
                 removePlayer();
               }}
-              className='btn'
+              className='text'
             ></BackButton>
-            <div className='container'>
+            </Link>
+            <h1 className='text-light'>Connected to Lobby : {room}</h1>
+            <h2 className='text-light'>Player Count: {players.length}</h2>
+
+
+            <div className='container player-grid'>
               {makeGrid(players.map((n: Player) => n.playername))}
             </div>
           </div>

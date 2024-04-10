@@ -413,6 +413,10 @@ h1 {
   text-align: center;
 }
 
+h2 {
+  text-align: center;
+}
+
 .text {
   color: white;
   font-family: 'Quicksand';
@@ -702,4 +706,24 @@ body {
   box-shadow: #0808082b 0.2rem 0;
 }
 
+/* Lobby */
+.lobby-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.player-grid{
+  background-color: #B2C4B9;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  max-height: 20rem;
+  max-width: 80%;
+  border-radius: 10px;
+}
 /* End */
