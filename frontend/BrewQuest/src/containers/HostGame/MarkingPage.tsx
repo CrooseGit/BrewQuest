@@ -36,7 +36,9 @@ const MarkingPage = ({
   // Message for backend: look at console to know what to do
   // Initialize roundsPerQuiz, questionsPerRound, questionTitle, submittedAnswers from database
   // current
-
+  const [endTime, setEndTime] = useState(new Date(Date.now() + 10000));
+  const [timer, setTimer] = useState({ minutes: '00', seconds: '00' });
+  const [roundOver, setRoundOver] = useState(false);
   const [questionTitle, setQuestionTitle] = useState('');
   const [modelAnswer, setModelAnswer] = useState('');
   // default to 1
@@ -298,13 +300,79 @@ const MarkingPage = ({
     }
   };
 
+  // Calculates minutes remaining from datetime
+  const calculateMinutes = () => {
+    const timeLeft = endTime.getTime() - Date.now();
+    return Math.floor((timeLeft / 1000 / 60) % 60).toLocaleString('en-US', {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    });
+  };
+  // End
+
+  // Calculates minutes remaining from datetime
+  const calculateSeconds = () => {
+    const timeLeft = endTime.getTime() - Date.now();
+    return Math.floor((timeLeft / 1000) % 60).toLocaleString('en-US', {
+      minimumIntegerDigits: 2,
+      useGrouping: false,
+    });
+  };
+  // End
+
+  // Fetches and sets prompts and answers, updates state of Answers and Submitted with default values
+  const clientGetRound = () => {
+    console.log('clientGetRound(): ');
+    const payload = {
+      pin: room,
+      round_id: roundIndex,
+    };
+    axios
+      .post(livequizhttp + 'clientGetRound/', payload)
+      .then((response) => {
+        console.log(response);
+        console.log('end_time ', new Date(Date.parse(response.data.end_time)));
+        setEndTime(new Date(Date.parse(response.data.end_time)));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  // End
+
+  // Runs on startup, and when round Index changed
+  useEffect(() => {
+    setEndTime(new Date(Date.now() + 10000));
+    clientGetRound();
+    setRoundOver(false);
+  }, [roundIndex]); //[prompts.length]);
+  // End
+
+  // Controls timer
+  useEffect(() => {
+    const timerInterval = setInterval(() => {
+      if (endTime.getTime() - Date.now() <= 0) {
+        console.log('end', endTime.getTime() - Date.now());
+        clearInterval(timerInterval);
+        setRoundOver(true);
+      } else {
+        setTimer({ minutes: calculateMinutes(), seconds: calculateSeconds() });
+      }
+    }, 1000);
+
+    return () => clearInterval(timerInterval);
+  }, [endTime]);
+  // End
+
   return (
     <div className='marking-page-div'>
       <div className='w-100'>
         <Link to='/host/QuizList'>
           <BackButton onClick={deleteRoom} />
         </Link>
+
         <NextRoundButton
+          disabled={!roundOver}
           onClick={
             roundIndex == questionsPerRound.length
               ? () => {
@@ -318,6 +386,13 @@ const MarkingPage = ({
         />
       </div>
       <h1 className='branding-heading text'>BrewQuest</h1>
+      <div className='text-center'>
+        <h5 className='text'>
+          Current Round: {roundIndex} Time Remaining: {timer.minutes}:
+          {timer.seconds}
+        </h5>
+      </div>
+
       <div className='round-questions'>
         {/* to fetch from database */}
         <div className='round-dpdn'>
