@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 import BackButton from '../../components/BackButton/BackButton';
+import { Link } from 'react-router-dom';
 
 interface Player {
   playername: string;
@@ -119,29 +120,31 @@ const HostLobby = ({
   return (
     <>
       <div className='container-fluid'>
+        <Link to='../QuizList'><BackButton
+          onClick={() => {
+            endQuiz();
+          }}
+          className='text'
+        ></BackButton></Link>
         <h1 className='text-light'>Connected to Lobby : {room}</h1>
-        <div className='d-flex justify-content-between p-5'>
-          <BackButton
-            onClick={() => {
-              endQuiz();
-            }}
-            className='btn'
-          ></BackButton>
-          <button
-            onClick={() => {
-              // Hand me down function that actually sets round end time then starts round.
-              startQuiz();
-            }}
-            disabled={players.length == 0}
-            className='button btn btn-primary btn-lg host-btn'
-            type='button'
-          >
-            Start
-          </button>
-          <div></div>
-        </div>
-        <div className='container p-5'>
+        <h2 className='text-light'>Player Count: {players.length}</h2>
+
+
+        <div className='container player-grid'>
           {makeGrid(players.map((n: Player) => n.playername))}
+        </div>
+        <div className="d-flex justify-content-center">   
+        <button
+          onClick={() => {
+            // Hand me down function that actually sets round end time then starts round.
+            startQuiz();
+          }}
+          disabled={players.length == 0}
+          className=' btn btn-primary btn-lg center-block '
+          type='button'
+        >
+          Start
+        </button>
         </div>
       </div>
     </>
