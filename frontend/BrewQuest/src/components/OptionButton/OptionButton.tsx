@@ -12,7 +12,7 @@ interface OptionButtonProps {
 const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
   const [optionDropdownVisible, setOptionDropdownVisible] = useState(false);
 
-  const toggleOptionDropdown = (event) => {
+  const toggleOptionDropdown = () => {
     setOptionDropdownVisible(!optionDropdownVisible);
   };
 
@@ -41,7 +41,7 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
   };
 
   window.onclick = (event) => {
-    if (!event.target.matches('.option-button') && !event.target.matches('.option-icon')){ //if not button
+    if (!event.target?.matches('.option-button') && !event.target?.matches('.option-icon')){ //if not button
       if (optionDropdownVisible){ //set to close option dropdown content
         setOptionDropdownVisible(false);
       }
