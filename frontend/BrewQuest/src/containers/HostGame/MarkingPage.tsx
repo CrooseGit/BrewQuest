@@ -364,15 +364,16 @@ const MarkingPage = ({
   }, [endTime]);
   // End
 
-  window.onclick = (e) => {
-    if (!e.target?.matches(".round-dpdn-btn")){ //not button
+  window.onclick = (e: any) => {
+    if (!e.target?.matches('.round-dpdn-btn')) {
+      //not button
       //close menu content if anything else clicked
-      let roundDpdnContent = document.getElementById("round-dpdn-menu");
-      if (roundDpdnContent?.classList.contains("show-menu")){
-        roundDpdnContent?.classList.remove("show-menu");
+      const roundDpdnContent = document.getElementById('round-dpdn-menu');
+      if (roundDpdnContent?.classList.contains('show-menu')) {
+        roundDpdnContent?.classList.remove('show-menu');
       }
     }
-  }
+  };
 
   return (
     <div className='marking-page-div'>
@@ -404,7 +405,6 @@ const MarkingPage = ({
       </div>
 
       <div className='round-questions'>
-
         {/* to fetch from database */}
         <div className='round-dpdn'>
           <button onClick={toggleRoundDpdn} className='round-dpdn-btn'>
