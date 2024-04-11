@@ -27,6 +27,7 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
         console.log(error);
       });
   };
+  
   const handleDuplicate = () => {
     axios.defaults.headers.common[
       'Authorization'

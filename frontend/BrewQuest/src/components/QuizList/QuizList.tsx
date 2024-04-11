@@ -90,9 +90,7 @@ const QuizList = ({
         type='button'
         onClick={createQuiz}
         className='btn fs-1 newQuizButton'
-      >
-        +
-      </button>
+      >+</button>
     </div>
   );
 };

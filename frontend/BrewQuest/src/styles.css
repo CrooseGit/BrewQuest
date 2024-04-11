@@ -390,8 +390,9 @@ img {
   text-align: center;
 }
 .newQuizButton {
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 56px;
+  height: 56px;
+  padding: 0 0 7px 0;
   text-align: center;
   line-height: 0;
   color: white;
