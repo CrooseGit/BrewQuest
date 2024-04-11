@@ -179,7 +179,7 @@ body {
   left: -140px;
   height: fit-content;
   width: fit-content;
-  display: flex;
+  display: none;
   background-color: #212922;
   flex-direction: column;
   gap: 3px;
@@ -190,6 +190,10 @@ body {
   /* opacity: 0; */
   /* pointer-events: none; */
   z-index: 99999999999;
+}
+
+.show-flex-menu{
+  display: flex;
 }
 
 .first-button {

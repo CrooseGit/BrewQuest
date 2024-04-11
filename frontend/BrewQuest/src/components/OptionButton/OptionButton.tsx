@@ -9,12 +9,8 @@ interface OptionButtonProps {
   reloadFunction: () => void;
 }
 
-const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
-  const [optionDropdownVisible, setOptionDropdownVisible] = useState(false);
-
-  const toggleOptionDropdown = () => {
-    setOptionDropdownVisible(!optionDropdownVisible);
-  };
+const OptionButton = ({ quizId, reloadFunction, toggleOptionDropdown}: OptionButtonProps) => {
+  // const [optionDropdownVisible, setOptionDropdownVisible] = useState(false);
 
   const handleDelete = () => {
     axios.defaults.headers.common[
@@ -40,13 +36,9 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
       });
   };
 
-  window.onclick = (event) => {
-    if (!event.target?.matches('.option-button') && !event.target?.matches('.option-icon')){ //if not button
-      if (optionDropdownVisible){ //set to close option dropdown content
-        setOptionDropdownVisible(false);
-      }
-    }
-  }
+  let optionBtnID = "option-button-"+quizId;
+  let optionContentID = "shown-options-"+quizId;
+  let optionIconID = "option-icon-"+quizId;
 
   return (
     <div>
@@ -57,21 +49,22 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
         <button
           tabIndex={0}
           className='option-button'
+          id={optionBtnID}
           onClick={toggleOptionDropdown}
         >
           {' '}
           {/* tab index for dropdown menu to appear in safari, temporary fix */}
-          <img src={option_image} className='option-icon' />
+          <img src={option_image} className='option-icon' id={optionIconID}/>
         </button>
     
         {/* dropdown content */}
-        {optionDropdownVisible && (
-          <div className='shown-options'>
+        {(
+          <div className='shown-options' id={optionContentID} >
             <button
               className='shown-option-button first-button'
               type='button'
               onClick={() => {
-                setOptionDropdownVisible(false);
+                // setOptionDropdownVisible(false);
                 handleDuplicate();
               }}
             >
@@ -95,7 +88,7 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
               className='shown-option-button last-button'
               type='button'
               onClick={() => {
-                setOptionDropdownVisible(false);
+                // setOptionDropdownVisible(false);
                 handleDelete();
               }}
             >
