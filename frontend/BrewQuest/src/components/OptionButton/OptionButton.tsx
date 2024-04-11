@@ -12,7 +12,7 @@ interface OptionButtonProps {
 const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
   const [optionDropdownVisible, setOptionDropdownVisible] = useState(false);
 
-  const toggleOptionDropdown = () => {
+  const toggleOptionDropdown = (event) => {
     setOptionDropdownVisible(!optionDropdownVisible);
   };
 
@@ -39,20 +39,31 @@ const OptionButton = ({ quizId, reloadFunction }: OptionButtonProps) => {
       });
   };
 
+  window.onclick = (event) => {
+    if (!event.target.matches('.option-button') && !event.target.matches('.option-icon')){ //if not button
+      if (optionDropdownVisible){ //set to close option dropdown content
+        setOptionDropdownVisible(false);
+      }
+    }
+  }
+
   return (
     <div>
-      <button
-        tabIndex={0}
-        className='option-button'
-        onClick={toggleOptionDropdown}
-      >
-        {' '}
-        {/* tab index for dropdown menu to appear in safari, temporary fix */}
-        <img src={option_image} className='option-icon' />
-      </button>
-
+      {/* dropdown */}
       <div className='option-dropdown'>
+
+        {/* button */}
+        <button
+          tabIndex={0}
+          className='option-button'
+          onClick={toggleOptionDropdown}
+        >
+          {' '}
+          {/* tab index for dropdown menu to appear in safari, temporary fix */}
+          <img src={option_image} className='option-icon' />
+        </button>
     
+        {/* dropdown content */}
         {optionDropdownVisible && (
           <div className='shown-options'>
             <button
