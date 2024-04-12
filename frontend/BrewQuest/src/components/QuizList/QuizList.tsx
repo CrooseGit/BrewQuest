@@ -52,11 +52,11 @@ const QuizList = ({
   const toggleOptionDropdown = (e) => {
     console.log("button pressed");
     for (let i=0; i< quizzes.length; i++) {
-      // reset to toggle all off
-      if (document.getElementById("shown-options-"+quizzes[i].id)?.classList.contains("show-flex-menu") && !(e.target.matches("#option-button-"+quizzes[i].id) || e.target.matches("#option-icon-"+quizzes[i].id))){
+      // reset to toggle all off except target
+      if (document.getElementById("shown-options-"+quizzes[i].id)?.classList.contains("show-flex-menu") && !e.target.matches("#option-button-"+quizzes[i].id) && !e.target.matches("#option-icon-"+quizzes[i].id)){
         document.getElementById("shown-options-"+quizzes[i].id)?.classList.remove("show-flex-menu");
       }
-      //toggle only the right one on
+      //toggle only the target
       if (e.target.matches("#option-button-"+quizzes[i].id) || e.target.matches("#option-icon-"+quizzes[i].id)){
         console.log("button detected");
         document.getElementById("shown-options-"+quizzes[i].id)?.classList.toggle("show-flex-menu");
