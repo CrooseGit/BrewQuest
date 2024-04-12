@@ -23,7 +23,7 @@ const OptionButton = ({ quizId, reloadFunction, toggleOptionDropdown}: OptionBut
         console.log(error);
       });
   };
-  
+
   const handleDuplicate = () => {
     axios.defaults.headers.common[
       'Authorization'
@@ -36,15 +36,14 @@ const OptionButton = ({ quizId, reloadFunction, toggleOptionDropdown}: OptionBut
       });
   };
 
-  let optionBtnID = "option-button-"+quizId;
-  let optionContentID = "shown-options-"+quizId;
-  let optionIconID = "option-icon-"+quizId;
+let optionBtnID = "option-button-"+quizId;
+let optionContentID = "shown-options-"+quizId;
+let optionIconID = "option-icon-"+quizId;
 
   return (
     <div>
       {/* dropdown */}
       <div className='option-dropdown'>
-
         {/* button */}
         <button
           tabIndex={0}
@@ -56,7 +55,7 @@ const OptionButton = ({ quizId, reloadFunction, toggleOptionDropdown}: OptionBut
           {/* tab index for dropdown menu to appear in safari, temporary fix */}
           <img src={option_image} className='option-icon' id={optionIconID}/>
         </button>
-    
+
         {/* dropdown content */}
         {(
           <div className='shown-options' id={optionContentID} >

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const QuizListPage = () => {
   // This file provides the page where a host can see a list of all their quizzes
-  // TODO: disable host button if no quiz selected
+
   const [quizToHost, setQuizToHost] = useState({ title: 'Loading', id: -1 });
   const [isDisabled, setIsDisabled] = useState(true);
   return (
@@ -21,25 +21,29 @@ const QuizListPage = () => {
           ></QuizList>
           <div>
             {isDisabled ? (
-              <button type='button' className='btn btn-secondary host-quiz' disabled={isDisabled}>
+              <button
+                type='button'
+                className='btn btn-secondary host-quiz'
+                disabled={isDisabled}
+              >
                 Host Quiz
               </button>
             ) : (
               <Link
-              className='host-quiz btn btn-secondary'
-              to={'/host/game'}
-              style={{ textDecoration: 'none' }}
-              state={{
-                title: quizToHost.title,
-                id: quizToHost.id,
-                room:
-                  quizToHost.title.replace(/ /g, '_') +
-                  '_' +
-                  quizToHost.id.toString(),
-              }}
-            >
-              Host Quiz
-            </Link>
+                className='host-quiz btn btn-secondary'
+                to={'/host/game'}
+                style={{ textDecoration: 'none' }}
+                state={{
+                  title: quizToHost.title,
+                  id: quizToHost.id,
+                  room:
+                    quizToHost.title.replace(/ /g, '_') +
+                    '_' +
+                    quizToHost.id.toString(),
+                }}
+              >
+                Host Quiz
+              </Link>
             )}
           </div>
         </div>

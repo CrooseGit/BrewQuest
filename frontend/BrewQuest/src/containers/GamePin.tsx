@@ -5,7 +5,6 @@ import { useState, ChangeEvent, MouseEvent } from 'react';
 import axios from 'axios';
 import ip from '../info';
 
-// TODO: Add feature to check whether entered name is a unique playername in the gamelobby
 // then only allow the player to join the lobby and join the game if the name is unqiue
 // allow for
 
@@ -36,8 +35,6 @@ const GamePin = () => {
    */
   const handleSubmit = (e: MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    // TODO: Add feature to check whether entered name is a unique playername in the gamelobby
-    // TODO: then only allow the player to join the lobby and join the game if the name is unqiue
     if (name !== '' && room !== '') {
       axios
         .post('http://' + ip + ':8000/livequiz/joinGame/', {

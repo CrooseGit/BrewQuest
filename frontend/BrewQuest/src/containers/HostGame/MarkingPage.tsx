@@ -197,7 +197,7 @@ const MarkingPage = ({
       .then((response) => {
         if (response.data.status == 'success') {
           // not sure why it wasnt working before i did this
-          // Reuben dont touch this or ill chop ur balls off
+
           setQuestionsPerRound((prevQuestions) => [
             ...prevQuestions,
             ...response.data.data,
@@ -321,14 +321,15 @@ const MarkingPage = ({
   // End
 
   // Fetches and sets prompts and answers, updates state of Answers and Submitted with default values
-  const clientGetRound = () => {
-    console.log('clientGetRound(): ');
+  const hostGetRound = () => {
+    console.log('hostGetRound(): ');
+
     const payload = {
       pin: room,
-      round_id: roundIndex,
     };
+    console.log('payload, ', payload);
     axios
-      .post(livequizhttp + 'clientGetRound/', payload)
+      .post(livequizhttp + 'hostGetRound/', payload)
       .then((response) => {
         console.log(response);
         console.log('end_time ', new Date(Date.parse(response.data.end_time)));
@@ -343,7 +344,7 @@ const MarkingPage = ({
   // Runs on startup, and when round Index changed
   useEffect(() => {
     setEndTime(new Date(Date.now() + 10000));
-    clientGetRound();
+    hostGetRound();
     setRoundOver(false);
   }, [roundIndex]); //[prompts.length]);
   // End
@@ -364,15 +365,16 @@ const MarkingPage = ({
   }, [endTime]);
   // End
 
-  window.onclick = (e) => {
-    if (!e.target?.matches(".round-dpdn-btn")){ //not button
+  window.onclick = (e: any) => {
+    if (!e.target?.matches('.round-dpdn-btn')) {
+      //not button
       //close menu content if anything else clicked
-      let roundDpdnContent = document.getElementById("round-dpdn-menu");
-      if (roundDpdnContent?.classList.contains("show-menu")){
-        roundDpdnContent?.classList.remove("show-menu");
+      const roundDpdnContent = document.getElementById('round-dpdn-menu');
+      if (roundDpdnContent?.classList.contains('show-menu')) {
+        roundDpdnContent?.classList.remove('show-menu');
       }
     }
-  }
+  };
 
   return (
     <div className='marking-page-div'>
@@ -404,7 +406,6 @@ const MarkingPage = ({
       </div>
 
       <div className='round-questions'>
-
         {/* to fetch from database */}
         <div className='round-dpdn'>
           <button onClick={toggleRoundDpdn} className='round-dpdn-btn'>
