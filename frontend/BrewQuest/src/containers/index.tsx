@@ -11,5 +11,4 @@ export { default as Logout } from './Logout';
 export { default as Host } from './Host';
 export { default as EditProfile } from './EditProfile';
 export { default as GameLobby } from './ClientGame/GameLobby';
-export { default as InGame } from './InGame';
 export { default as ClientGame } from './ClientGame/ClientGame';
