@@ -25,6 +25,9 @@ const EditProfile = () => {
       const token = localStorage.getItem('access_token')!;
       const decoded: Decoded = jwtDecode(token);
       const id = decoded.user_id;
+      axios.defaults.headers.common[
+        'Authorization'
+      ] = `Bearer ${localStorage.getItem('access_token')}`;
       await axios
         .put('http://' + ip + ':8000/' + `api/delete_user/${id}`)
         .then(async () => {
