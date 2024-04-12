@@ -49,7 +49,7 @@ const QuizList = ({
   }, []);
 
   // toggle option dropdown content based on which button is clicked
-  const toggleOptionDropdown = (e) => {
+  const toggleOptionDropdown = (e : any) => {
     console.log("button pressed");
     for (let i=0; i< quizzes.length; i++) {
       // reset to toggle all off except target
@@ -65,7 +65,7 @@ const QuizList = ({
   }
 
   // toggle off all dropdown content when empty space clicked
-  window.onclick = (e) => {
+  window.onclick = (e : any) => {
     if (!e.target.matches(".option-button") && !e.target.matches(".option-icon")){
       for (let i=0; i< quizzes.length; i++) {
         if (document.getElementById("shown-options-"+quizzes[i].id)?.classList.contains("show-flex-menu")){

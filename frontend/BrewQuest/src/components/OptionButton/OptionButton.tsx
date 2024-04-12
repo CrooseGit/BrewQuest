@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import option_image from '../../assets/three_dots.svg';
 import axios from 'axios';
 import ip from '../../info';
@@ -7,9 +6,14 @@ import { Link } from 'react-router-dom';
 interface OptionButtonProps {
   quizId: number;
   reloadFunction: () => void;
+  toggleOptionDropdown: (e: any) => void;
 }
 
-const OptionButton = ({ quizId, reloadFunction, toggleOptionDropdown}: OptionButtonProps) => {
+const OptionButton = ({
+  quizId,
+  reloadFunction,
+  toggleOptionDropdown,
+}: OptionButtonProps) => {
   // const [optionDropdownVisible, setOptionDropdownVisible] = useState(false);
 
   const handleDelete = () => {
@@ -36,9 +40,9 @@ const OptionButton = ({ quizId, reloadFunction, toggleOptionDropdown}: OptionBut
       });
   };
 
-let optionBtnID = "option-button-"+quizId;
-let optionContentID = "shown-options-"+quizId;
-let optionIconID = "option-icon-"+quizId;
+  let optionBtnID = 'option-button-' + quizId;
+  let optionContentID = 'shown-options-' + quizId;
+  let optionIconID = 'option-icon-' + quizId;
 
   return (
     <div>
@@ -53,12 +57,12 @@ let optionIconID = "option-icon-"+quizId;
         >
           {' '}
           {/* tab index for dropdown menu to appear in safari, temporary fix */}
-          <img src={option_image} className='option-icon' id={optionIconID}/>
+          <img src={option_image} className='option-icon' id={optionIconID} />
         </button>
 
         {/* dropdown content */}
-        {(
-          <div className='shown-options' id={optionContentID} >
+        {
+          <div className='shown-options' id={optionContentID}>
             <button
               className='shown-option-button first-button'
               type='button'
@@ -94,7 +98,7 @@ let optionIconID = "option-icon-"+quizId;
               Delete
             </button>
           </div>
-        )}
+        }
       </div>
     </div>
   );
